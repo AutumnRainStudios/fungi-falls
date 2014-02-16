@@ -15,6 +15,8 @@ function preload() {
     game.load.image('shroomStemLong', 'assets/stemLong.png');
     game.load.image('hitBox', 'assets/transTest.png');
     game.load.image('shroom1', 'assets/tallShroom_red.png');
+    game.load.image('shroom2', 'assets/tallShroom_brown.png');
+    game.load.image('bomb', 'assets/bomb.png');
     game.load.spritesheet('player', 'assets/p1_spritesheet.png', 72, 100);
 
 }
@@ -24,15 +26,13 @@ var boundary;
 
 function create() {
 
-	//  A simple background for our game
+	//  Background elements
     game.add.sprite(0, 0, 'bg');
-
-
     game.add.sprite(120, 340, 'shroomStemShort');
     game.add.sprite(840, 290, 'shroomStemMed');
     game.add.sprite(500, 200, 'shroomStemLong');
  
-    //  The platforms group contains the ground and the 2 ledges we can jump on
+    //  Groups for platforms
     platforms = game.add.group();
     boundary = game.add.group();
  
@@ -51,10 +51,9 @@ function create() {
 	horizontalBoundary.body.immovable = true;
 
 
-    //  Now let's create two ledges
+    //  Now let's create three ledges
     var ledge = platforms.create(-20, 300, 'shroomPlatformRed');
     ledge.body.immovable = true;
-    ledge.body.checkCollision.left = false;
     ledge.body.checkCollision.right = false;
 
     ledge = platforms.create(400, 160, 'shroomPlatformTan');
@@ -65,14 +64,13 @@ function create() {
     ledge = platforms.create(700, 250, 'shroomPlatformRed');
     ledge.body.immovable = true;
     ledge.body.checkCollision.left = false;
-    ledge.body.checkCollision.right = false;
+
 
 
     // The player and its settings
     player = game.add.sprite(70, game.world.height - 150, 'player');
  
     //  Player physics properties. Give the little guy a slight bounce.
-    //player.body.bounce.y = 0.2;
     player.body.gravity.y = 500;
     player.body.drag = 0;
     player.body.checkCollision.up = false;
@@ -82,30 +80,56 @@ function create() {
     player.animations.add('left', [6, 7, 8, 9, 10, 11], 16, true);
     player.animations.add('right', [12, 13, 14, 15, 16, 17, 18], 16, true);
 
-    stars = game.add.group();
+    shrooms = game.add.group();
+    bombs = game.add.group();
 
-    //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 12; i++)
+    //  Make it rain
+    for (var i = 0; i < 20; i++)
     {
-        //  Create a star inside of the 'stars' group
-        createShroom();
+        createEntity();
     }
 
+    // Enable cursors
     cursors = game.input.keyboard.createCursorKeys();
 
 }
 
-function createShroom(pos) {
+function createEntity() {
 
-	var star = stars.create(Math.random()*1024, -70, 'shroom1');
+	var random = Math.random();
+
+	if (random <= 0.8) {
+		spawnShroom();
+	} else if (random <= 0.9) {
+		spawnBomb();
+	} else {
+		spawnShroom();
+	}
+
+}
+
+function spawnShroom() {
+
+	if (Math.random() <= 0.5) {
+		var shroom = shrooms.create(Math.random()*1024, -70, 'shroom1');
+	} else {
+		var shroom = shrooms.create(Math.random()*1024, -70, 'shroom2');
+	}
 
     //  Let gravity do its thing
-    star.body.gravity.y = 600;
+    shroom.body.gravity.y = 600;
+    shroom.body.velocity.x = (Math.random()*500)-250;
+    shroom.body.bounce.y = 0.7 + Math.random() * 0.2;
+}
 
-    star.body.velocity.x = (Math.random()*500)-250;
+function spawnBomb() {
 
-    //  This just gives each star a slightly random bounce value
-    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+	var bomb = bombs.create(Math.random()*1024, -70, 'bomb');
+
+    //  Let gravity do its thing
+    bomb.body.gravity.y = 600;
+    bomb.body.velocity.x = (Math.random()*500)-250;
+    bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
 }
 
  
@@ -118,6 +142,10 @@ function update() {
  	//  Reset the players velocity (movement)
     player.body.velocity.x = 0;
  
+
+ 	// Player Controls
+
+ 	// Allow player to fall through platforms if holding down
     if (cursors.down.isDown){
     	platforms.setAll('body.checkCollision.up', false);
     } else {
@@ -128,55 +156,56 @@ function update() {
     if (cursors.up.isDown && player.body.touching.down)
     {
         player.body.velocity.y = -550;
+    }
+
+    // Left & Right Movement
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -350;
+ 
+ 		if (player.body.touching.down) {
+ 			player.animations.play('left');
+ 		} else {
+ 			player.frame = 2;
+ 		}
+
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 350;
+
+        if (player.body.touching.down) {
+ 			player.animations.play('right');
+ 		} else {
+ 			player.frame = 3;
+ 		}
 
     } else {
-
-	    if (cursors.left.isDown)
-	    {
-	        //  Move to the left
-	        player.body.velocity.x = -350;
-	 
-	 		if (player.body.touching.down) {
-	 			player.animations.play('left');
-	 		} else {
-	 			player.frame = 2;
-	 		}
-
-	    }
-	    else if (cursors.right.isDown)
-	    {
-	        //  Move to the right
-	        player.body.velocity.x = 350;
-
-	        if (player.body.touching.down) {
-	 			player.animations.play('right');
-	 		} else {
-	 			player.frame = 3;
-	 		}
-
-	    } else {
-	        //  Stand still
-	        player.animations.stop();
-	        player.frame = 0;
-	    }
- 
- 	}
+        //  Stand still
+        player.animations.stop();
+        player.frame = 0;
+    }
 
 
- 	game.physics.collide(stars, platforms);
- 	game.physics.collide(stars, boundary);
+ 	//
+ 	game.physics.collide(shrooms, platforms);
+ 	game.physics.collide(bombs, boundary);
+ 	game.physics.collide(shrooms, boundary);
+ 	game.physics.overlap(player, shrooms, collectShroom, null, this);
+ 	game.physics.overlap(player, bombs, collectShroom, null, this);
 
- 	game.physics.overlap(player, stars, collectStar, null, this);
-
- 	function collectStar (player, star) {
- 
+ 	function collectShroom (player, shroom) {
 	    // Removes the star from the screen
-	    createShroom(Math.random()*1024);
-	    star.kill();
-
-	    
- 
+	    shroom.kill();
+	    createEntity();
 	}
 
+ 	function collectBomb (player, bomb) {
+	    // Removes the star from the screen
+	    bomb.kill();
+	    createEntity();
+	}
 
 }
