@@ -17,11 +17,45 @@
 
 					<h1>FungiFalls</h1>
 
+					<p>Collect these 
+						<img src="assets/tallShroom_brown.png" style="width: 30px;"> and these <img src="assets/tallShroom_red.png" style="width: 30px;">,
+						 but avoid these <img src="assets/bomb.png" style="width: 30px;">
+					</p>
+
+
 					<section id="game_canvas">
 						<!-- Canvas for game -->
+
+						<div id="game-over">
+							<h2>YOO DED MATE!</h2>
+
+							<h3>Final Score: <strong><span id="score-final"></span>!</strong></h3>
+
+							<button type="button" class="btn btn-primary" onclick="window.location.reload(false);">Try Again</button>
+						</div>
+
 					</section>
+
+
 				</div>
 			</div>
+
+			<br/>
+
+			<div class="row">
+				<div class="col-sm-6">
+						<strong>Score: <span id="score" class="badge badge-info"></span></strong>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="progress progress-striped">
+					 	<div id="health-bar" class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">
+					    	<span id="health"></span>
+					  	</div>
+					</div>
+				</div>
+
+
 		</div>
 	</body>
 </html>

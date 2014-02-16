@@ -21,10 +21,22 @@ function preload() {
 
 }
 
+var player;
 var platforms;
 var boundary;
 
+var cursors;
+
+var shrooms;
+var bombs;
+var score = 0;
+var health = 100;
+
 function create() {
+
+	// Hide the game over box
+
+
 
 	//  Background elements
     game.add.sprite(0, 0, 'bg');
@@ -74,6 +86,7 @@ function create() {
     player.body.gravity.y = 500;
     player.body.drag = 0;
     player.body.checkCollision.up = false;
+    //player.body.linearDamping = 500;
     //player.body.collideWorldBounds = true;
  
     //  Our two animations, walking left and right.
@@ -126,7 +139,12 @@ function spawnBomb() {
 
 	var bomb = bombs.create(Math.random()*1024, -70, 'bomb');
 
-    //  Let gravity do its thing
+	//var angle = Math.random() * 360;
+
+    //bomb.body.allowRotation = true;
+    //bomb.body.rotation = angle;
+	//bomb.body.angle = angle;
+    //bomb.body.shape = 'circle';
     bomb.body.gravity.y = 600;
     bomb.body.velocity.x = (Math.random()*500)-250;
     bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
@@ -188,24 +206,38 @@ function update() {
         player.frame = 0;
     }
 
-
  	//
  	game.physics.collide(shrooms, platforms);
  	game.physics.collide(bombs, boundary);
  	game.physics.collide(shrooms, boundary);
  	game.physics.overlap(player, shrooms, collectShroom, null, this);
- 	game.physics.overlap(player, bombs, collectShroom, null, this);
+ 	game.physics.overlap(player, bombs, collectBomb, null, this);
 
  	function collectShroom (player, shroom) {
 	    // Removes the star from the screen
 	    shroom.kill();
 	    createEntity();
+	    score += 10;
 	}
 
  	function collectBomb (player, bomb) {
 	    // Removes the star from the screen
 	    bomb.kill();
 	    createEntity();
+	    player.frame = 1;
+	    health = health - 10;
 	}
+
+	if (health <= 0) {
+		player.kill();
+
+		document.getElementById("game-over").style.display='block';
+		document.getElementById("score-final").innerHTML=score;
+		
+	}
+
+	document.getElementById("score").innerHTML=score;
+	document.getElementById("health").innerHTML=health;
+	document.getElementById("health-bar").style.width= health + "%";
 
 }
