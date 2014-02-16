@@ -17,6 +17,8 @@ function preload() {
     game.load.image('shroom1', 'assets/tallShroom_red.png');
     game.load.image('shroom2', 'assets/tallShroom_brown.png');
     game.load.image('bomb', 'assets/bomb.png');
+    game.load.image('star', 'assets/star.png');
+    game.load.image('laser', 'assets/laserPurpleDot.png');
     game.load.spritesheet('player', 'assets/p1_spritesheet.png', 72, 100);
 
 }
@@ -31,12 +33,7 @@ var shrooms;
 var bombs;
 var score = 0;
 var health = 100;
-
 function create() {
-
-	// Hide the game over box
-
-
 
 	//  Background elements
     game.add.sprite(0, 0, 'bg');
@@ -102,8 +99,21 @@ function create() {
         createEntity();
     }
 
+
+    // Add some funky stuff
+
+    emitterBomb = game.add.emitter(0, 0, 200);
+    emitterBomb.makeParticles('star');
+    emitterBomb.gravity = 200;
+
+    emitterJump = game.add.emitter(0, 0, 200);
+    emitterJump.makeParticles('laser');
+    emitterJump.gravity = 200;
+
     // Enable cursors
     cursors = game.input.keyboard.createCursorKeys();
+
+
 
 }
 
@@ -174,6 +184,7 @@ function update() {
     if (cursors.up.isDown && player.body.touching.down)
     {
         player.body.velocity.y = -550;
+        jumpBurst();
     }
 
     // Left & Right Movement
@@ -223,6 +234,7 @@ function update() {
  	function collectBomb (player, bomb) {
 	    // Removes the star from the screen
 	    bomb.kill();
+	    bombBurst(bomb);
 	    createEntity();
 	    player.frame = 1;
 	    health = health - 10;
@@ -239,5 +251,33 @@ function update() {
 	document.getElementById("score").innerHTML=score;
 	document.getElementById("health").innerHTML=health;
 	document.getElementById("health-bar").style.width= health + "%";
+
+}
+
+function jumpBurst() {
+
+    //  Position the emitter where the mouse/touch event was
+    emitterJump.x = player.x;
+    emitterJump.y = player.y + 90;
+
+    //  The first parameter sets the effect to "explode" which means all particles are emitted at once
+    //  The second gives each particle a 2000ms lifespan
+    //  The third is ignored when using burst/explode mode
+    //  The final parameter (10) is how many particles will be emitted in this single burst
+    emitterJump.start(true, 1000, null, 10);
+
+}
+
+function bombBurst(bomb) {
+
+    //  Position the emitter where the mouse/touch event was
+    emitterBomb.x = bomb.x;
+    emitterBomb.y = bomb.y;
+
+    //  The first parameter sets the effect to "explode" which means all particles are emitted at once
+    //  The second gives each particle a 2000ms lifespan
+    //  The third is ignored when using burst/explode mode
+    //  The final parameter (10) is how many particles will be emitted in this single burst
+    emitterBomb.start(true, 2000, null, 20);
 
 }
