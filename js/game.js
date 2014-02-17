@@ -81,7 +81,8 @@ function create() {
  
     //  Player physics properties. Give the little guy a slight bounce.
     player.body.gravity.y = 500;
-    player.body.drag = 0;
+    player.body.bounce.x = 0.7;
+    //player.body.mass = 1000;
     player.body.checkCollision.up = false;
     //player.body.linearDamping = 500;
     //player.body.collideWorldBounds = true;
@@ -134,20 +135,21 @@ function createEntity() {
 function spawnShroom() {
 
 	if (Math.random() <= 0.5) {
-		var shroom = shrooms.create(Math.random()*1024, -70, 'shroom1');
+		var shroom = shrooms.create(Math.random()*924+100, -70, 'shroom1');
 	} else {
-		var shroom = shrooms.create(Math.random()*1024, -70, 'shroom2');
+		var shroom = shrooms.create(Math.random()*924+100, -70, 'shroom2');
 	}
 
     //  Let gravity do its thing
     shroom.body.gravity.y = 600;
     shroom.body.velocity.x = (Math.random()*500)-250;
     shroom.body.bounce.y = 0.7 + Math.random() * 0.2;
+    shroom.body.bounce.x = 0.7 + Math.random() * 0.2;
 }
 
 function spawnBomb() {
 
-	var bomb = bombs.create(Math.random()*1024, -70, 'bomb');
+	var bomb = bombs.create(Math.random()*924+100, -70, 'bomb');
 
 	//var angle = Math.random() * 360;
 
@@ -157,6 +159,7 @@ function spawnBomb() {
     //bomb.body.shape = 'circle';
     bomb.body.gravity.y = 600;
     bomb.body.velocity.x = (Math.random()*500)-250;
+    bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
     bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
 }
 
@@ -219,6 +222,7 @@ function update() {
 
  	//
  	game.physics.collide(shrooms, platforms);
+    game.physics.collide(bombs, platforms);
  	game.physics.collide(bombs, boundary);
  	game.physics.collide(shrooms, boundary);
  	game.physics.overlap(player, shrooms, collectShroom, null, this);
@@ -237,6 +241,7 @@ function update() {
 	    bombBurst(bomb);
 	    createEntity();
 	    player.frame = 1;
+        player.body.velocity.x = (Math.random()*340)-170;
 	    health = health - 10;
 	}
 
