@@ -34,18 +34,18 @@ Player.prototype = {
 	update : function() {
 
 		//  Reset the players velocity (movement)
-	    //this.sprite.body.velocity.x = 0;
+	    this.sprite.body.velocity.x = 0;
 	 
 	 	// Player Controls
 
 	 	// Allow player to fall through platforms if holding down
-	 	/*
-	    if (cursors.down.isDown){
-	    	platforms.setAll('body.checkCollision.up', false);
+	 	
+	    if (this.cursors.down.isDown){
+	    	level.platforms.setAll('body.checkCollision.up', false);
 	    } else {
-	    	platforms.setAll('body.checkCollision.up', true);
+	    	level.platforms.setAll('body.checkCollision.up', true);
 	    }
-	    */
+	
 
 	    //  Allow the player to jump if they are touching the ground.
 	    if (this.cursors.up.isDown && this.sprite.body.touching.down)

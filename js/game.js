@@ -6,22 +6,14 @@ var game = new Phaser.Game(1024, 512, Phaser.AUTO, 'game_canvas', { preload: pre
  
 function preload() {
 
-    game.load.image('bg', 'assets/bg_shroom.png');
-    game.load.image('ground', 'assets/shroomBrownAltMid.png');
-    game.load.image('shroomPlatformRed', 'assets/shroomPlatformRed.png');
-    game.load.image('shroomPlatformTan', 'assets/shroomPlatformTan.png');
-    game.load.image('shroomStemShort', 'assets/stemShort.png');
-    game.load.image('shroomStemMed', 'assets/stemMed.png');
-    game.load.image('shroomStemLong', 'assets/stemLong.png');
-    game.load.image('hitBox', 'assets/transTest.png');
-    game.load.image('shroom1', 'assets/tallShroom_red.png');
-    game.load.image('shroom2', 'assets/tallShroom_brown.png');
-    game.load.image('bomb', 'assets/bomb.png');
     game.load.image('star', 'assets/star.png');
     game.load.image('laser', 'assets/laserPurpleDot.png');
     
     player = new Player(game);
     player.preload();
+
+    level = new Level(game);
+    level.preload();
 
 }
 
@@ -32,61 +24,18 @@ var cursors;
 
 var shrooms;
 var bombs;
+
 var score = 0;
 var health = 100;
+
 function create() {
 
-	//  Background elements
-    game.add.sprite(0, 0, 'bg');
-    game.add.sprite(120, 340, 'shroomStemShort');
-    game.add.sprite(840, 290, 'shroomStemMed');
-    game.add.sprite(500, 200, 'shroomStemLong');
- 
-    //  Groups for platforms
-    platforms = game.add.group();
-    boundary = game.add.group();
- 
-    // Here we create the ground.
-    var ground = boundary.create(0, game.world.height - 35, 'ground');
-    ground.scale.setTo(15, 1);
-    ground.body.immovable = true;
- 
-    // Create horizontal boundaries
-	var horizontalBoundary = boundary.create(-10, -512, 'hitBox');
-	horizontalBoundary.scale.setTo(1, 51);
-	horizontalBoundary.body.immovable = true;
-
-	horizontalBoundary = boundary.create(1014, -512, 'hitBox');
-	horizontalBoundary.scale.setTo(1, 51);
-	horizontalBoundary.body.immovable = true;
 
 
-    //  Now let's create three ledges
-    var ledge = platforms.create(-20, 300, 'shroomPlatformRed');
-    ledge.body.immovable = true;
-    ledge.body.checkCollision.right = false;
+   
 
-    ledge = platforms.create(400, 160, 'shroomPlatformTan');
-    ledge.body.immovable = true;
-    ledge.body.checkCollision.left = false;
-    ledge.body.checkCollision.right = false;
- 
-    ledge = platforms.create(700, 250, 'shroomPlatformRed');
-    ledge.body.immovable = true;
-    ledge.body.checkCollision.left = false;
-
-
+    level.create();
     player.create();
-
-
-    shrooms = game.add.group();
-    bombs = game.add.group();
-
-    //  Make it rain
-    for (var i = 0; i < 20; i++)
-    {
-        createEntity();
-    }
 
 
     // Add some funky stuff
@@ -98,10 +47,6 @@ function create() {
     emitterJump = game.add.emitter(0, 0, 200);
     emitterJump.makeParticles('laser');
     emitterJump.gravity = 200;
-
-    
-
-
 
 }
 
@@ -122,9 +67,9 @@ function createEntity() {
 function spawnShroom() {
 
 	if (Math.random() <= 0.5) {
-		var shroom = shrooms.create(Math.random()*924+100, -70, 'shroom1');
+		var shroom = level.shrooms.create(Math.random()*924+100, -70, 'shroom1');
 	} else {
-		var shroom = shrooms.create(Math.random()*924+100, -70, 'shroom2');
+		var shroom = level.shrooms.create(Math.random()*924+100, -70, 'shroom2');
 	}
 
     //  Let gravity do its thing
@@ -136,7 +81,7 @@ function spawnShroom() {
 
 function spawnBomb() {
 
-	var bomb = bombs.create(Math.random()*924+100, -70, 'bomb');
+	var bomb = level.bombs.create(Math.random()*924+100, -70, 'bomb');
 
 	//var angle = Math.random() * 360;
 
@@ -151,6 +96,9 @@ function spawnBomb() {
 
     bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
     bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
+
+
+
 }
 
  
@@ -159,18 +107,18 @@ function update() {
     
 
 	//  Collide the player and the stars with the platforms
-    game.physics.collide(player.sprite, platforms);
-    game.physics.collide(player.sprite, boundary);
+    game.physics.collide(player.sprite, level.platforms);
+    game.physics.collide(player.sprite, level.boundary);
 
     
 
  	//
- 	game.physics.collide(shrooms, platforms);
-    game.physics.collide(bombs, platforms);
- 	game.physics.collide(bombs, boundary);
- 	game.physics.collide(shrooms, boundary);
- 	game.physics.overlap(player.sprite, shrooms, collectShroom, null, this);
- 	game.physics.overlap(player.sprite, bombs, collectBomb, null, this);
+ 	game.physics.collide(level.shrooms, level.platforms);
+    game.physics.collide(level.bombs, level.platforms);
+ 	game.physics.collide(level.bombs, level.boundary);
+ 	game.physics.collide(level.shrooms, level.boundary);
+ 	game.physics.overlap(player.sprite, level.shrooms, collectShroom, null, this);
+ 	game.physics.overlap(player.sprite, level.bombs, collectBomb, null, this);
 
 
     player.update();
