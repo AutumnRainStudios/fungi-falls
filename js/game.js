@@ -19,11 +19,12 @@ function preload() {
     game.load.image('bomb', 'assets/bomb.png');
     game.load.image('star', 'assets/star.png');
     game.load.image('laser', 'assets/laserPurpleDot.png');
-    game.load.spritesheet('player', 'assets/p1_spritesheet.png', 72, 100);
+    
+    player = new Player(game);
+    player.preload();
 
 }
 
-var player;
 var platforms;
 var boundary;
 
@@ -75,21 +76,8 @@ function create() {
     ledge.body.checkCollision.left = false;
 
 
+    player.create();
 
-    // The player and its settings
-    player = game.add.sprite(70, game.world.height - 150, 'player');
- 
-    //  Player physics properties. Give the little guy a slight bounce.
-    player.body.gravity.y = 500;
-    player.body.bounce.x = 0.7;
-    //player.body.mass = 1000;
-    player.body.checkCollision.up = false;
-    //player.body.linearDamping = 500;
-    //player.body.collideWorldBounds = true;
- 
-    //  Our two animations, walking left and right.
-    player.animations.add('left', [6, 7, 8, 9, 10, 11], 16, true);
-    player.animations.add('right', [12, 13, 14, 15, 16, 17, 18], 16, true);
 
     shrooms = game.add.group();
     bombs = game.add.group();
@@ -111,8 +99,7 @@ function create() {
     emitterJump.makeParticles('laser');
     emitterJump.gravity = 200;
 
-    // Enable cursors
-    cursors = game.input.keyboard.createCursorKeys();
+    
 
 
 
@@ -159,6 +146,9 @@ function spawnBomb() {
     //bomb.body.shape = 'circle';
     bomb.body.gravity.y = 600;
     bomb.body.velocity.x = (Math.random()*500)-250;
+
+    bomb.body.velocity.x = (Math.random()*500)-250;
+
     bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
     bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
 }
@@ -166,67 +156,25 @@ function spawnBomb() {
  
 function update() {
 
+    
+
 	//  Collide the player and the stars with the platforms
-    game.physics.collide(player, platforms);
-    game.physics.collide(player, boundary);
+    game.physics.collide(player.sprite, platforms);
+    game.physics.collide(player.sprite, boundary);
 
- 	//  Reset the players velocity (movement)
-    player.body.velocity.x = 0;
- 
-
- 	// Player Controls
-
- 	// Allow player to fall through platforms if holding down
-    if (cursors.down.isDown){
-    	platforms.setAll('body.checkCollision.up', false);
-    } else {
-    	platforms.setAll('body.checkCollision.up', true);
-    }
-
-    //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -550;
-        jumpBurst();
-    }
-
-    // Left & Right Movement
-    if (cursors.left.isDown)
-    {
-        //  Move to the left
-        player.body.velocity.x = -350;
- 
- 		if (player.body.touching.down) {
- 			player.animations.play('left');
- 		} else {
- 			player.frame = 2;
- 		}
-
-    }
-    else if (cursors.right.isDown)
-    {
-        //  Move to the right
-        player.body.velocity.x = 350;
-
-        if (player.body.touching.down) {
- 			player.animations.play('right');
- 		} else {
- 			player.frame = 3;
- 		}
-
-    } else {
-        //  Stand still
-        player.animations.stop();
-        player.frame = 0;
-    }
+    
 
  	//
  	game.physics.collide(shrooms, platforms);
     game.physics.collide(bombs, platforms);
  	game.physics.collide(bombs, boundary);
  	game.physics.collide(shrooms, boundary);
- 	game.physics.overlap(player, shrooms, collectShroom, null, this);
- 	game.physics.overlap(player, bombs, collectBomb, null, this);
+ 	game.physics.overlap(player.sprite, shrooms, collectShroom, null, this);
+ 	game.physics.overlap(player.sprite, bombs, collectBomb, null, this);
+
+
+    player.update();
+
 
  	function collectShroom (player, shroom) {
 	    // Removes the star from the screen
@@ -246,7 +194,7 @@ function update() {
 	}
 
 	if (health <= 0) {
-		player.kill();
+		player.sprite.kill();
 
 		document.getElementById("game-over").style.display='block';
 		document.getElementById("score-final").innerHTML=score;
@@ -260,29 +208,19 @@ function update() {
 }
 
 function jumpBurst() {
-
     //  Position the emitter where the mouse/touch event was
-    emitterJump.x = player.x;
-    emitterJump.y = player.y + 90;
+    emitterJump.x = player.sprite.x;
+    emitterJump.y = player.sprite.y + 90;
 
     //  The first parameter sets the effect to "explode" which means all particles are emitted at once
     //  The second gives each particle a 2000ms lifespan
     //  The third is ignored when using burst/explode mode
     //  The final parameter (10) is how many particles will be emitted in this single burst
     emitterJump.start(true, 1000, null, 10);
-
 }
 
 function bombBurst(bomb) {
-
-    //  Position the emitter where the mouse/touch event was
     emitterBomb.x = bomb.x;
     emitterBomb.y = bomb.y;
-
-    //  The first parameter sets the effect to "explode" which means all particles are emitted at once
-    //  The second gives each particle a 2000ms lifespan
-    //  The third is ignored when using burst/explode mode
-    //  The final parameter (10) is how many particles will be emitted in this single burst
     emitterBomb.start(true, 2000, null, 20);
-
 }
