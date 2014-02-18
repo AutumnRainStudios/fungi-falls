@@ -37,15 +37,12 @@ Player.prototype = {
 	    this.sprite.body.velocity.x = 0;
 	 
 	 	// Player Controls
-
 	 	// Allow player to fall through platforms if holding down
-	 	
 	    if (this.cursors.down.isDown){
 	    	level.platforms.setAll('body.checkCollision.up', false);
 	    } else {
 	    	level.platforms.setAll('body.checkCollision.up', true);
 	    }
-	
 
 	    //  Allow the player to jump if they are touching the ground.
 	    if (this.cursors.up.isDown && this.sprite.body.touching.down)
@@ -53,36 +50,31 @@ Player.prototype = {
 	        this.sprite.body.velocity.y = -550;
 	        jumpBurst();
 	    }
-
+	    
 	    // Left & Right Movement
 	    if (this.cursors.left.isDown)
 	    {
 	        //  Move to the left
 	        this.sprite.body.velocity.x = -350;
-	 
 	 		if (this.sprite.body.touching.down) {
 	 			this.sprite.animations.play('left');
 	 		} else {
 	 			this.sprite.frame = 2;
 	 		}
-
 	    }
 	    else if (this.cursors.right.isDown)
 	    {
 	        //  Move to the right
 	        this.sprite.body.velocity.x = 350;
-
 	        if (this.sprite.body.touching.down) {
 	 			this.sprite.animations.play('right');
 	 		} else {
 	 			this.sprite.frame = 3;
 	 		}
-
 	    } else {
 	        //  Stand still
 	        this.sprite.animations.stop();
 	        this.sprite.frame = 0;
 	    }
 	}
-
 }

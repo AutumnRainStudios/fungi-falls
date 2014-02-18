@@ -1,11 +1,7 @@
 Level  = function(game) {
-	
 	this.game = game;
-
 	this.boundary = null;
 	this.platforms = null;
-	this.bombs = null;
-	this.shrooms = null;
 }
 
 Level.prototype = {
@@ -19,9 +15,7 @@ Level.prototype = {
 	    this.game.load.image('shroomStemMed', 'assets/stemMed.png');
 	    this.game.load.image('shroomStemLong', 'assets/stemLong.png');
 	    this.game.load.image('hitBox', 'assets/transTest.png');
-	    this.game.load.image('shroom1', 'assets/tallShroom_red.png');
-	    this.game.load.image('shroom2', 'assets/tallShroom_brown.png');
-	   	this.game.load.image('bomb', 'assets/bomb.png');
+	    
 	},
 
 	create: function() {
@@ -67,24 +61,11 @@ Level.prototype = {
 	    ledge.body.moves = false;
 
 
-	    this.shrooms = game.add.group();
-	    this.bombs = game.add.group();
-
-
-	        //  Make it rain
-	    for (var i = 0; i < 20; i++)
-	    {
-	        createEntity();
-	    }
-
-
 	},
 
 	update: function() {
 
 
 	}
-
-
 }
 
