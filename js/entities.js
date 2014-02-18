@@ -18,7 +18,7 @@ Entities.prototype = {
 	    this.bombs = game.add.group();
 	    
 	   	//  Make it rain
-	    for (var i = 0; i < 200; i++)
+	    for (var i = 0; i < 20; i++)
 	    {
 	        this.createEntity();
 	    }
