@@ -1,0 +1,23 @@
+{
+  "name": "Fungi-falls",
+  "version": "1.0.0",
+  "authors": [
+    "Dan Powell <dan@autumnrain.co.uk>"
+  ],
+  "description": "Shroomtastic",
+  "homepage": "http://www.autumnrain.co.uk",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "=3.1.1",
+    "jquery": "=1.10.2",
+    "modernizr": "=2.6.2",
+    "phaser": "~1.1.5"
+  }
+}

@@ -1,7 +1,7 @@
 // game.js
 // Core game script
 
-var game = new Phaser.Game(1024, 512, Phaser.AUTO, 'game_canvas', { preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game(1024, 512, Phaser.AUTO, 'game_canvas', { preload: preload, create: create, update: update});
 
 function preload() {
 
@@ -17,18 +17,17 @@ function preload() {
 	entities = new Entities(game);
 	entities.preload();
 	
-	debuginput = null;
-
+	controls = new Controls(game);
 }
 
 var score = 0;
 var health = 100;
 
 function create() {
-
     level.create();
     player.create();
 	entities.create();
+	controls.create();
 
     // Add some funky stuff
     emitterBomb = game.add.emitter(0, 0, 200);
@@ -38,8 +37,6 @@ function create() {
     emitterJump = game.add.emitter(0, 0, 200);
     emitterJump.makeParticles('laser');
     emitterJump.gravity = 200;
-    
-    debuginput = game.add.text(400, 30);
 }
 
 function update() {
@@ -68,12 +65,6 @@ function update() {
 	document.getElementById("score").innerHTML=score;
 	document.getElementById("health").innerHTML=health;
 	document.getElementById("health-bar").style.width= health + "%";
-	
-	debuginput.setText("stuff");
-}
-
-function render() {
-	game.debug.renderInputInfo(30,30);
 }
 
 function collectShroom (player, shroom) {
@@ -83,6 +74,7 @@ function collectShroom (player, shroom) {
 }
 
 function collectBomb (player, bomb) {
+	console.log('Bomb Function');
     bomb.kill();
     bombBurst(bomb);
     entities.createEntity();

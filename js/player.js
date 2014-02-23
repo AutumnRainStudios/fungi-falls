@@ -30,55 +30,6 @@ Player.prototype = {
 
 	    // Enable cursors
     	this.cursors = this.game.input.keyboard.createCursorKeys();
-    	
-    	
-    	
-    GameController.init({
-        left: {
-            type: 'dpad',
-            dpad: {
-            	up : {
-                	touchStart: function() {
-						game.input.dpad_u = true;
-					},
-					touchEnd: function() {
-						game.input.dpad_u = false;
-					}
-                },
-                left : {
-                	touchStart: function() {
-						game.input.dpad_l = true;
-					},
-					touchEnd: function() {
-						game.input.dpad_l = false;
-					}
-                },
-                down : {
-                	touchStart: function() {
-						game.input.dpad_d = true;
-					},
-					touchEnd: function() {
-						game.input.dpad_d = false;
-					}
-                },
-                right : {
-                	touchStart: function() {
-						game.input.dpad_r = true;
-					},
-					touchEnd: function() {
-						game.input.dpad_r = false;
-					}
-                }
-            }
-        },
-        right: {
-            // We're not using anything on the right for this demo, but you can add buttons, etc.
-            // See https://github.com/austinhallock/html5-virtual-game-controller/ for examples.
-            type: 'none'
-        }
-    });
-
-
 	},
 
 	update : function() {
@@ -88,14 +39,14 @@ Player.prototype = {
 	 
 	 	// Player Controls
 	 	// Allow player to fall through platforms if holding down
-	    if (this.cursors.down.isDown){
+	    if (this.cursors.down.isDown || game.input.dpad_d == true){
 	    	level.platforms.setAll('body.checkCollision.up', false);
 	    } else {
 	    	level.platforms.setAll('body.checkCollision.up', true);
 	    }
 
 	    //  Allow the player to jump if they are touching the ground.
-	    if ((this.cursors.up.isDown || game.input.dpad_ == true) && this.sprite.body.touching.down)
+	    if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 	    {
 	        this.sprite.body.velocity.y = -550;
 	        jumpBurst();

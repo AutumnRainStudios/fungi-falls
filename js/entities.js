@@ -1,8 +1,8 @@
 Entities = function(game) {
-		this.game = game;
-		this.sprite = null;
-		this.bombs = null;
-		this.shrooms = null;
+	this.game = game;
+	this.sprite = null;
+	this.bombs = null;
+	this.shrooms = null;
 }
 
 Entities.prototype = {

@@ -3,16 +3,30 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Fungi Falls</title>
+		
+		
+        <script type="text/javascript" src="js/debug.js"></script>
+
+			
+		<script type="text/javascript" src="js/vendor/modernizr.js"></script>
+		
+		
 		<script type="text/javascript" src="js/vendor/phaser.min.js"></script>
-		<script src="js/vendor/game-controller.js"></script>
+		
+		<script type="text/javascript" src="js/vendor/phaser.min.js"></script>
+		<script type="text/javascript" src="js/vendor/gamecontroller.min.js"></script>
 		<script type="text/javascript" src="js/player.js?v=8978575"></script>
 		<script type="text/javascript" src="js/level.js?v=686764"></script>
 		<script type="text/javascript" src="js/entities.js?v=786769"></script>
+		<script type="text/javascript" src="js/controls.js?v=749fa8748"></script>
 		<script type="text/javascript" src="js/game.js?v=65765"></script>
 	
 		<link rel="stylesheet" href="css/vendor/bootstrap.min.css">
 		<link rel="stylesheet" href="css/vendor/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/styles.css">
+		
+
+					
 	</head>
 	<body id="page_home">
 		<div class="container">
@@ -25,7 +39,6 @@
 						<img src="assets/tallShroom_brown.png" style="width: 30px;"> and these <img src="assets/tallShroom_red.png" style="width: 30px;">,
 						 but avoid these <img src="assets/bomb.png" style="width: 30px;">
 					</p>
-
 
 					<section id="game_canvas">
 						<!-- Canvas for game -->
@@ -61,9 +74,7 @@
 				</div>
 			</div>
 
-			<br/>
-			<br/>
-
+			
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
 					<article class="well">
@@ -73,6 +84,14 @@
 				</div>
 			</div>
 
+			<div class="well">
+				<h4>Console:</h4>
+				
+				<button type="button" onclick="console.clearOutput();" class="btn">Clear</button>
+				
+				<ul id="console">
+				</ul>
+			</div>
 
 		</div>
 	</body>
