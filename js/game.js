@@ -5,7 +5,7 @@ var game = new Phaser.Game(1024, 512, Phaser.AUTO, 'game_canvas', { preload: pre
 
 function preload() {
 
-    game.load.image('star', 'assets/star.png');
+    
     game.load.image('laser', 'assets/laserPurpleDot.png');
     
     player = new Player(game);
@@ -29,11 +29,6 @@ function create() {
 	entities.create();
 	controls.create();
 
-    // Add some funky stuff
-    emitterBomb = game.add.emitter(0, 0, 200);
-    emitterBomb.makeParticles('star');
-    emitterBomb.gravity = 200;
-
     emitterJump = game.add.emitter(0, 0, 200);
     emitterJump.makeParticles('laser');
     emitterJump.gravity = 200;
@@ -49,8 +44,8 @@ function update() {
     game.physics.collide(entities.bombs, level.platforms);
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
- 	game.physics.overlap(player.sprite, entities.shrooms, collectShroom, null, this);
- 	game.physics.overlap(player.sprite, entities.bombs, collectBomb, null, this);
+ 	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
+ 	game.physics.overlap(player.sprite, entities.bombs, entities.collectBomb, null, this);
 
     player.update();
     entities.update();
@@ -67,30 +62,9 @@ function update() {
 	document.getElementById("health-bar").style.width= health + "%";
 }
 
-function collectShroom (player, shroom) {
-    shroom.kill();
-    entities.createEntity();
-    score += 10;
-}
-
-function collectBomb (player, bomb) {
-	console.log('Bomb Function');
-    bomb.kill();
-    bombBurst(bomb);
-    entities.createEntity();
-    player.frame = 1;
-    player.body.velocity.x = (Math.random()*340)-170;
-    health = health - 10;
-}
 
 function jumpBurst() {
     emitterJump.x = player.sprite.x;
     emitterJump.y = player.sprite.y + 90;
     emitterJump.start(true, 1000, null, 10);
-}
-
-function bombBurst(bomb) {
-    emitterBomb.x = bomb.x;
-    emitterBomb.y = bomb.y;
-    emitterBomb.start(true, 2000, null, 20);
 }

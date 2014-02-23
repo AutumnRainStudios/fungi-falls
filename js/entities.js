@@ -3,6 +3,7 @@ Entities = function(game) {
 	this.sprite = null;
 	this.bombs = null;
 	this.shrooms = null;
+	this.self = this;
 }
 
 Entities.prototype = {
@@ -11,6 +12,7 @@ Entities.prototype = {
 	    this.game.load.image('shroom1', 'assets/tallShroom_red.png');
 	    this.game.load.image('shroom2', 'assets/tallShroom_brown.png');
 	   	this.game.load.image('bomb', 'assets/bomb.png');
+	   	this.game.load.image('star', 'assets/star.png');
 	},
 
 	create : function() {
@@ -22,6 +24,12 @@ Entities.prototype = {
 	    {
 	        this.createEntity();
 	    }
+	    
+	     // Add some funky stuff
+    	emitterBomb = game.add.emitter(0, 0, 200);
+    	emitterBomb.makeParticles('star');
+    	emitterBomb.gravity = 200;
+	    
 
 	},
 	
@@ -77,6 +85,29 @@ Entities.prototype = {
         bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
         bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
 
-    }
+    },
+    
+    bombBlast : function(bomb) {
+    	emitterBomb.x = bomb.x;
+    	emitterBomb.y = bomb.y;
+    	emitterBomb.start(true, 2000, null, 20);
+	},
+	
+		
+	collectShroom :function (player, shroom) {
+	    shroom.kill();
+	    entities.createEntity();
+	    score += 10;
+	},
+	
+	collectBomb : function(player, bomb) {
+		console.log(bomb);
+	    bomb.kill();
+	    //self.bombBurst(bomb);
+	    entities.createEntity();
+	    player.frame = 1;
+	    player.body.velocity.x = (Math.random()*340)-170;
+	    health = health - 10;
+	}
 
 }
