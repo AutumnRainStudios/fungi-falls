@@ -1,9 +1,11 @@
+
+
 Entities = function(game) {
 	this.game = game;
 	this.sprite = null;
 	this.bombs = null;
 	this.shrooms = null;
-	this.self = this;
+	
 }
 
 Entities.prototype = {
@@ -16,6 +18,8 @@ Entities.prototype = {
 	},
 
 	create : function() {
+		//var self = this;
+	
 		this.shrooms = game.add.group();
 	    this.bombs = game.add.group();
 	    
@@ -34,7 +38,7 @@ Entities.prototype = {
 	},
 	
 	update : function() {
-		
+		game.physics.overlap(player.sprite, this.bombs, this.collectBomb, null, this);
 	},
 	
 	
@@ -87,12 +91,11 @@ Entities.prototype = {
 
     },
     
-    bombBlast : function(bomb) {
+	bombBlast :function(bomb) {
     	emitterBomb.x = bomb.x;
     	emitterBomb.y = bomb.y;
     	emitterBomb.start(true, 2000, null, 20);
 	},
-	
 		
 	collectShroom :function (player, shroom) {
 	    shroom.kill();
@@ -101,13 +104,15 @@ Entities.prototype = {
 	},
 	
 	collectBomb : function(player, bomb) {
-		console.log(bomb);
-	    bomb.kill();
-	    //self.bombBurst(bomb);
+	    this.bombBlast(bomb);
 	    entities.createEntity();
 	    player.frame = 1;
 	    player.body.velocity.x = (Math.random()*340)-170;
 	    health = health - 10;
-	}
+	},
+	
+	stuff : function() {
+		console.log('boom');
+	},
 
 }

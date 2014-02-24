@@ -45,8 +45,7 @@ function update() {
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
- 	game.physics.overlap(player.sprite, entities.bombs, entities.collectBomb, null, this);
-
+ 	
     player.update();
     entities.update();
 
