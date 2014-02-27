@@ -8,21 +8,22 @@ Player.prototype = {
 	
 	preload: function() {
 		this.game.load.spritesheet('player', 'assets/p1_spritesheet.png', 72, 100);
+		this.game.load.image('laser', 'assets/laserPurpleDot.png');
 	},
 
 	create : function() {
 
 		this.game.input.dpad = null;
 		// The player and its settings
-    	this.sprite = game.add.sprite(70, game.world.height - 150, 'player');
- 
+    	this.sprite = game.add.sprite(70, game.world.height - 250, 'player');
+    	 
     	//  Player physics properties. Give the little guy a slight bounce.
 	    this.sprite.body.gravity.y = 500;
 	    this.sprite.body.bounce.x = 0.7;
 	    //player.body.mass = 1000;
 	    this.sprite.body.checkCollision.up = false;
 	    //player.body.linearDamping = 500;
-	    //player.body.collideWorldBounds = true;
+	    this.sprite.body.collideWorldBounds = true;
 	 
 	    //  Our two animations, walking left and right.
 	    this.sprite.animations.add('left', [6, 7, 8, 9, 10, 11], 16, true);
@@ -30,6 +31,13 @@ Player.prototype = {
 
 	    // Enable cursors
     	this.cursors = this.game.input.keyboard.createCursorKeys();
+    	
+    	//this.game.camera.follow(player);
+    	game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+    	
+	    emitterJump = game.add.emitter(0, 0, 200);
+		emitterJump.makeParticles('laser');
+		emitterJump.gravity = 200;
 	},
 
 	update : function() {
@@ -49,7 +57,7 @@ Player.prototype = {
 	    if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 	    {
 	        this.sprite.body.velocity.y = -550;
-	        jumpBurst();
+	        this.jumpBurst(this.sprite);
 	    }
 	    
 	    // Left & Right Movement
@@ -77,5 +85,11 @@ Player.prototype = {
 	        this.sprite.animations.stop();
 	        this.sprite.frame = 0;
 	    }
+	},
+	
+	jumpBurst : function (player) {
+    	emitterJump.x = player.x;
+		emitterJump.y = player.y + 90;
+		emitterJump.start(true, 1000, null, 10);
 	}
 }

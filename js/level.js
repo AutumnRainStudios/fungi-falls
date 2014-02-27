@@ -19,43 +19,39 @@ Level.prototype = {
 	},
 
 	create: function() {
+	
+		this.game.world.setBounds(0, 0, 1024, 4096);
+	
+		var worldHeight = game.world.height;
+	
 		//  Background elements
-	    this.game.add.sprite(0, 0, 'bg');
-	    this.game.add.sprite(120, 340, 'shroomStemShort');
-	    this.game.add.sprite(840, 290, 'shroomStemMed');
-	    this.game.add.sprite(500, 200, 'shroomStemLong');
+	    this.bg = this.game.add.sprite(0, 0, 'bg');
+	    this.game.add.sprite(500, worldHeight - 175, 'shroomStemShort');
+	    this.game.add.sprite(840, worldHeight - 225, 'shroomStemMed');
+	    this.game.add.sprite(200, worldHeight - 315, 'shroomStemLong');
+	    
+	    this.bg.fixedToCamera = true;
 	 
 	    //  Groups for platforms
 	    this.platforms = game.add.group();
 	    this.boundary = game.add.group();
 	 
 	    // Here we create the ground.
-	    var ground = this.boundary.create(0, game.world.height - 35, 'ground');
+	    var ground = this.boundary.create(0, worldHeight - 35, 'ground');
 	    ground.scale.setTo(15, 1);
 	    ground.body.immovable = true;
 	 
-	    // Create horizontal boundaries
-		var horizontalBoundary = this.boundary.create(-10, -512, 'hitBox');
-		horizontalBoundary.scale.setTo(1, 51);
-		horizontalBoundary.body.immovable = true;
-
-		horizontalBoundary = this.boundary.create(1014, -512, 'hitBox');
-		horizontalBoundary.scale.setTo(1, 51);
-		horizontalBoundary.body.immovable = true;
-
-
-
 	    //  Now let's create three ledges
-	    var ledge = this.platforms.create(-20, 300, 'shroomPlatformRed');
+	    var ledge = this.platforms.create(350, worldHeight - 215, 'shroomPlatformRed');
 	    ledge.body.immovable = true;
 	    ledge.body.checkCollision.right = false;
 
-	    ledge = this.platforms.create(400, 160, 'shroomPlatformTan');
+	    ledge = this.platforms.create(105, worldHeight - 315, 'shroomPlatformTan');
 	    ledge.body.immovable = true;
 	    ledge.body.checkCollision.left = false;
 	    ledge.body.checkCollision.right = false;
 	 
-	    ledge = this.platforms.create(700, 250, 'shroomPlatformRed');
+	    ledge = this.platforms.create(700, worldHeight - 260, 'shroomPlatformRed');
 	    ledge.body.immovable = true;
 	    ledge.body.checkCollision.left = false;
 	    ledge.body.moves = false;

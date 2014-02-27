@@ -1,12 +1,12 @@
 // game.js
 // Core game script
 
-var game = new Phaser.Game(1024, 512, Phaser.AUTO, 'game_canvas', { preload: preload, create: create, update: update});
+var game = new Phaser.Game(1024, 512, Phaser.CANVAS, 'game_canvas', { preload: preload, create: create, update: update, render: render});
 
 function preload() {
 
     
-    game.load.image('laser', 'assets/laserPurpleDot.png');
+    
     
     player = new Player(game);
     player.preload();
@@ -28,10 +28,6 @@ function create() {
     player.create();
 	entities.create();
 	controls.create();
-
-    emitterJump = game.add.emitter(0, 0, 200);
-    emitterJump.makeParticles('laser');
-    emitterJump.gravity = 200;
 }
 
 function update() {
@@ -45,6 +41,7 @@ function update() {
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
+ 	
  	
     player.update();
     entities.update();
@@ -62,8 +59,28 @@ function update() {
 }
 
 
-function jumpBurst() {
-    emitterJump.x = player.sprite.x;
-    emitterJump.y = player.sprite.y + 90;
-    emitterJump.start(true, 1000, null, 10);
+function render() {
+
+    // Sprite debug info
+	for (i=0; i<entities.shrooms.total; i++) {
+		game.debug.renderSpriteCorners(entities.shrooms.getAt(i));
+	}
+	/*
+	for (i=0; i<entities.bombs.total; i++) {
+		game.debug.renderSpriteCorners(entities.bombs.getAt(i));
+	}
+	*/
+
+	entities.bombs.forEachAlive(renderBombCorners, this)
+
+
+    game.debug.renderSpriteCorners(player.sprite, false, false);
+    game.debug.renderSpriteInfo(player.sprite, 32, 32);
+    //game.debug.renderLocalTransformInfo(player, 32, 160);
+    //game.debug.renderWorldTransformInfo(player, 32, 290);
+
+}
+
+function renderBombCorners(bomb) {
+	game.debug.renderPhysicsBody(bomb.body);
 }
