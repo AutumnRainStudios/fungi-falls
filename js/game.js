@@ -71,8 +71,10 @@ function render() {
 	}
 	*/
 
-	entities.bombs.forEachAlive(renderBombCorners, this)
-
+	entities.bombs.forEachAlive(renderPhysics, this)
+	entities.shrooms.forEachAlive(renderPhysics, this)
+	
+	level.platforms.forEachAlive(renderPhysics, this)
 
     game.debug.renderSpriteCorners(player.sprite, false, false);
     game.debug.renderSpriteInfo(player.sprite, 32, 32);
@@ -81,6 +83,6 @@ function render() {
 
 }
 
-function renderBombCorners(bomb) {
-	game.debug.renderPhysicsBody(bomb.body);
+function renderPhysics(entity) {
+	game.debug.renderPhysicsBody(entity.body);
 }

@@ -44,15 +44,16 @@ Level.prototype = {
 	    //  Now let's create three ledges
 	    var ledge = this.platforms.create(350, worldHeight - 215, 'shroomPlatformRed');
 	    ledge.body.immovable = true;
+	    ledge.body.setRectangle(350, 1, 0, 0);
 	    ledge.body.checkCollision.right = false;
 
 	    ledge = this.platforms.create(105, worldHeight - 315, 'shroomPlatformTan');
 	    ledge.body.immovable = true;
-	    ledge.body.checkCollision.left = false;
-	    ledge.body.checkCollision.right = false;
+	    ledge.body.setRectangle(280, 1, 0, 0);
 	 
 	    ledge = this.platforms.create(700, worldHeight - 260, 'shroomPlatformRed');
 	    ledge.body.immovable = true;
+	    ledge.body.setRectangle(350, 1, 0, 0);
 	    ledge.body.checkCollision.left = false;
 	    ledge.body.moves = false;
 

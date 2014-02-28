@@ -18,11 +18,11 @@ Player.prototype = {
     	this.sprite = game.add.sprite(70, game.world.height - 250, 'player');
     	 
     	//  Player physics properties. Give the little guy a slight bounce.
-	    this.sprite.body.gravity.y = 500;
-	    this.sprite.body.bounce.x = 0.7;
+	    this.sprite.body.gravity.y = 900;
+	    this.sprite.body.bounce.y = 0.01;
 	    //player.body.mass = 1000;
 	    this.sprite.body.checkCollision.up = false;
-	    //player.body.linearDamping = 500;
+	    //this.sprite.body.linearDamping = 2;
 	    this.sprite.body.collideWorldBounds = true;
 	 
 	    //  Our two animations, walking left and right.
@@ -56,7 +56,7 @@ Player.prototype = {
 	    //  Allow the player to jump if they are touching the ground.
 	    if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 	    {
-	        this.sprite.body.velocity.y = -550;
+	        this.sprite.body.velocity.y = -700;
 	        this.jumpBurst(this.sprite);
 	    }
 	    
