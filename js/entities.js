@@ -92,7 +92,6 @@ Entities.prototype = {
         //bomb.body.rotation = angle;
         
         bomb.body.setCircle(30,30,30);
-        
         bomb.anchor.setTo(0.5,0.5);
         
         //bomb.body.shape = 'circle';
@@ -127,7 +126,7 @@ Entities.prototype = {
 	    this.bombBlast(bomb);
 	    entities.createEntity();
 	    player.frame = 1;
-	    player.body.velocity.x = (Math.random()*340)-170;
+	    //player.body.velocity.x = 0;//= (Math.random()*340)-170;
 	    health = health - 10;
 	},
 

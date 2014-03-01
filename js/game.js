@@ -77,7 +77,7 @@ function render() {
 	level.platforms.forEachAlive(renderPhysics, this)
 
     game.debug.renderSpriteCorners(player.sprite, false, false);
-    game.debug.renderSpriteInfo(player.sprite, 32, 32);
+    game.debug.renderBodyInfo(player.sprite, 32, 32);
     //game.debug.renderLocalTransformInfo(player, 32, 160);
     //game.debug.renderWorldTransformInfo(player, 32, 290);
 
