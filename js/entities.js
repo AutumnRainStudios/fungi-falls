@@ -83,8 +83,14 @@ Entities.prototype = {
     },
 
 	spawnBomb :function() {
-
-    	var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
+		/*
+		if (this.bombs.getFirstDead()){
+    		var bomb = this.bombs.getFirstDead();
+    		bomb.makeAlive();
+    	} else { 
+    	*/
+    		var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
+    	//}
     
     	//var angle = Math.random() * 360;
     
@@ -98,12 +104,10 @@ Entities.prototype = {
         bomb.body.gravity.y = 600;
         bomb.body.velocity.x = (Math.random()*500)-250;
 
-        bomb.body.velocity.x = (Math.random()*500)-250;
+//         bomb.body.velocity.x = (Math.random()*500)-250;
 
         bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
         bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
-        
-        
         
         bomb.body.collideWorldBounds = true;
 
@@ -112,17 +116,17 @@ Entities.prototype = {
 	bombBlast :function(bomb) {
     	emitterBomb.x = bomb.x;
     	emitterBomb.y = bomb.y;
-    	emitterBomb.start(true, 2000, null, 20);
+    	//emitterBomb.start(true, 2000, null, 20);
 	},
 		
 	collectShroom :function (player, shroom) {
-	    shroom.kill();
+	    shroom.destroy();
 	    entities.createEntity();
 	    score += 10;
 	},
 	
 	collectBomb : function(player, bomb) {
-		bomb.kill();
+		bomb.destroy();
 	    this.bombBlast(bomb);
 	    entities.createEntity();
 	    player.frame = 1;

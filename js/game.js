@@ -5,9 +5,6 @@ var game = new Phaser.Game(1024, 512, Phaser.CANVAS, 'game_canvas', { preload: p
 
 function preload() {
 
-    
-    
-    
     player = new Player(game);
     player.preload();
 
@@ -21,7 +18,7 @@ function preload() {
 }
 
 var score = 0;
-var health = 100;
+var health = 10000;
 
 function create() {
     level.create();
@@ -53,13 +50,18 @@ function update() {
 		document.getElementById("score-final").innerHTML=score;
 	}
 
-	document.getElementById("score").innerHTML=score;
-	document.getElementById("health").innerHTML=health;
-	document.getElementById("health-bar").style.width= health + "%";
+// 	document.getElementById("score").innerHTML=score;
+// 	document.getElementById("health").innerHTML=health;
+// 	document.getElementById("health-bar").style.width= health + "%";
 }
 
 
 function render() {
+
+	game.debug.renderText(entities.shrooms.countLiving(), 900, 30);
+	game.debug.renderText(entities.bombs.countLiving(), 900, 60);
+
+	if (debug == true){
 
     // Sprite debug info
 	for (i=0; i<entities.shrooms.total; i++) {
@@ -71,6 +73,7 @@ function render() {
 	}
 	*/
 
+	
 	entities.bombs.forEachAlive(renderPhysics, this)
 	entities.shrooms.forEachAlive(renderPhysics, this)
 	
@@ -78,6 +81,8 @@ function render() {
 
     game.debug.renderSpriteCorners(player.sprite, false, false);
     game.debug.renderBodyInfo(player.sprite, 32, 32);
+    }
+    
     //game.debug.renderLocalTransformInfo(player, 32, 160);
     //game.debug.renderWorldTransformInfo(player, 32, 290);
 
