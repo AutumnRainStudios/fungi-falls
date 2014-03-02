@@ -7,16 +7,13 @@
 		
 		<script type="text/javascript">
 			
-			var debug = true;
+			var debug = false;
+			var debugMobile = false;
 		</script>
 		
         <script type="text/javascript" src="js/debug.js"></script>
 
-			
 		<script type="text/javascript" src="js/vendor/modernizr.js"></script>
-		
-		
-		<script type="text/javascript" src="js/vendor/phaser.min.js"></script>
 		
 		<script type="text/javascript" src="js/vendor/phaser.min.js"></script>
 		<script type="text/javascript" src="js/vendor/gamecontroller.min.js"></script>
@@ -34,6 +31,22 @@
 					
 	</head>
 	<body id="page_home">
+	
+		<section id="game_canvas">
+			<!-- Canvas for game -->
+
+			<div id="game-over">
+				<h2>Game Over</h2>
+				<h3>No more 'shrooms for you...</h3>
+
+				<h3>Final Score: <strong><span id="score-final"></span>!</strong></h3>
+
+				<button type="button" class="btn btn-primary" onclick="window.location.reload(false);">Try Again</button>
+			</div>
+
+		</section>
+
+	
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
@@ -45,23 +58,12 @@
 						 but avoid these <img src="assets/bomb.png" style="width: 30px;">
 					</p>
 
-					<section id="game_canvas">
-						<!-- Canvas for game -->
-
-						<div id="game-over">
-							<h2>Game Over</h2>
-							<h3>No more shrooms for you...</h3>
-
-							<h3>Final Score: <strong><span id="score-final"></span>!</strong></h3>
-
-							<button type="button" class="btn btn-primary" onclick="window.location.reload(false);">Try Again</button>
-						</div>
-
-					</section>
-
-
 				</div>
 			</div>
+		</div>
+		
+
+		<div class="container">
 
 			<br/>
 

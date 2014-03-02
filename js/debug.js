@@ -1,4 +1,4 @@
-if (debug == true) {
+if (debugMobile == true) {
 
 	window.onerror = function(msg, url, linenumber) {
 		alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
