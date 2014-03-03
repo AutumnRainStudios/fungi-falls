@@ -5,69 +5,30 @@ Controls = function(game) {
 Controls.prototype = {
 	
 	create: function() {
-
-
-
-		//game.input.onDown.add(this.doSomething, this);
-		
-		
-
-
 		if (Modernizr.touch && debugMobile == true) {
-
-			GameController.init({
-				touchRadius: false,
-				forcePerformanceFriendly : true,
-				left: {
-					type: 'dpad',
-					dpad: {
-						//up : false,
-						left : {
-							opacity: 1,
-							touchStart: function() {
-								game.input.dpad_l = true;
-							},
-							touchEnd: function() {
-								game.input.dpad_l = false;
-							}
-						},
-						down : {
-							opacity: 1,
-							touchStart: function() {
-								game.input.dpad_d = true;
-							},
-							touchEnd: function() {
-								game.input.dpad_d = false;
-							}
-						},
-						right : {
-							opacity: 1,
-							touchStart: function() {
-								game.input.dpad_r = true;
-							},
-							touchEnd: function() {
-								game.input.dpad_r = false;
-							}
-						}
-					}
-				},
-				//right: false
-				right: {
-					type: 'buttons',
-					buttons: [
-					false,
-					false,
-					{
-							label : 'A',
-							touchStart: function() {
-								game.input.button_a = true;
-							},
-							touchEnd: function() {
-								game.input.button_a = false;
-							}
-					},
-					false
-					]
+			
+			
+			
+		this.buttons.a = this.game.add.button(924, 520, 'button_a', this.buttonPressA, this, 0, 0, 1);;
+		this.buttons.a.anchor.setTo(0.5, 0.5);
+		this.buttons.a.fixedToCamera = true;
+		
+		this.buttons.a.events.onInputDown.add(function(){game.input.button_a = true});
+		this.buttons.a.events.onInputUp.add(function(){game.input.button_a = false});
+		
+		this.buttons.left = this.game.add.button(100, 520, 'button_left', this.buttonPressA, this, 0, 0, 1);;
+		this.buttons.left.anchor.setTo(0.5, 0.5);
+		this.buttons.left.fixedToCamera = true;
+		
+		this.buttons.left.events.onInputDown.add(function(){game.input.dpad_l = true});
+		this.buttons.left.events.onInputUp.add(function(){game.input.dpad_l = false});
+		
+		this.buttons.right = this.game.add.button(200, 520, 'button_right', this.buttonPressA, this, 0, 0, 1);;
+		this.buttons.right.anchor.setTo(0.5, 0.5);
+		this.buttons.right.fixedToCamera = true;
+		
+		this.buttons.right.events.onInputDown.add(function(){game.input.dpad_r = true});
+		this.buttons.right.events.onInputUp.add(function(){game.input.dpad_r = false});
 					
 				}
 			});
