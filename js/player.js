@@ -2,11 +2,6 @@ Player = function(game) {
 	this.game = game;
 	this.sprite = null;
 	this.cursors = null;
-	this.buttons = {
-		a : null,
-		left: null,
-		right: null
-	};
 }
 
 Player.prototype = {

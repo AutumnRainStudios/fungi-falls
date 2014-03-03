@@ -1,5 +1,10 @@
 Controls = function(game) {
 	this.game = game;
+	this.buttons = {
+		a : null,
+		left: null,
+		right: null
+	};
 }
 
 Controls.prototype = {

@@ -66,16 +66,6 @@ function render() {
 		//game.debug.renderText(entities.shrooms.countLiving(), 900, 30);
 
 	// Sprite debug info
-	for (i=0; i<entities.shrooms.total; i++) {
-		game.debug.renderSpriteCorners(entities.shrooms.getAt(i));
-	}
-	/*
-	for (i=0; i<entities.bombs.total; i++) {
-		game.debug.renderSpriteCorners(entities.bombs.getAt(i));
-	}
-	*/
-
-	
 	entities.bombs.forEachAlive(renderPhysics, this)
 	entities.shrooms.forEachAlive(renderPhysics, this)
 	
@@ -86,10 +76,6 @@ function render() {
 	}
 	
 	//game.debug.renderSpriteCorners(player.buttons.a);
-	
-	//game.debug.renderLocalTransformInfo(player, 32, 160);
-	//game.debug.renderWorldTransformInfo(player, 32, 290);
-
 }
 
 function renderPhysics(entity) {

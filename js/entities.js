@@ -13,7 +13,7 @@ Entities.prototype = {
 	preload: function() {
 		this.game.load.image('shroom1', 'assets/tallShroom_red.png');
 		this.game.load.image('shroom2', 'assets/tallShroom_brown.png');
-	   	this.game.load.image('bomb', 'assets/bomb.png');
+	   	this.game.load.spritesheet('bomb', 'assets/bomb_spritesheet.png', 70, 70);
 	   	this.game.load.image('star', 'assets/star.png');
 	},
 
@@ -29,9 +29,9 @@ Entities.prototype = {
 		}
 		
 		 // Add some funky stuff
-		emitterBomb = game.add.emitter(0, 0, 200);
-		emitterBomb.makeParticles('star');
-		emitterBomb.gravity = 200;
+		//emitterBomb = game.add.emitter(0, 0, 200);
+		//emitterBomb.makeParticles('star');
+		//emitterBomb.gravity = 10;
 	},
 	
 	update : function() {
@@ -67,7 +67,7 @@ Entities.prototype = {
 			shroom.body.gravity.y = 600;
 			shroom.body.bounce.y = 0.7 + (Math.random() * 0.2);
 			shroom.body.bounce.x = -0.7 - (Math.random() * 0.2);
-			shroom.body.linearDamping = 5;
+			shroom.body.linearDamping = -10;
 			shroom.body.collideWorldBounds = true;
 		}
 		shroom.body.velocity.x = (Math.random()*500)-250;
@@ -82,23 +82,26 @@ Entities.prototype = {
 			bomb.revive();
 		} else { 
 			var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
-			bomb.body.setCircle(30,30,30);
+			bomb.body.setCircle(30,35,35);
 			bomb.anchor.setTo(0.5,0.5);
 			bomb.body.gravity.y = 600;
 			bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
 			bomb.body.bounce.y = 0.7 + Math.random() * 0.2;
-			bomb.body.linearDamping = 5;
+			bomb.body.linearDamping = -10;
 			bomb.body.collideWorldBounds = true;
 		}
 
 		bomb.body.velocity.x = (Math.random()*500)-250;
 		
+		this.game.time.events.add(Phaser.Timer.SECOND *4, this.bombBlast, bomb);
+		
 	},
 	
-	bombBlast :function(bomb) {
-		emitterBomb.x = bomb.x;
-		emitterBomb.y = bomb.y;
-		emitterBomb.start(true, 2000, null, 20);
+	bombBlast :function() {
+		console.log(this);
+// 		emitterBomb.x = bomb.x;
+// 		emitterBomb.y = bomb.y;
+// 		emitterBomb.start(true, 2000, null, 20);
 	},
 		
 	collectShroom :function (player, shroom) {
@@ -109,7 +112,7 @@ Entities.prototype = {
 	
 	collectBomb : function(player, bomb) {
 		bomb.kill();
-		this.bombBlast(bomb);
+		//this.bombBlast(bomb);
 		entities.createEntity();
 		player.frame = 1;
 		health = health - 10;
