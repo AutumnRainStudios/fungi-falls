@@ -60,7 +60,7 @@ Player.prototype = {
 		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
 			this.sprite.body.velocity.y = -700;
-			this.jumpBurst(this.sprite);
+			//this.jumpBurst(this.sprite);
 		}
 
 		
