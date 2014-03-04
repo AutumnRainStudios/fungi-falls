@@ -2,6 +2,8 @@ Level  = function(game) {
 	this.game = game;
 	this.boundary = null;
 	this.platforms = null;
+	this.worldHeight = 0;
+	this.worldWidth = 0;
 }
 
 Level.prototype = {
@@ -15,14 +17,14 @@ Level.prototype = {
 		this.game.load.image('shroomStemMed', 'assets/stemMed.png');
 		this.game.load.image('shroomStemLong', 'assets/stemLong.png');
 		this.game.load.image('hitBox', 'assets/transTest.png');
-		
 	},
 
 	create: function() {
 	
 		this.game.world.setBounds(0, 0, 1024, 4096);
 	
-		var worldHeight = game.world.height;
+		this.worldHeight = game.world.height;
+		this.worldWidth = game.world.width;
 	
 		//  Background elements
 		this.bg = this.game.add.sprite(0, 0, 'bg');
@@ -30,9 +32,9 @@ Level.prototype = {
 		this.bg.height = game.camera.height;
 		
 		
-		this.game.add.sprite(500, worldHeight - 175, 'shroomStemShort');
-		this.game.add.sprite(840, worldHeight - 225, 'shroomStemMed');
-		this.game.add.sprite(200, worldHeight - 315, 'shroomStemLong');
+		this.game.add.sprite(500, this.worldHeight - 175, 'shroomStemShort');
+		this.game.add.sprite(840, this.worldHeight - 225, 'shroomStemMed');
+		this.game.add.sprite(200, this.worldHeight - 315, 'shroomStemLong');
 		
 		this.bg.fixedToCamera = true;
 	 
@@ -41,27 +43,36 @@ Level.prototype = {
 		this.boundary = game.add.group();
 	 
 		// Here we create the ground.
-		var ground = this.boundary.create(0, worldHeight - 35, 'ground');
+		var ground = this.boundary.create(0, this.worldHeight - 35, 'ground');
 		ground.scale.setTo(15, 1);
 		ground.body.immovable = true;
-	 
-		//  Now let's create three ledges
-		var ledge = this.platforms.create(350, worldHeight - 215, 'shroomPlatformRed');
+		
+		this.generateLedges();
+	},
+	
+	generateLedges : function() {
+		var previous = {
+			x: this.worldWidth/2,
+			y: Math.random() * this.worldHeight - 130
+		}
+		
+		console.log(previous.x);
+		console.log(previous.y);
+		
+		for (i=0; i < 20; i++) {
+			this.makeLedge(previous.x, previous.y);
+			previous.x += (Math.random() * 400) - 200;
+			previous.y += Math.random() * 100 + 130;
+			
+		}
+	},
+	
+	makeLedge : function(x, y) {
+		ledge = this.platforms.create(x, y, 'shroomPlatformRed');
 		ledge.body.immovable = true;
 		ledge.body.setRectangle(350, 1, 0, 0);
-		ledge.body.checkCollision.right = false;
-
-		ledge = this.platforms.create(105, worldHeight - 315, 'shroomPlatformTan');
-		ledge.body.immovable = true;
-		ledge.body.setRectangle(280, 1, 0, 0);
-	 
-		ledge = this.platforms.create(700, worldHeight - 260, 'shroomPlatformRed');
-		ledge.body.immovable = true;
-		ledge.body.setRectangle(350, 1, 0, 0);
-		ledge.body.checkCollision.left = false;
+		//ledge.body.checkCollision.left = false;
 		ledge.body.moves = false;
-
-
 	},
 
 	update: function() {
