@@ -53,7 +53,7 @@ Player.prototype = {
 		
 		// Set a different acceleration weighting if mid jump
 		if (!this.sprite.body.touching.down) {
-			var a = 0.05;
+			var a = 0.1;
 		} else {
 			var a = 0.2;
 		}
@@ -65,7 +65,7 @@ Player.prototype = {
 		}
 		
 		//  Allow the player to jump if they are touching the ground.
-		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down && this.onPlatform > 10)
+		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
 			this.sprite.body.velocity.y = -801;
 			//this.jumpBurst(this.sprite);

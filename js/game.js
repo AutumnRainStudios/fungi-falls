@@ -14,7 +14,7 @@ function preload() {
 	entities = new Entities(game);
 	entities.preload();
 	
-	controls = new Controls(game);
+	controls = new Controls(game, 'buttons');
 }
 
 var score = 0;
@@ -29,6 +29,8 @@ function create() {
 }
 
 function update() {
+
+	controls.update();
 
 	//  Collide the player and the stars with the platforms
 	//game.physics.overlap(player.sprite, level.platforms, player.platformStand, null, this);
@@ -46,9 +48,10 @@ function update() {
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
  	
- 	//game.physics.collide(entities.bombs, entities.shrooms);
+ 	game.physics.collide(entities.bombs, entities.shrooms);
  	
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
+ 	game.physics.collide(player.sprite, level.platforms.below, level.dropPlatform, null, this);
  	
  	game.physics.overlap(level.entityCollector, entities.shrooms, entities.recycleEntity, null, this);
  	game.physics.overlap(level.entityCollector, entities.bombs, entities.recycleEntity, null, this);

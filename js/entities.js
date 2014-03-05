@@ -100,7 +100,7 @@ Entities.prototype = {
 		bomb.timer = 200;
 		bomb.body.velocity.x = (Math.random()*500)-250;
 				
-		this.game.time.events.add(Phaser.Timer.SECOND * 3, this.bombBlast, bomb);
+		this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.bombBlast, bomb);
 		
 	},
 	

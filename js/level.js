@@ -60,7 +60,7 @@ Level.prototype = {
 		ground.body.immovable = true;
 		
 		this.generateLedges(Math.random() * this.worldWidth/4, this.worldHeight - 150);
-		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
+// 		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
 	},
 	
 	generateLedges : function(startX, startY) {
@@ -69,7 +69,7 @@ Level.prototype = {
 			y: startY
 		}
 		
-		for (i=0; i < 20; i++) {
+		for (i=0; i < 10; i++) {
 			this.makeLedge(previous.x, previous.y);
 			previous.x += (Math.random() * 400) - 200;
 			previous.y -= Math.random() * 40 + 100;
@@ -116,6 +116,22 @@ Level.prototype = {
 			this.platforms.above.add(platform);
 	    }
 	
-	}
+	},
+	
+	dropPlatform2: function(platform) {
+		console.log(this);
+		console.log(platform);
+		//platform.kill();
+	},
+	
+	dropPlatform: function(player, platform){
+		console.log(platform);
+		//this.game.time.events.add(Phaser.Timer.SECOND * 4, this.dropPlatform2, this, platform);
+		
+		//this.dropPlatform2(platform);
+		
+	},
+	
+	
 }
 
