@@ -1,9 +1,16 @@
 Level  = function(game) {
 	this.game = game;
 	this.boundary = null;
-	this.platforms = null;
+	this.platforms = {
+		above: null,
+		below: null
+	};
 	this.worldHeight = 0;
 	this.worldWidth = 0;
+	
+	this.entityCollector = null;
+	
+	this.temp = 0;
 }
 
 Level.prototype = {
@@ -39,45 +46,76 @@ Level.prototype = {
 		this.bg.fixedToCamera = true;
 	 
 		//  Groups for platforms
-		this.platforms = game.add.group();
+		this.platforms.above = game.add.group();
+		this.platforms.below = game.add.group();
 		this.boundary = game.add.group();
+		
+		this.entityCollector = this.game.add.sprite(0, 700, 'hitBox');
+		this.entityCollector.scale.setTo(this.worldWidth/20, 1);
+		this.entityCollector.fixedToCamera = true;
 	 
 		// Here we create the ground.
 		var ground = this.boundary.create(0, this.worldHeight - 35, 'ground');
 		ground.scale.setTo(15, 1);
 		ground.body.immovable = true;
 		
-		this.generateLedges();
+		this.generateLedges(Math.random() * this.worldWidth/4, this.worldHeight - 150);
+		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
 	},
 	
-	generateLedges : function() {
+	generateLedges : function(startX, startY) {
 		var previous = {
-			x: this.worldWidth/2,
-			y: Math.random() * this.worldHeight - 130
+			x: startX,
+			y: startY
 		}
-		
-		console.log(previous.x);
-		console.log(previous.y);
 		
 		for (i=0; i < 20; i++) {
 			this.makeLedge(previous.x, previous.y);
 			previous.x += (Math.random() * 400) - 200;
-			previous.y += Math.random() * 100 + 130;
-			
+			previous.y -= Math.random() * 40 + 100;
 		}
 	},
 	
 	makeLedge : function(x, y) {
-		ledge = this.platforms.create(x, y, 'shroomPlatformRed');
+		ledge = this.platforms.above.create(x, y, 'shroomPlatformRed');
 		ledge.body.immovable = true;
 		ledge.body.setRectangle(350, 1, 0, 0);
-		//ledge.body.checkCollision.left = false;
+		ledge.body.checkCollision.left = false;
+		ledge.body.checkCollision.right = false;
+		ledge.body.checkCollision.bottom = false;
 		ledge.body.moves = false;
 	},
 
 	update: function() {
+	
+		//level.platforms.above.forEachAlive(this.sortAbovePlatforms, this, this.platforms.above);
+		
+		for (i=0; i < level.platforms.above.countLiving(); i++){
+			this.sortAbovePlatforms(level.platforms.above.getAt(i), 'hello');
+		}
+		
+		for (i=0; i < level.platforms.below.countLiving(); i++){
+			this.sortBelowPlatforms(level.platforms.below.getAt(i), 'hello');
+		}
+		
+		//level.platforms.below.forEach(this.sortBelowPlatforms, this, this.platforms.below);
+	},
+	
+	sortAbovePlatforms: function(platform, group) {
 
-
+		if(platform.y > player.sprite.y+100) {
+			this.platforms.above.remove(platform); // generates error
+			this.platforms.below.add(platform);
+	    }
+		
+	},
+	
+	sortBelowPlatforms: function(platform, group) {
+		if(platform.y < player.sprite.y+50) {
+			this.platforms.below.remove(platform); // generates error
+			this.platforms.above.add(platform);
+	    }
+	
 	}
 }
 

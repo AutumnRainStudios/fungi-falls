@@ -19,6 +19,7 @@ function preload() {
 
 var score = 0;
 var health = 100;
+var temp = 0;
 
 function create() {
 	level.create();
@@ -30,18 +31,33 @@ function create() {
 function update() {
 
 	//  Collide the player and the stars with the platforms
-	game.physics.collide(player.sprite, level.platforms);
+	//game.physics.overlap(player.sprite, level.platforms, player.platformStand, null, this);
+	
+	game.physics.collide(player.sprite, level.platforms.below);
+	
 	game.physics.collide(player.sprite, level.boundary);
 	
- 	game.physics.collide(entities.shrooms, level.platforms);
-	game.physics.collide(entities.bombs, level.platforms);
+ 	game.physics.collide(entities.shrooms, level.platforms.above);
+ 	game.physics.collide(entities.shrooms, level.platforms.below);
+ 	
+	game.physics.collide(entities.bombs, level.platforms.above);
+	game.physics.collide(entities.bombs, level.platforms.below);
+	
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
+ 	
+ 	//game.physics.collide(entities.bombs, entities.shrooms);
+ 	
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
+ 	
+ 	game.physics.overlap(level.entityCollector, entities.shrooms, entities.recycleEntity, null, this);
+ 	game.physics.overlap(level.entityCollector, entities.bombs, entities.recycleEntity, null, this);
  	
  	
 	player.update();
 	entities.update();
+	
+	level.update();
 
 	if (health <= 0) {
 		player.sprite.destroy();
@@ -65,13 +81,13 @@ function render() {
 
 		//game.debug.renderText(entities.shrooms.countLiving(), 900, 30);
 
-	// Sprite debug info
-	entities.bombs.forEachAlive(renderPhysics, this)
-	entities.shrooms.forEachAlive(renderPhysics, this)
-	
-	level.platforms.forEachAlive(renderPhysics, this)
+		// Sprite debug info
+		entities.bombs.forEachAlive(renderPhysics, this)
+		entities.shrooms.forEachAlive(renderPhysics, this)
+		level.platforms.above.forEachAlive(renderPhysics, this)
 
-	game.debug.renderSpriteCorners(player.sprite, false, false);
+		game.debug.renderSpriteCorners(player.sprite, false, false);
+		game.debug.renderBodyInfo(player.sprite, 32, 32);
 	
 	}
 	

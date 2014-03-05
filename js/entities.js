@@ -63,7 +63,7 @@ Entities.prototype = {
 		if (this.shrooms.countDead() > 0){
 			var shroom = this.shrooms.getFirstDead();
 			shroom.x = Math.random()*924+100;
-			shroom.y = player.sprite.y-512;
+			shroom.y = player.sprite.y-640;
 			shroom.revive();
 		} else {
 			if (Math.random() <= 0.5) {
@@ -85,7 +85,7 @@ Entities.prototype = {
 		if (this.bombs.countDead() > 0){
 			var bomb = this.bombs.getFirstDead();
 			bomb.x = Math.random()*924+100;
-			bomb.y = player.sprite.y-512;
+			bomb.y = player.sprite.y-640;
 			bomb.revive();
 		} else { 
 			var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
@@ -110,9 +110,6 @@ Entities.prototype = {
 		entities.spawnExplosion(this.x,this.y);
 		entities.createEntity();
 		this.kill();
-		
-		
-			
 
 //  		emitterBomb.x = this.x;
 //  		emitterBomb.y = this.y;
@@ -138,6 +135,15 @@ Entities.prototype = {
 		shroom.kill();
 		entities.createEntity();
 		score += 10;
+	},
+	
+	recycleEntity: function (collector, entity) {
+		//console.log(shroom);
+		entity.x = Math.random()*924+100;
+		entity.y = player.sprite.y-640;
+		entity.body.velocity.y = 0;
+		entity.body.velocity.x = (Math.random()*500)-250;
+		//console.log('recycle');
 	},
 	
 	explosionDamage : function(player, exp) {

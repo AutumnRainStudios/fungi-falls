@@ -16,10 +16,10 @@ Player.prototype = {
 
 	create : function() {
 
-		this.sprite = game.add.sprite(70, game.world.height - 250, 'player');
+		this.sprite = game.add.sprite(70, game.world.height - 100, 'player');
 		 
-		this.sprite.body.gravity.y = 1500;
-		this.sprite.body.bounce.y = 0.001;
+		this.sprite.body.gravity.y = 800;
+		//this.sprite.body.bounce.y = 0.001;
 		this.sprite.body.linearDamping = -10;
 		this.sprite.body.checkCollision.up = false;
 		this.sprite.body.collideWorldBounds = true;
@@ -30,6 +30,8 @@ Player.prototype = {
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		
 		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+		
+		this.onPlatform = 0;
 		
 		emitterJump = game.add.emitter(0, 0, 200);
 		emitterJump.makeParticles('laser');
@@ -51,15 +53,21 @@ Player.prototype = {
 		
 		// Set a different acceleration weighting if mid jump
 		if (!this.sprite.body.touching.down) {
-			var a = 0.025;
+			var a = 0.05;
 		} else {
 			var a = 0.2;
 		}
 		
+		if (this.sprite.body.touching.down) {
+			this.onPlatform++;
+		} else {
+			this.onPlatform = 0;
+		}
+		
 		//  Allow the player to jump if they are touching the ground.
-		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
+		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down && this.onPlatform > 10)
 		{
-			this.sprite.body.velocity.y = -700;
+			this.sprite.body.velocity.y = -801;
 			//this.jumpBurst(this.sprite);
 		}
 
@@ -102,6 +110,10 @@ Player.prototype = {
 			this.sprite.frame = 0;
 	 	}
 
+	},
+	
+	platformStand : function(player, platform) {
+		player.body.velocity.y = 0;
 	},
 	
 	jumpBurst : function (player) {
