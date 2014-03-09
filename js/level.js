@@ -69,8 +69,8 @@ Level.prototype = {
 		bossPlatform.scale.setTo(15, 1);
 		bossPlatform.body.immovable = true;
 		
-		this.generateLedges(Math.random() * this.worldWidth/4, this.worldHeight - 150);
-		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
+		this.generateLedges(this.worldWidth/4, this.worldHeight - 200);
+		this.generateLedges(this.worldWidth/4*2, this.worldHeight - 300);
 	},
 	
 	generateLedges : function(startX, startY) {
@@ -79,14 +79,13 @@ Level.prototype = {
 			y: startY
 		}
 		
-		while (previous.y > 660) {
+		while (previous.y > 680) {
 			this.makeLedge(previous.x, previous.y);
 			//previous.x += (Math.random() * 400) - 200;
-			previous.y -= Math.random() * 200 + 100;
+			previous.y -= 200;
 
 
-
-			initialValue = ((Math.random() * 1024) - 512 + previous.x)/this.worldWidth;
+			initialValue = ((Math.random() * 512) - 256 + previous.x)/(this.worldWidth/2);
 			beforeDecimal = Math.floor(initialValue);
 			afterDecimal = initialValue - beforeDecimal;
 

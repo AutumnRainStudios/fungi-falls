@@ -5,7 +5,6 @@ Player = function(game) {
 	this.gibs = null;
 	this.movement = {
 		targetSpeed : 300,
-		//threshold : 20,
 		direction : 0,
 		acceleration : 0
 	}
@@ -19,7 +18,6 @@ Player.prototype = {
 		this.game.load.image('gib_body', 'assets/sprites/player_gibs/player_gib_body.png');
 		this.game.load.image('gib_hat', 'assets/sprites/player_gibs/player_gib_hat.png');
 		this.game.load.image('gib_limb', 'assets/sprites/player_gibs/player_gib_limb.png');
-		this.game.load.image('laser', 'assets/sprites/laserPurpleDot.png');
 	},
 
 	create : function() {
@@ -36,27 +34,20 @@ Player.prototype = {
 		this.sprite.animations.add('walk', [5, 6, 7, 8, 9, 10], 16, true);
 		this.sprite.animations.add('jump', [1, 2], 8, true);
 		this.sprite.animations.add('hurt', [3, 4], 1, true);
-		//this.sprite.animations.add('right', [12, 13, 14, 15, 16, 17, 18], 16, true);
 
 		this.gibs = game.add.group();
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
-		
-		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+		this.game.camera.follow(this.sprite);
+		var deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*5,this.game.camera.width-100,this.game.camera.height/8);
+		this.game.camera.deadzone = deadzone;
 		
 		this.onPlatform = 0;
-		
-		emitterJump = game.add.emitter(0, 0, 200);
-		emitterJump.bounce.setTo(0.5, 0.5);
-
-		emitterJump.makeParticles('gib_head', 0, 10, true, true);
-		emitterJump.gravity = 0;
-
 	},
 
 	update : function() {
 
-		if (health <= 80) {
+		if (health <= 90) {
 			this.playerDeath(this.sprite, this);
 			health = 100;
 			this.sprite.kill();
@@ -72,7 +63,7 @@ Player.prototype = {
 
 		// Set a different acceleration weighting if mid jump
 		if (this.sprite.body.touching.down) {
-			this.onPlatform++;
+			this.onPlatform + 0.1;
 			this.movement.acceleration = 0.3;
 		} else {
 			this.onPlatform = 0;
@@ -83,10 +74,8 @@ Player.prototype = {
 		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
 			this.sprite.body.velocity.y = -620;
-			//this.jumpBurst(this.sprite);
 		}
 
-		
 		// Left & Right Movement
 		if (this.cursors.right.isDown || game.input.dpad_r == true)
 		{
@@ -105,7 +94,6 @@ Player.prototype = {
 			//  Bring to a halt
 			this.sprite.body.velocity.x = ((this.movement.acceleration * 0) + (1-this.movement.acceleration) * this.sprite.body.velocity.x);
 		}
-		
 		
 
 		if (this.sprite.body.velocity.x > 5) {
@@ -136,12 +124,6 @@ Player.prototype = {
 	
 	platformStand : function(player, platform) {
 		player.body.velocity.y = 0;
-	},
-	
-	jumpBurst : function (player) {
-		emitterJump.x = player.x;
-		emitterJump.y = player.y;
-		emitterJump.start(true, 6000, null, 1);
 	},
 	
 	fallDamage : function(player, ground) {
