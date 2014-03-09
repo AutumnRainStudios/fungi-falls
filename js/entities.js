@@ -4,16 +4,18 @@ Entities = function(game) {
 	this.bombs = null;
 	this.shrooms = null;
 	this.explosions = null;
+	this.shroomLord = null;
 }
 
 Entities.prototype = {
 	
 	preload: function() {
-		this.game.load.image('shroom1', 'assets/tallShroom_red.png');
-		this.game.load.image('shroom2', 'assets/tallShroom_brown.png');
-	   	this.game.load.spritesheet('bomb', 'assets/bomb_spritesheet.png', 70, 70);
-	   	this.game.load.spritesheet('explosion', 'assets/explosion.png', 200, 200);
-	   	this.game.load.image('star', 'assets/star.png');
+		this.game.load.image('shroom1', 'assets/sprites/entity_shroom_red.png');
+		this.game.load.image('shroom2', 'assets/sprites/entity_shroom_tan.png');
+	   	this.game.load.spritesheet('bomb', 'assets/sprites/entity_bomb_spritesheet.png', 60, 60);
+	   	this.game.load.spritesheet('explosion', 'assets/sprites/explosion.png', 200, 200);
+	   	this.game.load.image('star', 'assets/sprites/star.png');
+	   	this.game.load.spritesheet('shroomLord', 'assets/sprites/shroomLord_spritesheet.png', 360, 320);
 	},
 
 	create : function() {
@@ -29,10 +31,11 @@ Entities.prototype = {
 		}
 		
 		 // Add some funky stuff
-		emitterBomb = game.add.emitter(0, 0, 200);
-		emitterBomb.makeParticles('star');
-		emitterBomb.gravity = 10;
-		//emitterBomb.minParticleSpeed = 1000;
+
+		this.shroomLord = this.game.add.sprite(400, 320, 'shroomLord');
+		this.shroomLord.animations.add('walk', [2, 3, 4, 5, 6], 8, true);
+		this.shroomLord.animations.play('walk');
+
 	},
 	
 	update : function() {
@@ -43,7 +46,7 @@ Entities.prototype = {
 	updateBomb : function(bomb) {
 		bomb.angle = bomb.body.x;
 		bomb.timer -= 1;
-		if ([224,168,126,94,70,52,38,30,22,16,12,9,6].indexOf(bomb.timer*2) > -1){
+		if ([224,168,126,94,70,52,38,30,22,16,12,9,6].indexOf(bomb.timer) > -1){
 			bomb.frame = 1;
 		} else {
 			bomb.frame = 0;
@@ -89,7 +92,7 @@ Entities.prototype = {
 			bomb.revive();
 		} else { 
 			var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
-			bomb.body.setCircle(35,35,35);
+			bomb.body.setCircle(28,28,30);
 			bomb.anchor.setTo(0.5,0.5);
 			bomb.body.gravity.y = 600;
 			bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
@@ -100,7 +103,7 @@ Entities.prototype = {
 		bomb.timer = 200;
 		bomb.body.velocity.x = (Math.random()*500)-250;
 				
-		this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.bombBlast, bomb);
+		this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, bomb);
 		
 	},
 	
@@ -150,7 +153,7 @@ Entities.prototype = {
 		//bomb.kill();
 		//this.bombBlast(bomb);
 		//entities.createEntity();
-		player.frame = 1;
+		player.animations.play('hurt');
 		health = health - 1;
 	},
 

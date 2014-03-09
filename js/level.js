@@ -16,14 +16,16 @@ Level  = function(game) {
 Level.prototype = {
 	
 	preload: function() {
-		this.game.load.image('bg', 'assets/bg_shroom.png');
-		this.game.load.image('ground', 'assets/shroomBrownAltMid.png');
-		this.game.load.image('shroomPlatformRed', 'assets/shroomPlatformRed.png');
-		this.game.load.image('shroomPlatformTan', 'assets/shroomPlatformTan.png');
-		this.game.load.image('shroomStemShort', 'assets/stemShort.png');
-		this.game.load.image('shroomStemMed', 'assets/stemMed.png');
-		this.game.load.image('shroomStemLong', 'assets/stemLong.png');
-		this.game.load.image('hitBox', 'assets/transTest.png');
+		this.game.load.image('bg_dawn', 'assets/bg/bg_dawn.png');
+		this.game.load.image('bg_night', 'assets/bg/bg_night.png');
+		this.game.load.image('bg_inside', 'assets/bg/bg_inside.png');
+		this.game.load.image('bg_outside', 'assets/bg/bg_outside.png');
+		this.game.load.image('ground', 'assets/sprites/ground.png');
+		this.game.load.image('shroomPlatformRed', 'assets/sprites/platform_red.png');
+		this.game.load.image('shroomPlatformTan', 'assets/sprites/platform_tan.png');
+		this.game.load.image('shroomPlatformRedSmall', 'assets/sprites/platform_red_small.png');
+		this.game.load.image('shroomPlatformTanSmall', 'assets/sprites/platform_tan_small.png');
+		this.game.load.image('hitBox', 'assets/sprites/transTest.png');
 	},
 
 	create: function() {
@@ -34,20 +36,24 @@ Level.prototype = {
 		this.worldWidth = game.world.width;
 	
 		//  Background elements
-		this.bg = this.game.add.sprite(0, 0, 'bg');
+		this.bg_dawn = this.game.add.sprite(0, 0, 'bg_dawn');
+		this.bg_dawn.width = game.camera.width;
+		this.bg_dawn.height = game.camera.height;
+		this.bg_dawn.fixedToCamera = true;
+		
+		this.bg = this.game.add.sprite(0, 0, 'bg_night');
 		this.bg.width = game.camera.width;
 		this.bg.height = game.camera.height;
-		
-		
-		this.game.add.sprite(500, this.worldHeight - 175, 'shroomStemShort');
-		this.game.add.sprite(840, this.worldHeight - 225, 'shroomStemMed');
-		this.game.add.sprite(200, this.worldHeight - 315, 'shroomStemLong');
-		
 		this.bg.fixedToCamera = true;
+		
+		
+		this.bg_outside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_outside');
+		this.bg_outside.alpha = 0.5;
+		this.bg_inside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_inside');
+
 	 
 		//  Groups for platforms
-		this.platforms.above = game.add.group();
-		this.platforms.below = game.add.group();
+		this.platforms = game.add.group();
 		this.boundary = game.add.group();
 		
 		this.entityCollector = this.game.add.sprite(0, 700, 'hitBox');
@@ -58,9 +64,13 @@ Level.prototype = {
 		var ground = this.boundary.create(0, this.worldHeight - 35, 'ground');
 		ground.scale.setTo(15, 1);
 		ground.body.immovable = true;
+
+		var bossPlatform = this.platforms.create(0, 640, 'ground');
+		bossPlatform.scale.setTo(15, 1);
+		bossPlatform.body.immovable = true;
 		
 		this.generateLedges(Math.random() * this.worldWidth/4, this.worldHeight - 150);
-// 		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
+		this.generateLedges(Math.random() * this.worldWidth/4+this.worldWidth/2, this.worldHeight - 150);
 	},
 	
 	generateLedges : function(startX, startY) {
@@ -69,17 +79,38 @@ Level.prototype = {
 			y: startY
 		}
 		
-		for (i=0; i < 10; i++) {
+		while (previous.y > 660) {
 			this.makeLedge(previous.x, previous.y);
-			previous.x += (Math.random() * 400) - 200;
-			previous.y -= Math.random() * 40 + 100;
+			//previous.x += (Math.random() * 400) - 200;
+			previous.y -= Math.random() * 200 + 100;
+
+
+
+			initialValue = ((Math.random() * 1024) - 512 + previous.x)/this.worldWidth;
+			beforeDecimal = Math.floor(initialValue);
+			afterDecimal = initialValue - beforeDecimal;
+
+			previous.x = afterDecimal * this.worldWidth;
 		}
+		
 	},
 	
 	makeLedge : function(x, y) {
-		ledge = this.platforms.above.create(x, y, 'shroomPlatformRed');
+
+		var random = Math.random();
+		var ledge = null;
+
+		if (random <= 0.25) {
+			ledge = this.platforms.create(x, y, 'shroomPlatformRed');
+		} else if (random > 0.25 && random <= 0.5) {
+			ledge = this.platforms.create(x, y, 'shroomPlatformTan');
+		} else if (random > 0.5 && random <= 0.75) {
+			ledge = this.platforms.create(x, y, 'shroomPlatformTanSmall');
+		} else {
+			ledge = this.platforms.create(x, y, 'shroomPlatformRedSmall');
+		}
+
 		ledge.body.immovable = true;
-		ledge.body.setRectangle(350, 1, 0, 0);
 		ledge.body.checkCollision.left = false;
 		ledge.body.checkCollision.right = false;
 		ledge.body.checkCollision.bottom = false;
@@ -87,48 +118,30 @@ Level.prototype = {
 	},
 
 	update: function() {
-	
-		//level.platforms.above.forEachAlive(this.sortAbovePlatforms, this, this.platforms.above);
-		
-		for (i=0; i < level.platforms.above.countLiving(); i++){
-			this.sortAbovePlatforms(level.platforms.above.getAt(i), 'hello');
-		}
-		
-		for (i=0; i < level.platforms.below.countLiving(); i++){
-			this.sortBelowPlatforms(level.platforms.below.getAt(i), 'hello');
-		}
-		
-		//level.platforms.below.forEach(this.sortBelowPlatforms, this, this.platforms.below);
+		this.bg.alpha = (game.camera.y/this.worldHeight)+0.1;
+		this.bg_outside.tilePosition.y = game.camera.y*0.2;
 	},
-	
-	sortAbovePlatforms: function(platform, group) {
 
-		if(platform.y > player.sprite.y+100) {
-			this.platforms.above.remove(platform); // generates error
-			this.platforms.below.add(platform);
-	    }
-		
-	},
-	
-	sortBelowPlatforms: function(platform, group) {
-		if(platform.y < player.sprite.y+50) {
-			this.platforms.below.remove(platform); // generates error
-			this.platforms.above.add(platform);
-	    }
-	
+	platformCollision: function(){
+		if (player.sprite.body.velocity.y < 0){ 
+			return false;
+		}else{
+			return true;
+		}
 	},
 	
 	dropPlatform2: function(platform) {
-		console.log(this);
-		console.log(platform);
-		//platform.kill();
+		//console.log(this);
+		//console.log(platform);
+		platform.kill();
 	},
 	
 	dropPlatform: function(player, platform){
-		console.log(platform);
-		//this.game.time.events.add(Phaser.Timer.SECOND * 4, this.dropPlatform2, this, platform);
+		//	console.log(platform);
 		
-		//this.dropPlatform2(platform);
+		//this.game.time.events.add(Phaser.Timer.SECOND/2, level.dropPlatform2, this, platform);
+		
+		//level.dropPlatform2(platform);
 		
 	},
 	

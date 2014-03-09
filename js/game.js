@@ -15,6 +15,7 @@ function preload() {
 	entities.preload();
 	
 	controls = new Controls(game, 'buttons');
+	controls.preload();
 }
 
 var score = 0;
@@ -35,23 +36,28 @@ function update() {
 	//  Collide the player and the stars with the platforms
 	//game.physics.overlap(player.sprite, level.platforms, player.platformStand, null, this);
 	
-	game.physics.collide(player.sprite, level.platforms.below);
+	game.physics.collide(player.sprite, level.platforms, null, level.platformCollision);
 	
 	game.physics.collide(player.sprite, level.boundary);
 	
- 	game.physics.collide(entities.shrooms, level.platforms.above);
- 	game.physics.collide(entities.shrooms, level.platforms.below);
+ 	//game.physics.collide(entities.shrooms, level.platforms.above);
+ 	game.physics.collide(entities.shrooms, level.platforms);
  	
-	game.physics.collide(entities.bombs, level.platforms.above);
-	game.physics.collide(entities.bombs, level.platforms.below);
+	game.physics.collide(entities.bombs, level.platforms);
+	//game.physics.collide(entities.bombs, level.platforms.below);
 	
  	game.physics.collide(entities.bombs, level.boundary);
  	game.physics.collide(entities.shrooms, level.boundary);
  	
- 	game.physics.collide(entities.bombs, entities.shrooms);
+ 	//game.physics.collide(entities.bombs, entities.shrooms);
+
+
+	game.physics.collide(player.gibs, level.platforms);
+
  	
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
- 	game.physics.collide(player.sprite, level.platforms.below, level.dropPlatform, null, this);
+ 	
+ 	//game.physics.collide(player.sprite, level.platforms.below, level.dropPlatform, null, this);
  	
  	game.physics.overlap(level.entityCollector, entities.shrooms, entities.recycleEntity, null, this);
  	game.physics.overlap(level.entityCollector, entities.bombs, entities.recycleEntity, null, this);
@@ -62,16 +68,9 @@ function update() {
 	
 	level.update();
 
-	if (health <= 0) {
-		player.sprite.destroy();
-
-		document.getElementById("game-over").style.display='block';
-		document.getElementById("score-final").innerHTML=score;
-	}
-
-	document.getElementById("score").innerHTML=score;
- 	document.getElementById("health").innerHTML=health;
- 	document.getElementById("health-bar").style.width= health + "%";
+	//document.getElementById("score").innerHTML=score;
+ 	//document.getElementById("health").innerHTML=health;
+ 	//document.getElementById("health-bar").style.width= health + "%";
 }
 
 
@@ -87,7 +86,7 @@ function render() {
 		// Sprite debug info
 		entities.bombs.forEachAlive(renderPhysics, this)
 		entities.shrooms.forEachAlive(renderPhysics, this)
-		level.platforms.above.forEachAlive(renderPhysics, this)
+		level.platforms.forEachAlive(renderPhysics, this)
 
 		game.debug.renderSpriteCorners(player.sprite, false, false);
 		game.debug.renderBodyInfo(player.sprite, 32, 32);
@@ -100,3 +99,12 @@ function render() {
 function renderPhysics(entity) {
 	game.debug.renderPhysicsBody(entity.body);
 }
+
+function platformCollision(){
+	//console.log(player);
+		if (player.sprite.body.velocity.y < 10){ 
+			return false;
+		}else{
+			return true;
+		}
+	}
