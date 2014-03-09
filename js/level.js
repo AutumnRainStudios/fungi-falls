@@ -136,7 +136,8 @@ Level.prototype = {
 		platform.kill();
 	},
 	
-	dropPlatform: function(player, platform){
+	dropPlatform: function(collector, platform){
+		platform.kill();
 		//	console.log(platform);
 		
 		//this.game.time.events.add(Phaser.Timer.SECOND/2, level.dropPlatform2, this, platform);

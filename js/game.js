@@ -36,7 +36,10 @@ function update() {
 	//  Collide the player and the stars with the platforms
 	//game.physics.overlap(player.sprite, level.platforms, player.platformStand, null, this);
 	
+	game.physics.overlap(player.sprite, level.boundary, player.fallDamage)
+	
 	game.physics.collide(player.sprite, level.platforms, null, level.platformCollision);
+
 	
 	game.physics.collide(player.sprite, level.boundary);
 	
@@ -57,7 +60,7 @@ function update() {
  	
  	game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
  	
- 	//game.physics.collide(player.sprite, level.platforms.below, level.dropPlatform, null, this);
+ 	game.physics.overlap(level.entityCollector, level.platforms, level.dropPlatform, null, this);
  	
  	game.physics.overlap(level.entityCollector, entities.shrooms, entities.recycleEntity, null, this);
  	game.physics.overlap(level.entityCollector, entities.bombs, entities.recycleEntity, null, this);
@@ -99,12 +102,3 @@ function render() {
 function renderPhysics(entity) {
 	game.debug.renderPhysicsBody(entity.body);
 }
-
-function platformCollision(){
-	//console.log(player);
-		if (player.sprite.body.velocity.y < 10){ 
-			return false;
-		}else{
-			return true;
-		}
-	}

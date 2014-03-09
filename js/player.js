@@ -82,7 +82,7 @@ Player.prototype = {
 		//  Allow the player to jump if they are touching the ground.
 		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
-			this.sprite.body.velocity.y = -700;
+			this.sprite.body.velocity.y = -620;
 			//this.jumpBurst(this.sprite);
 		}
 
@@ -142,6 +142,14 @@ Player.prototype = {
 		emitterJump.x = player.x;
 		emitterJump.y = player.y;
 		emitterJump.start(true, 6000, null, 1);
+	},
+	
+	fallDamage : function(player, ground) {
+		//console.log(player)
+		if (player.body.velocity.y > 800){
+			health = 0;
+			console.log(player.body.velocity.y);
+		}
 	},
 
 	playerDeath : function (player, scope) {
