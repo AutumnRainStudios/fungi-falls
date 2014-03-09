@@ -5,6 +5,7 @@ Entities = function(game) {
 	this.shrooms = null;
 	this.explosions = null;
 	this.shroomLord = null;
+	this.runBombs = false;
 }
 
 Entities.prototype = {
@@ -24,23 +25,30 @@ Entities.prototype = {
 		this.bombs = game.add.group();
 		this.explosions = game.add.group();
 		
-	   	//  Make it rain
-		for (var i = 0; i < 20; i++)
-		{
-			this.createEntity();
-		}
-		
-		 // Add some funky stuff
-
 		this.shroomLord = this.game.add.sprite(400, 320, 'shroomLord');
 		this.shroomLord.animations.add('walk', [2, 3, 4, 5, 6], 8, true);
 		this.shroomLord.animations.play('walk');
+
+
+				for (var i = 0; i < 10; i++)
+				{
+					//this.spawnBomb(false);
+				}
 
 	},
 	
 	update : function() {
 		game.physics.overlap(player.sprite, this.explosions, this.explosionDamage, null, this);
 		this.bombs.forEachAlive(this.updateBomb, this);
+
+
+		if (player.sprite.y < game.world.height-640 && this.runBombs == false) {
+			this.runBombs = true;
+				for (var i = 0; i < 20; i++)
+				{
+					this.createEntity();
+				}
+		}
 	},
 	
 	updateBomb : function(bomb) {
@@ -54,7 +62,7 @@ Entities.prototype = {
 	},
 	
 	createEntity : function() {
-		if (Math.random() <= 0.8) {
+		if (Math.random() <= difficulty) {
 			this.spawnShroom();
 		} else {
 			this.spawnBomb();
@@ -62,7 +70,6 @@ Entities.prototype = {
 	},
 
 	spawnShroom : function() {
-
 		if (this.shrooms.countDead() > 0){
 			var shroom = this.shrooms.getFirstDead();
 			shroom.x = Math.random()*924+100;
@@ -83,8 +90,9 @@ Entities.prototype = {
 		shroom.body.velocity.x = (Math.random()*500)-250;
 	},
 
-	spawnBomb :function() {
-	
+	spawnBomb :function(timer) {
+		console.log(timer);
+		timer = typeof timer !== 'undefined' ? timer : true;
 		if (this.bombs.countDead() > 0){
 			var bomb = this.bombs.getFirstDead();
 			bomb.x = Math.random()*924+100;
@@ -102,21 +110,11 @@ Entities.prototype = {
 		}
 		bomb.timer = 200;
 		bomb.body.velocity.x = (Math.random()*500)-250;
-				
-		this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, bomb);
 		
-	},
-	
-	bombBlast :function() {
-// 		console.log('Timer: ' + this.timer);
-		//this.timer -= 1;
-		entities.spawnExplosion(this.x,this.y);
-		entities.createEntity();
-		this.kill();
-
-//  		emitterBomb.x = this.x;
-//  		emitterBomb.y = this.y;
-//  		emitterBomb.start(true, 1000, null, 10);
+		if (timer == true) {
+			this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, bomb);
+		}
+		
 	},
 		
 	spawnExplosion :function(x, y) {
@@ -127,11 +125,17 @@ Entities.prototype = {
 			exp.revive();
 		} else { 
 			var exp = this.explosions.create(x, y, 'explosion');
-			exp.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 24, true);
-			exp.body.setCircle(100, 100, 100);
+			exp.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			exp.body.setCircle(80, 100, 100);
 			exp.anchor.setTo(0.5,0.5);
 		}
 		exp.animations.play('boom', 24, false, true);
+	},
+
+	bombBlast :function() {
+		entities.spawnExplosion(this.x,this.y);
+		entities.createEntity();
+		this.kill();
 	},
 		
 	collectShroom :function (player, shroom) {
@@ -141,20 +145,15 @@ Entities.prototype = {
 	},
 	
 	recycleEntity: function (collector, entity) {
-		//console.log(shroom);
 		entity.x = Math.random()*924+100;
 		entity.y = player.sprite.y-640;
 		entity.body.velocity.y = 0;
 		entity.body.velocity.x = (Math.random()*500)-250;
-		//console.log('recycle');
 	},
 	
 	explosionDamage : function(player, exp) {
-		//bomb.kill();
-		//this.bombBlast(bomb);
-		//entities.createEntity();
 		player.animations.play('hurt');
-		health = health - 1;
+		player.heart--;
 	},
 
 }

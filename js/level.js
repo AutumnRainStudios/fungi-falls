@@ -26,6 +26,7 @@ Level.prototype = {
 		this.game.load.image('shroomPlatformRedSmall', 'assets/sprites/platform_red_small.png');
 		this.game.load.image('shroomPlatformTanSmall', 'assets/sprites/platform_tan_small.png');
 		this.game.load.image('hitBox', 'assets/sprites/transTest.png');
+		this.game.load.spritesheet('bed', 'assets/sprites/bed_spritesheet.png', 190, 130);
 	},
 
 	create: function() {
@@ -46,15 +47,13 @@ Level.prototype = {
 		this.bg.height = game.camera.height;
 		this.bg.fixedToCamera = true;
 		
-		
 		this.bg_outside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_outside');
 		this.bg_outside.alpha = 0.5;
 		this.bg_inside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_inside');
 
-	 
 		//  Groups for platforms
-		this.platforms = game.add.group();
-		this.boundary = game.add.group();
+		this.platforms = this.game.add.group();
+		this.boundary = this.game.add.group();
 		
 		this.entityCollector = this.game.add.sprite(0, 700, 'hitBox');
 		this.entityCollector.scale.setTo(this.worldWidth/20, 1);
@@ -69,27 +68,24 @@ Level.prototype = {
 		bossPlatform.scale.setTo(15, 1);
 		bossPlatform.body.immovable = true;
 		
-		this.generateLedges(this.worldWidth/4, this.worldHeight - 200);
-		this.generateLedges(this.worldWidth/4*2, this.worldHeight - 300);
+		this.generateLedges(this.worldWidth/12*1.5, this.worldHeight - 200);
+		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
+
+		this.bed = this.game.add.sprite(this.worldWidth/2, this.worldHeight-165, 'bed');
+		this.bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
+		this.bed.animations.play('sleep');
+
+
 	},
 	
 	generateLedges : function(startX, startY) {
-		var previous = {
-			x: startX,
-			y: startY
-		}
+
+		var previousY = startY;
 		
-		while (previous.y > 680) {
-			this.makeLedge(previous.x, previous.y);
-			//previous.x += (Math.random() * 400) - 200;
-			previous.y -= 200;
-
-
-			initialValue = ((Math.random() * 512) - 256 + previous.x)/(this.worldWidth/2);
-			beforeDecimal = Math.floor(initialValue);
-			afterDecimal = initialValue - beforeDecimal;
-
-			previous.x = afterDecimal * this.worldWidth;
+		while (previousY > 700) {
+			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
+			this.makeLedge(Math.random()*(this.worldWidth/12*4)+startX, previousY);
+			previousY -= 200;
 		}
 		
 	},
@@ -110,6 +106,7 @@ Level.prototype = {
 		}
 
 		ledge.body.immovable = true;
+		ledge.anchor.setTo(0.5,0.5);
 		ledge.body.checkCollision.left = false;
 		ledge.body.checkCollision.right = false;
 		ledge.body.checkCollision.bottom = false;

@@ -1,8 +1,10 @@
 Player = function(game) {
 	this.game = game;
 	this.sprite = null;
+
 	this.cursors = null;
 	this.gibs = null;
+
 	this.movement = {
 		targetSpeed : 300,
 		direction : 0,
@@ -24,6 +26,8 @@ Player.prototype = {
 
 		this.sprite = game.add.sprite(70, game.world.height - 100, 'player');
 		 
+		this.sprite.heart = 10;
+
 		this.sprite.body.gravity.y = 900;
 		this.sprite.body.bounce.y = 0.001;
 		this.sprite.body.linearDamping = -10;
@@ -47,9 +51,9 @@ Player.prototype = {
 
 	update : function() {
 
-		if (health <= 90) {
+		if (this.sprite.heart <= 0) {
 			this.playerDeath(this.sprite, this);
-			health = 100;
+			this.sprite.heart = 10;
 			this.sprite.kill();
 			//document.getElementById("game-over").style.display='block';
 			//document.getElementById("score-final").innerHTML=score;
@@ -122,15 +126,10 @@ Player.prototype = {
 
 	},
 	
-	platformStand : function(player, platform) {
-		player.body.velocity.y = 0;
-	},
-	
 	fallDamage : function(player, ground) {
 		//console.log(player)
 		if (player.body.velocity.y > 800){
-			health = 0;
-			console.log(player.body.velocity.y);
+			player.heart = 0;
 		}
 	},
 
@@ -154,14 +153,14 @@ Player.prototype = {
 			}
 
 			gib.body.gravity.y = 600;
-			gib.body.velocity.setTo(Math.random()*1000-500, Math.random()*1000-500);
+			gib.body.velocity.setTo(Math.random()*2000-1000, Math.random()* -1000);
 			//gib.body.velocity.x = Math.random()*1000-500;
 			//gib.body.velocity.y = Math.random()*1000-500;
 			gib.anchor.setTo(0.5, 0.5);
 			gib.body.rotation = Math.random()*360;
 
-			gib.body.bounce.y = (Math.random()/2);
-			gib.body.bounce.x = -0.7;
+			gib.body.bounce.y = 0.5;
+			gib.body.bounce.x = 0.5;
 			gib.body.linearDamping = 5;
 			gib.body.collideWorldBounds = true;
 

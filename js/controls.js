@@ -53,13 +53,5 @@ Controls.prototype = {
 			
 			
 		}	
-	},
-	
-	update : function() {
-		
-	},
-
-	buttonPressA : function(button) {
-		//console.log(button);
 	}
 }
