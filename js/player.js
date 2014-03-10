@@ -24,7 +24,7 @@ Player.prototype = {
 
 	create : function() {
 
-		this.sprite = game.add.sprite(70, game.world.height - 100, 'player');
+		this.sprite = game.add.sprite(620, game.world.height - 100, 'player');
 		 
 		this.sprite.heart = 10;
 

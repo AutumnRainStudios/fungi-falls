@@ -3,9 +3,13 @@
 
 var game = new Phaser.Game(1024, 640, Phaser.CANVAS, 'game_canvas');
 
-var stateLoading = function(game){};
+var stateLoading = function(game){
+	var enter = null;
+};
 stateLoading.prototype = {
 	preload: function() {
+		this.game.load.image('logo', 'assets/logo.png');
+
 		player = new Player(game);
 		player.preload();
 
@@ -19,17 +23,51 @@ stateLoading.prototype = {
 		controls.preload();
 	},
 	create: function() {
-		console.log('hello?');
-		thgame.world.setBounds(0, 0, 1024, 640);
-		var bed = this.game.add.sprite(800, 300, 'bed');
+
+		this.game.world.setBounds(0, 0, 1024, 4096);
+
+		var bg_night = this.game.add.sprite(0, 0, 'bg_night');
+		bg_night.width = game.camera.width;
+		bg_night.height = game.camera.height;
+		bg_night.fixedToCamera = true;
+
+		var bg_outside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_outside');
+		bg_outside.alpha = 0.5;
+		//bg_outside.tilePosition.y = 220;
+		//bg_outside.tilePosition.x = -20;
+		bg_outside.tilePosition.y = game.camera.y*0.2;
+		var bg_inside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_inside');
+
+
+		var ground = this.game.add.sprite(0, game.world.height - 35, 'ground');
+		ground.scale.setTo(15, 1);
+		ground.body.immovable = true;
+
+		game.camera.y = game.world.height;
+
+
+		var logo = this.game.add.sprite(512, game.world.height-400, 'logo');
+		logo.anchor.setTo(0.5,0.5);
+
+
+
+		var bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
 		bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
 		bed.animations.play('sleep');
+
+
+
+		enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
 	},
 	update: function() {
+
+		if (enter.isDown) {
+			game.state.start('game');
+		}
 		
 	}
 }
-
 
 
 var StateGame = function(game) { };
@@ -109,7 +147,13 @@ StateStartScreen.prototype = {
 	}
 }
 
-game.state.add('StartScreen', StateStartScreen);
+
+
+game.state.add('loading', stateLoading);
+game.state.add('start', StateStartScreen);
+game.state.add('game', StateGame);
+
+game.state.start('loading');
 
 
 var score = 0;

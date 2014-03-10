@@ -72,8 +72,7 @@ Level.prototype = {
 		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
 
 		this.bed = this.game.add.sprite(this.worldWidth/2, this.worldHeight-165, 'bed');
-		this.bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
-		this.bed.animations.play('sleep');
+		this.bed.frame = 6;
 
 
 	},
