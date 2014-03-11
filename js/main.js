@@ -13,10 +13,13 @@ game.state.add('start', StateStart);
 game.state.add('game', StateGame);
 game.state.add('scores', StateScores);
 
+
 game.state.start('loading');
 
 
-
+var start = function(){
+	game.state.start('game');
+}
 
 	
 

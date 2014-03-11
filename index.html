@@ -5,8 +5,8 @@
 		<title>Fungi Falls</title>
 		
 		<script type="text/javascript">
-			var debug = false;
-			var debugMobile = false;
+			var debug = true;
+			var debugMobile = true;
 		</script>
 		
         <script type="text/javascript" src="js/debug.js"></script>
@@ -23,7 +23,7 @@
 		<script type="text/javascript" src="js/states/game.js?v=1"></script>
 		<script type="text/javascript" src="js/states/scores.js?v=1"></script>
 
-		<script type="text/javascript" src="js/main.js?v=1"></script>
+		<script type="text/javascript" src="js/main.js?v=12344"></script>
 	
 		<link rel="stylesheet" href="css/vendor/bootstrap.min.css">
 		<link rel="stylesheet" href="css/vendor/bootstrap-theme.min.css">
@@ -37,13 +37,18 @@
 		<section id="game_canvas">
 			<!-- Canvas for game -->
 
-			<div id="game-over">
+			<div class="hud">
+			<div id="hud_gameOver" class="_gameOver">
 				<h2>Game Over</h2>
 				<h3>No more 'shrooms for you...</h3>
 
 				<h3>Final Score: <strong><span id="score-final"></span>!</strong></h3>
 
 				<button type="button" class="btn btn-primary" onclick="window.location.reload(false);">Try Again</button>
+			</div>
+
+			<div id="hud_start" class="_start">
+				<button type="button" class="btn btn-primary btn-large" onclick="start();">Start</button>
 			</div>
 
 		</section>

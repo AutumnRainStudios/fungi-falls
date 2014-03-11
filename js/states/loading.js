@@ -26,6 +26,7 @@ stateLoading.prototype = {
 		var logo = this.game.add.sprite(512, game.world.height-400, 'logo');
 		logo.anchor.setTo(0.5,0.5);
 
+		document.getElementById("hud_start").style.display='block';
 
 		enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
