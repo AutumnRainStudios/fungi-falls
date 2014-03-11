@@ -43,7 +43,7 @@ Player.prototype = {
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.sprite);
-		var deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*5,this.game.camera.width-100,this.game.camera.height/8);
+		var deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 		this.game.camera.deadzone = deadzone;
 		
 		this.onPlatform = 0;

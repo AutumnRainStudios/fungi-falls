@@ -41,6 +41,7 @@ Entities.prototype = {
 		game.physics.overlap(player.sprite, this.explosions, this.explosionDamage, null, this);
 		this.bombs.forEachAlive(this.updateBomb, this);
 
+		difficulty = (game.camera.y/this.worldHeight);
 
 		if (player.sprite.y < game.world.height-640 && this.runBombs == false) {
 			this.runBombs = true;
@@ -62,7 +63,7 @@ Entities.prototype = {
 	},
 	
 	createEntity : function() {
-		if (Math.random() <= difficulty) {
+		if (Math.random() >= difficulty) {
 			this.spawnShroom();
 		} else {
 			this.spawnBomb();

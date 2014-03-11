@@ -30,26 +30,11 @@ Level.prototype = {
 	},
 
 	create: function() {
-	
-		this.game.world.setBounds(0, 0, 1024, 4096);
+
+		this.createBackground();
 	
 		this.worldHeight = game.world.height;
 		this.worldWidth = game.world.width;
-	
-		//  Background elements
-		this.bg_dawn = this.game.add.sprite(0, 0, 'bg_dawn');
-		this.bg_dawn.width = game.camera.width;
-		this.bg_dawn.height = game.camera.height;
-		this.bg_dawn.fixedToCamera = true;
-		
-		this.bg = this.game.add.sprite(0, 0, 'bg_night');
-		this.bg.width = game.camera.width;
-		this.bg.height = game.camera.height;
-		this.bg.fixedToCamera = true;
-		
-		this.bg_outside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_outside');
-		this.bg_outside.alpha = 0.5;
-		this.bg_inside = game.add.tileSprite(0, 0, this.worldWidth, this.worldHeight, 'bg_inside');
 
 		//  Groups for platforms
 		this.platforms = this.game.add.group();
@@ -76,6 +61,39 @@ Level.prototype = {
 
 
 	},
+
+
+	createBackground : function() {
+
+		this.game.world.setBounds(0, 0, 1024, 4096);
+
+		this.bg_dawn = this.game.add.sprite(0, 0, 'bg_dawn');
+		this.bg_dawn.width = game.camera.width;
+		this.bg_dawn.height = game.camera.height;
+		this.bg_dawn.fixedToCamera = true;
+
+		this.bg_night = this.game.add.sprite(0, 0, 'bg_night');
+		this.bg_night.width = game.camera.width;
+		this.bg_night.height = game.camera.height;
+		this.bg_night.fixedToCamera = true;
+
+		this.bg_outside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_outside');
+		this.bg_outside.alpha = 0.5;
+		this.bg_outside.tilePosition.y = game.camera.y*0.2;
+		this.bg_inside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_inside');
+
+		this.ground = this.game.add.sprite(0, game.world.height - 35, 'ground');
+		this.ground.scale.setTo(15, 1);
+		this.ground.body.immovable = true;
+
+
+		var bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
+		bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
+		bed.animations.play('sleep');
+
+
+	},
+
 	
 	generateLedges : function(startX, startY) {
 
@@ -113,7 +131,7 @@ Level.prototype = {
 	},
 
 	update: function() {
-		this.bg.alpha = (game.camera.y/this.worldHeight)+0.1;
+		this.bg_night.alpha = (game.camera.y/this.worldHeight)+0.1;
 		this.bg_outside.tilePosition.y = game.camera.y*0.2;
 	},
 
