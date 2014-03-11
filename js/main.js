@@ -7,14 +7,17 @@ var score = 0;
 var difficulty = 0.7;
 var temp = 0;
 
-
-game.state.add('loading', stateLoading);
+game.state.add('boot', StateBoot);
+game.state.add('loading', StateLoading);
 game.state.add('start', StateStart);
 game.state.add('game', StateGame);
 game.state.add('scores', StateScores);
 
 
-game.state.start('loading');
+game.state.start('boot');
+
+
+
 
 
 var start = function(){

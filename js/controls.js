@@ -15,6 +15,7 @@ Controls.prototype = {
 		this.game.load.spritesheet('button_a', 'assets/controls/button_a.png', 150, 150);
 		this.game.load.spritesheet('button_left', 'assets/controls/button_left.png', 150, 150);
 		this.game.load.spritesheet('button_right', 'assets/controls/button_right.png', 150, 150);
+		this.game.load.spritesheet('startOptions', 'assets/gui/startOptions_spritesheet.png', 500, 80);
 	},
 
 	

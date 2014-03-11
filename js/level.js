@@ -9,8 +9,6 @@ Level  = function(game) {
 	this.worldWidth = 0;
 	
 	this.entityCollector = null;
-	
-	this.temp = 0;
 }
 
 Level.prototype = {
@@ -35,6 +33,8 @@ Level.prototype = {
 	
 		this.worldHeight = game.world.height;
 		this.worldWidth = game.world.width;
+		this.bed.animations.play('empty');
+
 
 		//  Groups for platforms
 		this.platforms = this.game.add.group();
@@ -56,10 +56,7 @@ Level.prototype = {
 		this.generateLedges(this.worldWidth/12*1.5, this.worldHeight - 200);
 		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
 
-		this.bed = this.game.add.sprite(this.worldWidth/2, this.worldHeight-165, 'bed');
-		this.bed.frame = 6;
-
-
+		
 	},
 
 
@@ -87,10 +84,12 @@ Level.prototype = {
 		this.ground.body.immovable = true;
 
 
-		var bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
-		bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
-		bed.animations.play('sleep');
+		this.bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
+		this.bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
+		this.bed.animations.add('empty', [6], 1, true);
+		this.bed.animations.play('sleep');
 
+		game.camera.y = game.world.height;
 
 	},
 
