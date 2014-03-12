@@ -1,7 +1,7 @@
 var StateStart = function(game) {
 	this.game = game;
 	this.logo = null;
-	this.menuSelected = null;
+	this.menuSelected = 'start';
 };
 StateStart.prototype = {
 	preload: function() {
@@ -20,30 +20,22 @@ StateStart.prototype = {
 		this.startMenu.anchor.setTo(0.5, 0.5);
 		this.startMenu.fixedToCamera = true;
 
-
-		enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-
-		this.cursors = this.game.input.keyboard.createCursorKeys();
-
-
-		//this.cursors.right.isDown 
-		this.menuSelected = 'start';
-
+		controls.create();
 
 	},
 	
 	update: function() {
 
-		if (this.cursors.right.isDown) {
+		if (controls.cursors.right.isDown || this.game.input.dpad_r) {
 			this.startMenu.frame = 1;
 			this.menuSelected = 'scores';
-		} else if (this.cursors.left.isDown) {
+		} else if (controls.cursors.left.isDown || this.game.input.dpad_l) {
 			this.startMenu.frame = 0;
 			this.menuSelected = 'start';
 		}
 
 
-		if (enter.isDown) {
+		if (controls.enter.isDown || this.game.input.button_a) {
 			if (this.menuSelected == 'scores') {
 				game.state.start('scores');
 			} else {

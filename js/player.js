@@ -2,7 +2,7 @@ Player = function(game) {
 	this.game = game;
 	this.sprite = null;
 
-	this.cursors = null;
+	//controls.cursors = null;
 	this.gibs = null;
 
 	this.movement = {
@@ -41,10 +41,8 @@ Player.prototype = {
 
 		this.gibs = game.add.group();
 
-		this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.sprite);
-		var deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
-		this.game.camera.deadzone = deadzone;
+		this.game.camera.deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 		
 		this.onPlatform = 0;
 	},
@@ -75,20 +73,20 @@ Player.prototype = {
 		}
 		
 		//  Allow the player to jump if they are touching the ground.
-		if ((this.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
+		if ((controls.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
 			this.sprite.body.velocity.y = -620;
 		}
 
 		// Left & Right Movement
-		if (this.cursors.right.isDown || game.input.dpad_r == true)
+		if (controls.cursors.right.isDown || game.input.dpad_r == true)
 		{
 			//  Move to the right
 			if (this.sprite.body.velocity.x < 0) {
 				this.sprite.body.velocity.x = ((this.movement.acceleration * 0) + (1-this.movement.acceleration) * this.sprite.body.velocity.x);
 			}
 			this.sprite.body.velocity.x += ((this.movement.acceleration * this.movement.targetSpeed) + (1-this.movement.acceleration) * Math.abs(this.sprite.body.velocity.x))-Math.abs(this.sprite.body.velocity.x);
-		} else if (this.cursors.left.isDown || game.input.dpad_l == true) {
+		} else if (controls.cursors.left.isDown || game.input.dpad_l == true) {
 			//  Move to the left
 			if (this.sprite.body.velocity.x > 0) {
 				this.sprite.body.velocity.x = ((this.movement.acceleration * 0) + (1-this.movement.acceleration) * this.sprite.body.velocity.x);
@@ -134,42 +132,35 @@ Player.prototype = {
 	},
 
 	playerDeath : function (player, scope) {
-		var createGib = function(i) {
-			var gib = null;
+		for (i=0; i<7; i++) {
+			this.gib = null;
 			switch (i)
 			{
 				case 0:
-			   		gib = scope.gibs.create(player.x, player.y, 'gib_head');
+			   		this.gib = scope.gibs.create(player.x, player.y, 'gib_head');
 			   		break;
 				case 1:
-					gib = scope.gibs.create(player.x, player.y, 'gib_body');
+					this.gib = scope.gibs.create(player.x, player.y, 'gib_body');
 					break;
 				case 2: 
-			    	gib = scope.gibs.create(player.x, player.y, 'gib_hat');
+			    	this.gib = scope.gibs.create(player.x, player.y, 'gib_hat');
 			    	break;
 				default: 
-					gib = scope.gibs.create(player.x, player.y, 'gib_limb');
+					this.gib = scope.gibs.create(player.x, player.y, 'gib_limb');
 					break;
 			}
 
-			gib.body.gravity.y = 600;
-			gib.body.velocity.setTo(Math.random()*2000-1000, Math.random()* -1000);
+			this.gib.body.gravity.y = 600;
+			this.gib.body.velocity.setTo(Math.random()*2000-1000, Math.random()* -1000);
 			//gib.body.velocity.x = Math.random()*1000-500;
 			//gib.body.velocity.y = Math.random()*1000-500;
-			gib.anchor.setTo(0.5, 0.5);
-			gib.body.rotation = Math.random()*360;
+			this.gib.anchor.setTo(0.5, 0.5);
+			this.gib.body.rotation = Math.random()*360;
 
-			gib.body.bounce.y = 0.5;
-			gib.body.bounce.x = 0.5;
-			gib.body.linearDamping = 5;
-			gib.body.collideWorldBounds = true;
-
-			
+			this.gib.body.bounce.y = 0.5;
+			this.gib.body.bounce.x = 0.5;
+			this.gib.body.linearDamping = 5;
+			this.gib.body.collideWorldBounds = true;
 		}
-
-		for (i=0; i<7; i++) {
-			createGib(i);
-		}
-			
 	}
 }

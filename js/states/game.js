@@ -37,11 +37,14 @@ StateGame.prototype = {
 	
 		//document.getElementById("score").innerHTML=score;
 	 	//document.getElementById("health").innerHTML=health;
-	 	document.getElementById("health-bar").style.width= player.heart + "%";		
+	 	//document.getElementById("health-bar").style.width= player.heart + "%";		
 	},
 	
 	render : function() {
 		game.debug.renderText("FPS: " + game.time.fps, 940, 30);
+
+		game.debug.renderText("Diff: " + difficulty, 940, 60);
+		
 
 		if (debug == true){
 

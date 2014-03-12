@@ -6,6 +6,8 @@ Controls = function(game, type) {
 		right: null
 	};
 	this.type = type;
+	this.cursors = null;
+	this.enter = null;
 }
 
 Controls.prototype = {
@@ -20,6 +22,9 @@ Controls.prototype = {
 
 	
 	create: function() {
+
+		this.cursors = this.game.input.keyboard.createCursorKeys();
+		this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
 		if (Modernizr.touch && this.type =='buttons') {
 			this.buttons.a = this.game.add.button(924, 520, 'button_a', this.buttonPressA, this, 0, 0, 1);

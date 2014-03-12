@@ -7,11 +7,11 @@ var score = 0;
 var difficulty = 0.7;
 var temp = 0;
 
-game.state.add('boot', StateBoot);
-game.state.add('loading', StateLoading);
-game.state.add('start', StateStart);
-game.state.add('game', StateGame);
-game.state.add('scores', StateScores);
+game.state.add('boot', StateBoot, false);
+game.state.add('loading', StateLoading, false);
+game.state.add('start', StateStart, false);
+game.state.add('game', StateGame, false);
+game.state.add('scores', StateScores, false);
 
 
 game.state.start('boot');

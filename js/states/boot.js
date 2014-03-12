@@ -1,6 +1,5 @@
 // Performs pre-load actions
 var StateBoot = function(game){
-	var enter = null;
 };
 StateBoot.prototype = {
 	preload: function() {
@@ -11,7 +10,6 @@ StateBoot.prototype = {
 	},
 
 	loadUpdate: function() {
-		//game.load.progress
 	},
 
 	create: function() {

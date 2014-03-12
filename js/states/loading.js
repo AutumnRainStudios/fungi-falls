@@ -44,6 +44,10 @@ StateLoading.prototype = {
 
 	create: function() {
 
+		var start = function() {
+			game.state.start('start');
+		}
+
 		console.log(this.fade);
 
 		this.fade2 = this.fade;
@@ -56,10 +60,16 @@ StateLoading.prototype = {
 		this.preloadBar1.bringToTop();
 		this.preloadBar2.bringToTop();
 
+		this.bgFade = this.game.add.tween(this.bg);
+		this.bgFade.to( { alpha: 0 }, 1000, Phaser.Easing.Quadratic.InOut, false, 0, 0, false);
+		this.bgFade.onComplete.add(start, this);
+		this.bgFade.start();
+
+
 	},
 
 	update: function() {
-		
+		/*
 		this.bg.alpha = this.fade2/this.fade;
 		this.preloadBar1.alpha = this.fade2/this.fade;
 		this.preloadBar2.alpha = this.fade2/this.fade;
@@ -69,5 +79,6 @@ StateLoading.prototype = {
 		}
 
 		this.fade2 -= 1;
+		*/
 	}
 }

@@ -6,6 +6,8 @@ Entities = function(game) {
 	this.explosions = null;
 	this.shroomLord = null;
 	this.runBombs = false;
+	this.entity = null;
+	this.explosion = null;
 }
 
 Entities.prototype = {
@@ -30,10 +32,10 @@ Entities.prototype = {
 		this.shroomLord.animations.play('walk');
 
 
-				for (var i = 0; i < 10; i++)
-				{
-					//this.spawnBomb(false);
-				}
+		for (var i = 0; i < 10; i++)
+		{
+			//this.spawnBomb(false);
+		}
 
 	},
 	
@@ -41,7 +43,7 @@ Entities.prototype = {
 		game.physics.overlap(player.sprite, this.explosions, this.explosionDamage, null, this);
 		this.bombs.forEachAlive(this.updateBomb, this);
 
-		difficulty = (game.camera.y/this.worldHeight);
+		difficulty = (this.game.camera.y/this.game.world.height);
 
 		if (player.sprite.y < game.world.height-640 && this.runBombs == false) {
 			this.runBombs = true;
@@ -63,7 +65,7 @@ Entities.prototype = {
 	},
 	
 	createEntity : function() {
-		if (Math.random() >= difficulty) {
+		if (Math.random() < difficulty) {
 			this.spawnShroom();
 		} else {
 			this.spawnBomb();
@@ -72,71 +74,71 @@ Entities.prototype = {
 
 	spawnShroom : function() {
 		if (this.shrooms.countDead() > 0){
-			var shroom = this.shrooms.getFirstDead();
-			shroom.x = Math.random()*924+100;
-			shroom.y = player.sprite.y-640;
-			shroom.revive();
+			this.entity = this.shrooms.getFirstDead();
+			this.entity.x = Math.random()*924+100;
+			this.entity.y = player.sprite.y-640;
+			this.entity.revive();
 		} else {
 			if (Math.random() <= 0.5) {
-				var shroom = this.shrooms.create(Math.random()*924+100, player.sprite.y-512, 'shroom1');
+				this.entity = this.shrooms.create(Math.random()*924+100, player.sprite.y-512, 'shroom1');
 			} else {
-				var shroom = this.shrooms.create(Math.random()*924+100, player.sprite.y-512, 'shroom2');
+				this.entity = this.shrooms.create(Math.random()*924+100, player.sprite.y-512, 'shroom2');
 			}
-			shroom.body.gravity.y = 600;
-			shroom.body.bounce.y = (Math.random()/2);
-			shroom.body.bounce.x = -0.7;
-			shroom.body.linearDamping = 5;
-			shroom.body.collideWorldBounds = true;
+			this.entity.body.gravity.y = 600;
+			this.entity.body.bounce.y = (Math.random()/2);
+			this.entity.body.bounce.x = -0.7;
+			this.entity.body.linearDamping = 5;
+			this.entity.body.collideWorldBounds = true;
 		}
-		shroom.body.velocity.x = (Math.random()*500)-250;
+		this.entity.body.velocity.x = (Math.random()*500)-250;
 	},
 
 	spawnBomb :function(timer) {
-		console.log(timer);
+		//console.log(timer);
 		timer = typeof timer !== 'undefined' ? timer : true;
 		if (this.bombs.countDead() > 0){
-			var bomb = this.bombs.getFirstDead();
-			bomb.x = Math.random()*924+100;
-			bomb.y = player.sprite.y-640;
-			bomb.revive();
+			this.entity = this.bombs.getFirstDead();
+			this.entity.x = Math.random()*924+100;
+			this.entity.y = player.sprite.y-640;
+			this.entity.revive();
 		} else { 
-			var bomb = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
-			bomb.body.setCircle(28,28,30);
-			bomb.anchor.setTo(0.5,0.5);
-			bomb.body.gravity.y = 600;
-			bomb.body.bounce.x = 0.7 + Math.random() * 0.2;
-			bomb.body.bounce.y = 0.2 + Math.random() * 0.2;
-			bomb.body.linearDamping = -10;
-			bomb.body.collideWorldBounds = true;
+			this.entity = this.bombs.create(Math.random()*924+100, player.sprite.y-512, 'bomb');
+			this.entity.body.setCircle(28,28,30);
+			this.entity.anchor.setTo(0.5,0.5);
+			this.entity.body.gravity.y = 600;
+			this.entity.body.bounce.x = 0.7 + Math.random() * 0.2;
+			this.entity.body.bounce.y = 0.2 + Math.random() * 0.2;
+			this.entity.body.linearDamping = -10;
+			this.entity.body.collideWorldBounds = true;
 		}
-		bomb.timer = 200;
-		bomb.body.velocity.x = (Math.random()*500)-250;
+		this.entity.timer = 200;
+		this.entity.body.velocity.x = (Math.random()*500)-250;
 		
 		if (timer == true) {
-			this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, bomb);
+			this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, this.entity);
 		}
 		
 	},
 		
 	spawnExplosion :function(x, y) {
 		if (this.explosions.countDead() > 0){
-			var exp = this.explosions.getFirstDead();
-			exp.x = x;
-			exp.y = y;
-			exp.revive();
+			this.explosion = this.explosions.getFirstDead();
+			this.explosion.x = x;
+			this.explosion.y = y;
+			this.explosion.revive();
 		} else { 
-			var exp = this.explosions.create(x, y, 'explosion');
-			exp.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-			exp.body.setCircle(80, 100, 100);
-			exp.anchor.setTo(0.5,0.5);
+			this.explosion = this.explosions.create(x, y, 'explosion');
+			this.explosion.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			this.explosion.body.setCircle(80, 100, 100);
+			this.explosion.anchor.setTo(0.5,0.5);
 		}
-		exp.animations.play('boom', 24, false, true);
+		this.explosion.animations.play('boom', 24, false, true);
 	},
 
 	bombBlast :function() {
 		entities.spawnExplosion(this.x,this.y);
-		entities.createEntity();
 		this.kill();
+		entities.createEntity();
 	},
 		
 	collectShroom :function (player, shroom) {

@@ -45,13 +45,13 @@ Level.prototype = {
 		this.entityCollector.fixedToCamera = true;
 	 
 		// Here we create the ground.
-		var ground = this.boundary.create(0, this.worldHeight - 35, 'ground');
-		ground.scale.setTo(15, 1);
-		ground.body.immovable = true;
+		this.ground = this.boundary.create(0, this.worldHeight - 35, 'ground');
+		this.ground.scale.setTo(15, 1);
+		this.ground.body.immovable = true;
 
-		var bossPlatform = this.platforms.create(0, 640, 'ground');
-		bossPlatform.scale.setTo(15, 1);
-		bossPlatform.body.immovable = true;
+		this.bossPlatform = this.platforms.create(0, 640, 'ground');
+		this.bossPlatform.scale.setTo(15, 1);
+		this.bossPlatform.body.immovable = true;
 		
 		this.generateLedges(this.worldWidth/12*1.5, this.worldHeight - 200);
 		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
@@ -96,37 +96,37 @@ Level.prototype = {
 	
 	generateLedges : function(startX, startY) {
 
-		var previousY = startY;
+		this.previousY = startY;
 		
-		while (previousY > 700) {
+		while (this.previousY > 700) {
 			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
-			this.makeLedge(Math.random()*(this.worldWidth/12*4)+startX, previousY);
-			previousY -= 200;
+			this.makeLedge(Math.random()*(this.worldWidth/12*4)+startX, this.previousY);
+			this.previousY -= 200;
 		}
 		
 	},
 	
 	makeLedge : function(x, y) {
 
-		var random = Math.random();
-		var ledge = null;
+		this.random = Math.random();
+		this.ledge = null;
 
-		if (random <= 0.25) {
-			ledge = this.platforms.create(x, y, 'shroomPlatformRed');
-		} else if (random > 0.25 && random <= 0.5) {
-			ledge = this.platforms.create(x, y, 'shroomPlatformTan');
-		} else if (random > 0.5 && random <= 0.75) {
-			ledge = this.platforms.create(x, y, 'shroomPlatformTanSmall');
+		if (this.random <= 0.25) {
+			this.ledge = this.platforms.create(x, y, 'shroomPlatformRed');
+		} else if (this.random > 0.25 && this.random <= 0.5) {
+			this.ledge = this.platforms.create(x, y, 'shroomPlatformTan');
+		} else if (this.random > 0.5 && this.random <= 0.75) {
+			this.ledge = this.platforms.create(x, y, 'shroomPlatformTanSmall');
 		} else {
-			ledge = this.platforms.create(x, y, 'shroomPlatformRedSmall');
+			this.ledge = this.platforms.create(x, y, 'shroomPlatformRedSmall');
 		}
 
-		ledge.body.immovable = true;
-		ledge.anchor.setTo(0.5,0.5);
-		ledge.body.checkCollision.left = false;
-		ledge.body.checkCollision.right = false;
-		ledge.body.checkCollision.bottom = false;
-		ledge.body.moves = false;
+		this.ledge.body.immovable = true;
+		this.ledge.anchor.setTo(0.5,0.5);
+		this.ledge.body.checkCollision.left = false;
+		this.ledge.body.checkCollision.right = false;
+		this.ledge.body.checkCollision.bottom = false;
+		this.ledge.body.moves = false;
 	},
 
 	update: function() {
