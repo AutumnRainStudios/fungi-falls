@@ -15,8 +15,10 @@ Enemies.prototype = {
 		this.shroomLord.animations.play('walk');
 
 		this.bossMove=this.game.add.tween(this.shroomLord);
-		this.bossMove.to({x: 924}, 3000, Phaser.Easing.Quadratic.InOut, true, 0, true, true);
-		this.bossMove.start();
+		this.bossMove.to({x: 624}, 3000, Phaser.Easing.Linear.In, true, 0, 9000, true);
+		//this.bossMove.onComplete(this.bossMove.start);
+		//this.bossMove.loop();
+		//this.bossMove.start();
 
 	},
 	
