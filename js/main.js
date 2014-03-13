@@ -31,6 +31,3 @@ var start = function(){
 
 
 
-function renderPhysics(entity) {
-	game.debug.renderPhysicsBody(entity.body);
-}

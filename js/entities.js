@@ -16,8 +16,7 @@ Entities.prototype = {
 		this.game.load.image('shroom1', 'assets/sprites/entity_shroom_red.png');
 		this.game.load.image('shroom2', 'assets/sprites/entity_shroom_tan.png');
 	   	this.game.load.spritesheet('bomb', 'assets/sprites/entity_bomb_spritesheet.png', 60, 60);
-	   	this.game.load.spritesheet('explosion', 'assets/sprites/explosion.png', 200, 200);
-	   	this.game.load.image('star', 'assets/sprites/star.png');
+	   	this.game.load.spritesheet('explosion', 'assets/sprites/explosion_spritesheet.png', 200, 200);
 	},
 
 	create : function() {
@@ -34,10 +33,10 @@ Entities.prototype = {
 	},
 	
 	update : function() {
-		game.physics.overlap(player.sprite, this.explosions, this.explosionDamage, null, this);
+		game.physics.overlap(player.sprite, this.explosions, player.playerDeath, null, this);
 		this.bombs.forEachAlive(this.updateBomb, this);
 
-		difficulty = (this.game.camera.y/this.game.world.height);
+		difficulty = (this.game.camera.y/this.game.world.height)+0.1;
 
 		if (player.sprite.y < game.world.height-640 && this.runBombs == false) {
 			this.runBombs = true;
@@ -50,12 +49,6 @@ Entities.prototype = {
 	
 	updateBomb : function(bomb) {
 		bomb.angle = bomb.body.x;
-		bomb.timer -= 1;
-		if ([224,168,126,94,70,52,38,30,22,16,12,9,6].indexOf(bomb.timer) > -1){
-			bomb.frame = 1;
-		} else {
-			bomb.frame = 0;
-		}
 	},
 	
 	createEntity : function() {
@@ -87,9 +80,8 @@ Entities.prototype = {
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 	},
 
-	spawnBomb :function(timer) {
-		//console.log(timer);
-		timer = typeof timer !== 'undefined' ? timer : true;
+	spawnBomb :function() {
+
 		if (this.bombs.countDead() > 0){
 			this.entity = this.bombs.getFirstDead();
 			this.entity.x = Math.random()*924+100;
@@ -105,12 +97,11 @@ Entities.prototype = {
 			this.entity.body.linearDamping = -10;
 			this.entity.body.collideWorldBounds = true;
 		}
-		this.entity.timer = 200;
+		this.entity.animations.add('countdown', [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,1], 15, false);
+		this.entity.animations.play('countdown');
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 		
-		if (timer == true) {
-			this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, this.entity);
-		}
+		this.game.time.events.add(Phaser.Timer.SECOND * 2, this.bombBlast, this.entity);
 		
 	},
 		
@@ -138,7 +129,7 @@ Entities.prototype = {
 	collectShroom :function (player, shroom) {
 		shroom.kill();
 		entities.createEntity();
-		score += 10;
+		score += 1;
 	},
 	
 	recycleEntity: function (collector, entity) {
@@ -149,8 +140,8 @@ Entities.prototype = {
 	},
 	
 	explosionDamage : function(player, exp) {
-		player.animations.play('hurt');
-		//player.heart--;
+		//player.animations.play('hurt');
+		player.playerDeath();
 	},
 
 }

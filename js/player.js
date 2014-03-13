@@ -1,7 +1,7 @@
 Player = function(game) {
 	this.game = game;
 	this.sprite = null;
-
+	this.cameraPosition = null;
 	//controls.cursors = null;
 	this.gibs = null;
 
@@ -25,15 +25,18 @@ Player.prototype = {
 	create : function() {
 
 		this.sprite = game.add.sprite(620, game.world.height - 100, 'player');
+		//this.sprite = game.add.sprite(620, 100, 'player');
 		 
 		this.sprite.heart = 10;
 
 		this.sprite.body.gravity.y = 900;
 		this.sprite.body.bounce.y = 0.001;
 		this.sprite.body.linearDamping = -10;
-		this.sprite.body.checkCollision.up = false;
+		//this.sprite.body.setRectangle(40, 100, 12, 0);
+		//this.sprite.body.checkCollision.up = false;
 		this.sprite.body.collideWorldBounds = true;
 		this.sprite.anchor.setTo(0.5,0.5);
+
 	 
 		this.sprite.animations.add('walk', [5, 6, 7, 8, 9, 10], 16, true);
 		this.sprite.animations.add('jump', [1, 2], 8, true);
@@ -49,12 +52,22 @@ Player.prototype = {
 
 	update : function() {
 
-		if (this.sprite.heart <= 0) {
-			this.playerDeath(this.sprite, this);
-			this.sprite.heart = 10;
-			this.sprite.kill();
-			//document.getElementById("game-over").style.display='block';
-			//document.getElementById("score-final").innerHTML=score;
+		if (this.game.camera.y >= this.game.world.height - 640) {
+			this.cameraPosition = 'bottom';
+		} else if (this.game.camera.y < this.game.world.height - 640 && this.cameraPosition != 'middle' && this.cameraPosition != 'top') {
+			this.cameraPosition = 'middle';
+		} else if (this.game.camera.y < 640 && this.cameraPosition != 'top') {
+			this.cameraPosition = 'top';
+
+		} 
+
+		if (this.game.camera.y <= 120){
+			if (!this.cameraToggle) {
+				this.game.camera.follow(null);
+				game.add.tween(this.game.camera).to({ y: 0 }, 500, Phaser.Easing.Linear.None).start();
+				this.cameraToggle = true;
+			}
+
 		}
 
 		/*
@@ -75,7 +88,7 @@ Player.prototype = {
 		//  Allow the player to jump if they are touching the ground.
 		if ((controls.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
 		{
-			this.sprite.body.velocity.y = -620;
+			this.sprite.body.velocity.y = -600;
 		}
 
 		// Left & Right Movement
@@ -123,30 +136,35 @@ Player.prototype = {
 	 	}
 
 	},
+
+	topCamera: function(){
+
+	},
 	
-	fallDamage : function(player, ground) {
+	fallDamage : function(sprite) {
 		//console.log(player)
-		if (player.body.velocity.y > 800){
-			player.heart = 0;
+		if (sprite.body.velocity.y > 800){
+			player.playerDeath();
 		}
 	},
 
-	playerDeath : function (player, scope) {
+	playerDeath : function () {
+		player.sprite.kill();
 		for (i=0; i<7; i++) {
 			this.gib = null;
 			switch (i)
 			{
 				case 0:
-			   		this.gib = scope.gibs.create(player.x, player.y, 'gib_head');
+			   		this.gib = player.gibs.create(player.sprite.x, player.sprite.y, 'gib_head');
 			   		break;
 				case 1:
-					this.gib = scope.gibs.create(player.x, player.y, 'gib_body');
+					this.gib = player.gibs.create(player.sprite.x, player.sprite.y, 'gib_body');
 					break;
 				case 2: 
-			    	this.gib = scope.gibs.create(player.x, player.y, 'gib_hat');
+			    	this.gib = player.gibs.create(player.sprite.x, player.sprite.y, 'gib_hat');
 			    	break;
 				default: 
-					this.gib = scope.gibs.create(player.x, player.y, 'gib_limb');
+					this.gib = player.gibs.create(player.sprite.x, player.sprite.y, 'gib_limb');
 					break;
 			}
 

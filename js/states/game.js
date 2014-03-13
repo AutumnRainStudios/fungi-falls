@@ -28,12 +28,15 @@ StateGame.prototype = {
 		
 	 	game.physics.collide(level.platforms, entities.shrooms);
 		game.physics.collide(level.platforms, entities.bombs);
+
+		game.physics.collide(player.sprite, enemies.shroomLord, enemies.playerBounce, enemies.collisionCheck);
 		
 		game.physics.collide(level.platforms, player.gibs);
 		game.physics.collide(level.boundary, player.gibs);
 	
 		player.update();
 		entities.update();
+		enemies.update();
 		level.update();
 	
 		//document.getElementById("score").innerHTML=score;
@@ -41,22 +44,29 @@ StateGame.prototype = {
 	 	//document.getElementById("health-bar").style.width= player.heart + "%";		
 	},
 	
-	render : function() {
-		game.debug.renderText("FPS: " + game.time.fps, 940, 30);
-
-		game.debug.renderText("Diff: " + difficulty, 940, 60);
+	render: function() {
+		game.debug.renderText("FPS: " + game.time.fps, 900, 30);
+		game.debug.renderText("Diff: " + difficulty, 900, 50);
+		game.debug.renderText("CPos: " + player.cameraPosition, 900, 70);
 		
-
 		if (debug == true){
 
 			// Sprite debug info
-			entities.bombs.forEachAlive(renderPhysics, this)
-			entities.shrooms.forEachAlive(renderPhysics, this)
-			level.platforms.forEachAlive(renderPhysics, this)
-			entities.explosions.forEachAlive(renderPhysics, this)
+			entities.bombs.forEachAlive(this.renderPhysics, this);
+			entities.shrooms.forEachAlive(this.renderPhysics, this);
+			level.platforms.forEachAlive(this.renderPhysics, this);
+			entities.explosions.forEachAlive(this.renderPhysics, this);
+			//enemies.explosions.forEachAlive(renderPhysics, this);
 	
-			game.debug.renderSpriteCorners(player.sprite, false, false);
+			game.debug.renderPhysicsBody(enemies.shroomLord.body);
+
+			game.debug.renderPhysicsBody(player.sprite.body);
+
 			game.debug.renderBodyInfo(player.sprite, 32, 32);
 		}		
+	},
+
+	renderPhysics: function(entity) {
+		game.debug.renderPhysicsBody(entity.body);
 	}
 }

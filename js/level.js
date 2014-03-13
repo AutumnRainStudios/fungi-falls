@@ -12,10 +12,10 @@ Level  = function(game) {
 
 	this.bossArena = {
 		ledges : [
-			{sprite: 'shroomPlatformRed', x: 100, y: 550},
-			{sprite: 'shroomPlatformRedSmall', x: 100, y: 420},
-			{sprite: 'shroomPlatformTan', x: 924, y: 550},
-			{sprite: 'shroomPlatformTanSmall', x: 924, y: 420}
+			{sprite: 'shroomPlatformRed', x: 100, y: 510},
+			{sprite: 'shroomPlatformRedSmall', x: 50, y: 400},
+			{sprite: 'shroomPlatformTan', x: 924, y: 510},
+			{sprite: 'shroomPlatformTanSmall', x: 974, y: 400}
 		]
 
 	}
@@ -59,7 +59,7 @@ Level.prototype = {
 		this.ground.scale.setTo(15, 1);
 		this.ground.body.immovable = true;
 
-		this.bossPlatform = this.platforms.create(0, 640, 'ground');
+		this.bossPlatform = this.platforms.create(0, 600, 'ground');
 		this.bossPlatform.scale.setTo(15, 1);
 		this.bossPlatform.body.immovable = true;
 		
