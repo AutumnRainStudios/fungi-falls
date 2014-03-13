@@ -32,6 +32,9 @@ StateLoading.prototype = {
 
 		entities = new Entities(game);
 		entities.preload();
+
+		enemies = new Enemies(game);
+		enemies.preload();
 	
 		controls = new Controls(game, 'buttons');
 		controls.preload();

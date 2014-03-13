@@ -7,7 +7,8 @@ StateGame.prototype = {
 		level.create();
 		player.create();
 		entities.create();
-		controls.create();		
+		enemies.create();
+		controls.create();	
 	},
 	
 	update: function() {

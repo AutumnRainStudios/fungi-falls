@@ -9,6 +9,16 @@ Level  = function(game) {
 	this.worldWidth = 0;
 	
 	this.entityCollector = null;
+
+	this.bossArena = {
+		ledges : [
+			{sprite: 'shroomPlatformRed', x: 100, y: 550},
+			{sprite: 'shroomPlatformRedSmall', x: 100, y: 420},
+			{sprite: 'shroomPlatformTan', x: 924, y: 550},
+			{sprite: 'shroomPlatformTanSmall', x: 924, y: 420}
+		]
+
+	}
 }
 
 Level.prototype = {
@@ -56,6 +66,7 @@ Level.prototype = {
 		this.generateLedges(this.worldWidth/12*1.5, this.worldHeight - 200);
 		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
 
+		this.generateBossArena(this);
 		
 	},
 
@@ -104,6 +115,20 @@ Level.prototype = {
 			this.previousY -= 200;
 		}
 		
+	},
+
+	generateBossArena: function(env) {
+
+		this.bossArena.ledges.forEach(function(entry) {
+			//console.log
+			env.ledge = env.platforms.create(entry.x, entry.y, entry.sprite);
+			env.ledge.body.immovable = true;
+			env.ledge.anchor.setTo(0.5,0.5);
+			env.ledge.body.checkCollision.left = false;
+			env.ledge.body.checkCollision.right = false;
+			env.ledge.body.checkCollision.bottom = false;
+			env.ledge.body.moves = false;
+		});
 	},
 	
 	makeLedge : function(x, y) {

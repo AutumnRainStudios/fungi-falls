@@ -18,7 +18,6 @@ Entities.prototype = {
 	   	this.game.load.spritesheet('bomb', 'assets/sprites/entity_bomb_spritesheet.png', 60, 60);
 	   	this.game.load.spritesheet('explosion', 'assets/sprites/explosion.png', 200, 200);
 	   	this.game.load.image('star', 'assets/sprites/star.png');
-	   	this.game.load.spritesheet('shroomLord', 'assets/sprites/shroomLord_spritesheet.png', 360, 320);
 	},
 
 	create : function() {
@@ -26,11 +25,6 @@ Entities.prototype = {
 		this.shrooms = game.add.group();
 		this.bombs = game.add.group();
 		this.explosions = game.add.group();
-		
-		this.shroomLord = this.game.add.sprite(400, 320, 'shroomLord');
-		this.shroomLord.animations.add('walk', [2, 3, 4, 5, 6], 8, true);
-		this.shroomLord.animations.play('walk');
-
 
 		for (var i = 0; i < 10; i++)
 		{
@@ -156,7 +150,7 @@ Entities.prototype = {
 	
 	explosionDamage : function(player, exp) {
 		player.animations.play('hurt');
-		player.heart--;
+		//player.heart--;
 	},
 
 }
