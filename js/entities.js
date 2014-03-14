@@ -5,7 +5,7 @@ Entities = function(game) {
 	this.shrooms = null;
 	this.explosions = null;
 	this.shroomLord = null;
-	this.runBombs = false;
+	this.start = false;
 	this.entity = null;
 	this.explosion = null;
 }
@@ -25,11 +25,11 @@ Entities.prototype = {
 		this.bombs = game.add.group();
 		this.explosions = game.add.group();
 
-		for (var i = 0; i < 10; i++)
-		{
-			//this.spawnBomb(false);
+		if (game.state == 'start') {
+			for (var i = 0; i < 10; i++) {
+				this.spawnBomb();
+			}
 		}
-
 	},
 	
 	update : function() {
@@ -37,18 +37,23 @@ Entities.prototype = {
 		this.bombs.forEachAlive(this.updateBomb, this);
 
 		difficulty = (this.game.camera.y/this.game.world.height)+0.1;
-
-		if (player.sprite.y < game.world.height-640 && this.runBombs == false) {
-			this.runBombs = true;
-				for (var i = 0; i < 20; i++)
-				{
-					this.createEntity();
-				}
-		}
+		
+		this.progressCheck();
+		
 	},
 	
 	updateBomb : function(bomb) {
 		bomb.angle = bomb.body.x;
+	},
+	
+	progressCheck: function() {
+		if (this.start = false && player.sprite.y < game.world.height-640) {
+			this.start = true;
+			
+			for (var i = 0; i < 20; i++) {
+				this.game.time.events.add(Phaser.Timer.SECOND * (i/2), this.createEntity);
+			}
+		}
 	},
 	
 	createEntity : function() {

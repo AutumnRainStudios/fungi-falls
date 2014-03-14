@@ -1,4 +1,6 @@
-var StateGame = function(game) { };
+var StateGame = function(game) {
+	this.gameState = '';
+};
 StateGame.prototype = {
 	preload: function() {
 	},
@@ -48,6 +50,8 @@ StateGame.prototype = {
 		game.debug.renderText("FPS: " + game.time.fps, 900, 30);
 		game.debug.renderText("Diff: " + difficulty, 900, 50);
 		game.debug.renderText("CPos: " + player.cameraPosition, 900, 70);
+		this.gameState = game.state.getCurrentState();
+		game.debug.renderText("State: " + this.gameState.key, 900, 90)
 		
 		if (debug == true){
 
