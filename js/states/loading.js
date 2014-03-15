@@ -25,20 +25,22 @@ StateLoading.prototype = {
 
 		//this.game.load.setPreloadSprite(this.reloadBar2);
 
+		loadAssets();
+
 		player = new Player(game);
-		player.preload();
+		//player.preload();
 
 		level = new Level(game);
-		level.preload();
+		//level.preload();
 
 		entities = new Entities(game);
-		entities.preload();
+		//entities.preload();
 
 		enemies = new Enemies(game);
-		enemies.preload();
+		//enemies.preload();
 	
-		controls = new Controls(game, 'buttons');
-		controls.preload();
+		
+		//controls.preload();
 
 	},
 

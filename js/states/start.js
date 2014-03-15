@@ -3,10 +3,11 @@ var StateStart = function(game) {
 	this.game = game;
 	this.logo = null;
 	this.menuSelected = 'start';
+	this.cursors = null;
 };
 StateStart.prototype = {
 	preload: function() {
-		
+		this.controls = new Controls(game, 'buttons');
 	},
 	
 	create: function() {
@@ -21,31 +22,47 @@ StateStart.prototype = {
 		this.startMenu.anchor.setTo(0.5, 0.5);
 		this.startMenu.fixedToCamera = true;
 
-		controls.create();
+		this.controls.create();
 		//entities.create();
+
+		//this.cursors = this.game.input.keyboard.createCursorKeys();
+		//this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
 
 	},
 	
 	update: function() {
 
+		this.controls.update();
+
 		game.physics.collide(level.boundary, entities.startBombs);
 
-		if (controls.cursors.right.isDown || this.game.input.dpad_r) {
+		if (this.controls.input.right) {
 			this.startMenu.frame = 1;
 			this.menuSelected = 'scores';
-		} else if (controls.cursors.left.isDown || this.game.input.dpad_l) {
+		} else if (this.controls.input.left) {
 			this.startMenu.frame = 0;
 			this.menuSelected = 'start';
 		}
 
-
-		if (controls.enter.isDown || this.game.input.button_a) {
+		if (this.controls.input.a) {
 			if (this.menuSelected == 'scores') {
+				this.destroy();
 				game.state.start('scores');
 			} else {
+				this.destroy();
 				game.state.start('game');
 			}
 		}
 		
+	},
+
+	destroy: function() {
+		delete this.controls;
+		console.log('destroyed');
+	},
+
+	render: function() {
+		this.controls.render();
 	}
 }

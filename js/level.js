@@ -23,22 +23,6 @@ Level  = function(game) {
 
 Level.prototype = {
 	
-	preload: function() {
-		this.game.load.image('bg_dawn', 'assets/bg/bg_dawn.png');
-		this.game.load.image('bg_night', 'assets/bg/bg_night.png');
-		this.game.load.image('bg_inside', 'assets/bg/bg_inside.png');
-		this.game.load.image('bg_outside', 'assets/bg/bg_outside.png');
-		this.game.load.image('ground', 'assets/sprites/ground.png');
-		this.game.load.image('shroomPlatformRed', 'assets/sprites/platform_red.png');
-		this.game.load.image('shroomPlatformTan', 'assets/sprites/platform_tan.png');
-		this.game.load.image('shroomPlatformRedSmall', 'assets/sprites/platform_red_small.png');
-		this.game.load.image('shroomPlatformTanSmall', 'assets/sprites/platform_tan_small.png');
-		this.game.load.image('hitBox', 'assets/sprites/transTest.png');
-		this.game.load.image('win', 'assets/gui/won.png');
-		this.game.load.image('lose', 'assets/gui/died.png');
-		this.game.load.spritesheet('bed', 'assets/sprites/bed_spritesheet.png', 190, 130);
-	},
-
 	create: function() {
 
 		this.createBackground();

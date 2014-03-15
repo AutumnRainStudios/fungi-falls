@@ -14,13 +14,6 @@ Player = function(game) {
 
 Player.prototype = {
 	
-	preload: function() {
-		this.game.load.spritesheet('player', 'assets/sprites/player_spritesheet.png', 70, 100);
-		this.game.load.image('gib_head', 'assets/sprites/player_gibs/player_gib_head.png');
-		this.game.load.image('gib_body', 'assets/sprites/player_gibs/player_gib_body.png');
-		this.game.load.image('gib_hat', 'assets/sprites/player_gibs/player_gib_hat.png');
-		this.game.load.image('gib_limb', 'assets/sprites/player_gibs/player_gib_limb.png');
-	},
 
 	create : function() {
 
@@ -87,21 +80,17 @@ Player.prototype = {
 			this.movement.acceleration = 0.1;
 		}
 		
-		//  Allow the player to jump if they are touching the ground.
-		if ((controls.cursors.up.isDown || game.input.button_a == true) && this.sprite.body.touching.down)
-		{
-			this.sprite.body.velocity.y = -600;
-		}
+
 
 		// Left & Right Movement
-		if (controls.cursors.right.isDown || game.input.dpad_r == true)
+		if (controls.input.right)
 		{
 			//  Move to the right
 			if (this.sprite.body.velocity.x < 0) {
 				this.sprite.body.velocity.x = ((this.movement.acceleration * 0) + (1-this.movement.acceleration) * this.sprite.body.velocity.x);
 			}
 			this.sprite.body.velocity.x += ((this.movement.acceleration * this.movement.targetSpeed) + (1-this.movement.acceleration) * Math.abs(this.sprite.body.velocity.x))-Math.abs(this.sprite.body.velocity.x);
-		} else if (controls.cursors.left.isDown || game.input.dpad_l == true) {
+		} else if (controls.input.left) {
 			//  Move to the left
 			if (this.sprite.body.velocity.x > 0) {
 				this.sprite.body.velocity.x = ((this.movement.acceleration * 0) + (1-this.movement.acceleration) * this.sprite.body.velocity.x);
@@ -137,6 +126,11 @@ Player.prototype = {
 			this.sprite.frame = 0;
 	 	}
 
+	},
+
+	jump : function() {
+		//  Allow the player to jump if they are touching the ground.
+		this.sprite.body.velocity.y = -600;
 	},
 
 	topCamera: function(){

@@ -7,9 +7,6 @@ Enemies = function(game) {
 
 Enemies.prototype = {
 	
-	preload: function() {
-	   	this.game.load.spritesheet('shroomLord', 'assets/sprites/shroomLord_spritesheet.png', 360, 320);
-	},
 
 	create : function() {
 		this.shroomLord = this.game.add.sprite(300, 280, 'shroomLord');

@@ -13,13 +13,6 @@ Entities = function(game) {
 
 Entities.prototype = {
 	
-	preload: function() {
-		this.game.load.image('shroom1', 'assets/sprites/entity_shroom_red.png');
-		this.game.load.image('shroom2', 'assets/sprites/entity_shroom_tan.png');
-	   	this.game.load.spritesheet('bomb', 'assets/sprites/entity_bomb_spritesheet.png', 60, 60);
-	   	this.game.load.spritesheet('explosion', 'assets/sprites/explosion_spritesheet.png', 200, 200);
-	},
-
 	create : function() {
 		this.shrooms = game.add.group();
 		this.bombs = game.add.group();
