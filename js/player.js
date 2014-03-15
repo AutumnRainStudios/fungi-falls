@@ -37,9 +37,10 @@ Player.prototype = {
 		this.sprite.body.collideWorldBounds = true;
 		this.sprite.anchor.setTo(0.5,0.5);
 
-	 
-		this.sprite.animations.add('walk', [5, 6, 7, 8, 9, 10], 16, true);
-		this.sprite.animations.add('jump', [1, 2], 8, true);
+	 	this.sprite.animations.add('walkRight', [5, 6, 7, 8, 9, 10], 16, true);
+		this.sprite.animations.add('walkLeft', [11, 12, 13, 14, 15, 16], 16, true);
+		this.sprite.animations.add('jumpRight', [1, 2], 8, true);
+		this.sprite.animations.add('jumpLeft', [3, 4], 8, true);
 		this.sprite.animations.add('hurt', [3, 4], 1, true);
 
 		this.gibs = game.add.group();
@@ -56,9 +57,10 @@ Player.prototype = {
 			this.cameraPosition = 'bottom';
 		} else if (this.game.camera.y < this.game.world.height - 640 && this.cameraPosition != 'middle' && this.cameraPosition != 'top') {
 			this.cameraPosition = 'middle';
+		//} else if (this.game.camera.y < 840 && this.cameraPosition != 'midTop' && this.cameraPosition != 'top') {
+			//this.cameraPosition = 'midTop';
 		} else if (this.game.camera.y < 640 && this.cameraPosition != 'top') {
 			this.cameraPosition = 'top';
-
 		} 
 
 		if (this.game.camera.y <= 120){
@@ -113,22 +115,22 @@ Player.prototype = {
 
 		if (this.sprite.body.velocity.x > 5) {
 		
-			this.sprite.width = 70;
+			//this.sprite.width = 70;
 		
 			if (this.sprite.body.touching.down) {
-	 			this.sprite.animations.play('walk');
+	 			this.sprite.animations.play('walkRight');
 	 			
 	 		} else {
-	 			this.sprite.animations.play('jump');
+	 			this.sprite.animations.play('jumpRight');
 	 		}
 	 	} else if (this.sprite.body.velocity.x < -5){
 	 	
-	 		this.sprite.width = -70;
+	 		//this.sprite.width = -70;
 	 	
 	 		if (this.sprite.body.touching.down) {
-				this.sprite.animations.play('walk');
+				this.sprite.animations.play('walkLeft');
 			} else {
-				this.sprite.animations.play('jump');
+				this.sprite.animations.play('jumpLeft');
 			}
 	 	} else {
 		 	this.sprite.animations.stop();
@@ -180,5 +182,6 @@ Player.prototype = {
 			this.gib.body.linearDamping = 5;
 			this.gib.body.collideWorldBounds = true;
 		}
+		game.time.events.add(Phaser.Timer.SECOND * 2, level.goalFail);
 	}
 }

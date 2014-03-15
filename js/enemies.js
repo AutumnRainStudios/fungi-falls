@@ -2,6 +2,7 @@ Enemies = function(game) {
 	this.game = game;
 	this.shroomLord = null;
 	this.speed = 3000;
+	this.heart = 10;
 }
 
 Enemies.prototype = {
@@ -34,6 +35,11 @@ Enemies.prototype = {
 			.to({ width: 360 }, 250, Phaser.Easing.Linear.None)
 			.loop()
 			.start();
+
+
+		this.bossKillAnim = game.add.tween(this.shroomLord)
+			.to({ y: this.shroomLord.y-100 }, 800, Phaser.Easing.Quadratic.Out)
+			.to({ y: 1200 }, 1200, Phaser.Easing.Quadratic.In)
 	},
 	
 	update : function() {
@@ -43,25 +49,41 @@ Enemies.prototype = {
 	playerBounce: function() {
 		if (player.sprite.body.velocity.y < 0){ 
 			player.sprite.body.velocity.y = -700;
-			//player.sprite.body.velocity.x = (Math.random() * 100 - 50) * 100;
-			console.log('bounce!');
 			enemies.shroomLord.animations.play('hurt', 1, false);
 			enemies.bossMove.pause();
+			enemies.heart--;
 
 			var resetAnim = function() {
 				enemies.shroomLord.animations.play('walk');
 				enemies.bossMove.resume();
 			}
 
-			game.time.events.add(Phaser.Timer.SECOND * 0.2, resetAnim);
-
+			if (enemies.heart <= 0){
+				enemies.shroomLordDeath();
+			} else {
+				//resetAnim();
+				game.time.events.add(Phaser.Timer.SECOND * 0.2, resetAnim);
+			}
 		}
 		
 	},
 
+	shroomLordDeath: function() {
+
+		enemies.bossMove.stop();
+		enemies.bossKillAnim.start();
+
+		//entities.bombs.forEachAlive(this.renderPhysics, this);
+		//enemies.shroomLord.kill();
+		game.time.events.add(Phaser.Timer.SECOND * 2, level.goalComplete);
+
+		console.log(game.state.getCurrentState());
+
+	},
+
 	collisionCheck: function() {
 		
-		if (player.sprite.body.velocity.y < 400){ 
+		if (player.sprite.body.velocity.y < 400 || enemies.heart <= 0){ 
 			return false;
 		}else{
 			return true;

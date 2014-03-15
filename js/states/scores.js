@@ -1,4 +1,6 @@
-var StateScores = function(game) { };
+var StateScores = function(game) { 
+	gameState = 'scores';
+};
 StateScores.prototype = {
 	preload: function() {
 		

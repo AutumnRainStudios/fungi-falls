@@ -1,5 +1,6 @@
 // Performs pre-load actions
 var StateBoot = function(game){
+	gameState = 'boot';
 };
 StateBoot.prototype = {
 	preload: function() {

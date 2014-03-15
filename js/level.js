@@ -34,6 +34,8 @@ Level.prototype = {
 		this.game.load.image('shroomPlatformRedSmall', 'assets/sprites/platform_red_small.png');
 		this.game.load.image('shroomPlatformTanSmall', 'assets/sprites/platform_tan_small.png');
 		this.game.load.image('hitBox', 'assets/sprites/transTest.png');
+		this.game.load.image('win', 'assets/gui/won.png');
+		this.game.load.image('lose', 'assets/gui/died.png');
 		this.game.load.spritesheet('bed', 'assets/sprites/bed_spritesheet.png', 190, 130);
 	},
 
@@ -50,7 +52,7 @@ Level.prototype = {
 		this.platforms = this.game.add.group();
 		this.boundary = this.game.add.group();
 		
-		this.entityCollector = this.game.add.sprite(0, 700, 'hitBox');
+		this.entityCollector = this.game.add.sprite(0, 740, 'hitBox');
 		this.entityCollector.scale.setTo(this.worldWidth/20, 1);
 		this.entityCollector.fixedToCamera = true;
 	 
@@ -112,7 +114,7 @@ Level.prototype = {
 		while (this.previousY > 700) {
 			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
 			this.makeLedge(Math.random()*(this.worldWidth/12*4)+startX, this.previousY);
-			this.previousY -= 200;
+			this.previousY -= 180;
 		}
 		
 	},
@@ -181,6 +183,17 @@ Level.prototype = {
 		
 		//level.dropPlatform2(platform);
 		
+	},
+
+	goalFail: function() {
+		console.log('You Lost!');
+		var state = game.state.getCurrentState();
+		//state.destroy();
+		game.state.start('lost');
+	},
+
+	goalComplete: function() {
+		console.log('You Win!');
 	},
 	
 	

@@ -1,4 +1,5 @@
 var StateLoading = function(game){
+	gameState = 'loading';
 	this.game = game;
 	this.enter = null;
 	this.fade = 60;

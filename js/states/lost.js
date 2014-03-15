@@ -1,10 +1,10 @@
-var StateStart = function(game) {
-	gameState = 'start';
+var StateLost = function(game) {
+	gameState = 'lost';
 	this.game = game;
 	this.logo = null;
 	this.menuSelected = 'start';
 };
-StateStart.prototype = {
+StateLost.prototype = {
 	preload: function() {
 		
 	},
@@ -13,7 +13,7 @@ StateStart.prototype = {
 
 		level.createBackground();
 
-		this.logo = game.add.sprite(game.camera.width/2, 180, 'logo');
+		this.logo = game.add.sprite(game.camera.width/2, 180, 'lose');
 		this.logo.anchor.setTo(0.5,0.5);
 		this.logo.fixedToCamera = true;
 
@@ -43,7 +43,7 @@ StateStart.prototype = {
 			if (this.menuSelected == 'scores') {
 				game.state.start('scores');
 			} else {
-				game.state.start('game');
+				window.location.reload(false);
 			}
 		}
 		

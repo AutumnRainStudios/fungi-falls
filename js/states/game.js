@@ -1,5 +1,5 @@
 var StateGame = function(game) {
-	this.gameState = '';
+	gameState = 'game';
 };
 StateGame.prototype = {
 	preload: function() {
@@ -10,7 +10,7 @@ StateGame.prototype = {
 		player.create();
 		entities.create();
 		enemies.create();
-		controls.create();	
+		//controls.create();	
 	},
 	
 	update: function() {
@@ -50,24 +50,26 @@ StateGame.prototype = {
 		game.debug.renderText("FPS: " + game.time.fps, 900, 30);
 		game.debug.renderText("Diff: " + difficulty, 900, 50);
 		game.debug.renderText("CPos: " + player.cameraPosition, 900, 70);
-		this.gameState = game.state.getCurrentState();
-		game.debug.renderText("State: " + this.gameState.key, 900, 90)
+		game.debug.renderText("State: " + gameState, 900, 90)
 		
 		if (debug == true){
-
 			// Sprite debug info
 			entities.bombs.forEachAlive(this.renderPhysics, this);
 			entities.shrooms.forEachAlive(this.renderPhysics, this);
 			level.platforms.forEachAlive(this.renderPhysics, this);
 			entities.explosions.forEachAlive(this.renderPhysics, this);
-			//enemies.explosions.forEachAlive(renderPhysics, this);
 	
 			game.debug.renderPhysicsBody(enemies.shroomLord.body);
-
 			game.debug.renderPhysicsBody(player.sprite.body);
-
 			game.debug.renderBodyInfo(player.sprite, 32, 32);
 		}		
+	},
+
+	destroy: function(){
+		delete enemies;
+		delete entities;
+		delete player;
+		delete level;
 	},
 
 	renderPhysics: function(entity) {
