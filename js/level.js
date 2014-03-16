@@ -1,4 +1,4 @@
-Level  = function(game) {
+ Level  = function(game) {
 	this.game = game;
 	this.boundary = null;
 	this.platforms = {
@@ -61,20 +61,7 @@ Level.prototype = {
 
 		this.game.world.setBounds(0, 0, 1024, 4096);
 
-		this.bg_dawn = this.game.add.sprite(0, 0, 'bg_dawn');
-		this.bg_dawn.width = game.camera.width;
-		this.bg_dawn.height = game.camera.height;
-		this.bg_dawn.fixedToCamera = true;
 
-		this.bg_night = this.game.add.sprite(0, 0, 'bg_night');
-		this.bg_night.width = game.camera.width;
-		this.bg_night.height = game.camera.height;
-		this.bg_night.fixedToCamera = true;
-
-		this.bg_outside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_outside');
-		this.bg_outside.alpha = 0.5;
-		this.bg_outside.tilePosition.y = game.camera.y*0.2;
-		this.bg_inside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_inside');
 
 		this.ground = this.game.add.sprite(0, game.world.height - 35, 'ground');
 		this.ground.scale.setTo(15, 1);
@@ -140,7 +127,7 @@ Level.prototype = {
 		this.ledge.body.moves = false;
 	},
 
-	update: function() {
+	updateBackground: function() {
 		this.bg_night.alpha = (game.camera.y/this.worldHeight)+0.1;
 		this.bg_outside.tilePosition.y = game.camera.y*0.2;
 	},

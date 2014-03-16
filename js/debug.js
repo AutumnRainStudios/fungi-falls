@@ -44,4 +44,8 @@ if (debugMobile == true) {
 		document.getElementById("console").appendChild(html);
 		info.apply(console, [input])
     }
+} else if (debug != true) {
+	console.log = function() {};
+	console.warn = function() {};
+	console.info = function() {};
 }

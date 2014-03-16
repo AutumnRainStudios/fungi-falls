@@ -1,4 +1,4 @@
-Controls = function(game, type) {
+Controls = function(game) {
 	this.game = game;
 
 	this.keyboard = {
@@ -28,6 +28,7 @@ Controls.prototype = {
 	create: function() {
 
 		if (Modernizr.touch) {
+			/*
 			this.touch.a = this.game.add.button(924, 520, 'button_a', null, this, 0, 0, 1);
 			this.touch.a.anchor.setTo(0.5, 0.5);
 			this.touch.a.alpha = 0.3;
@@ -51,6 +52,7 @@ Controls.prototype = {
 			
 			//button.events.onInputDown.add(function(){this.controls.input.right = true});
 			//button.events.onInputUp.add(function(){this.controls.input.right = false});
+			*/
 		} else {
 			console.log('keyboard');
 			this.keyboard.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -63,22 +65,26 @@ Controls.prototype = {
 	},
 
 	update: function() {
-		if (this.keyboard.cursors.left.isDown) {
-			this.input.left = true;
-		} else {
-			this.input.left = false;
-		}
-		
-		if (this.keyboard.cursors.right.isDown) {
-			this.input.right = true;
-		} else {
-			this.input.right = false;
-		}
+		if (Modernizr.touch) {
 
-		if (this.keyboard.enter.isDown || this.keyboard.z.isDown || this.keyboard.space.isDown || this.keyboard.cursors.up.isDown ) {
-			this.input.a = true;
 		} else {
-			this.input.a = false;
+			if (this.keyboard.cursors.left.isDown) {
+				this.input.left = true;
+			} else {
+				this.input.left = false;
+			}
+			
+			if (this.keyboard.cursors.right.isDown) {
+				this.input.right = true;
+			} else {
+				this.input.right = false;
+			}
+
+			if (this.keyboard.enter.isDown || this.keyboard.z.isDown || this.keyboard.space.isDown || this.keyboard.cursors.up.isDown ) {
+				this.input.a = true;
+			} else {
+				this.input.a = false;
+			}
 		}
 	},
 
