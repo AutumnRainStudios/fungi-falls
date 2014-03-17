@@ -49,14 +49,13 @@ Level.prototype = {
 		this.bossPlatform.scale.setTo(15, 1);
 		this.bossPlatform.body.immovable = true;
 		
-		this.generateLedges(this.worldWidth/12*1.5, this.worldHeight - 200);
-		this.generateLedges(this.worldWidth/12*6.5, this.worldHeight - 300);
+
 
 		this.generateBossArena(this);
 		
 	},
 
-
+	/*
 	createBackground : function() {
 
 		this.game.world.setBounds(0, 0, 1024, 4096);
@@ -76,19 +75,9 @@ Level.prototype = {
 		game.camera.y = game.world.height;
 
 	},
-
+	*/
 	
-	generateLedges : function(startX, startY) {
 
-		this.previousY = startY;
-		
-		while (this.previousY > 700) {
-			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
-			this.makeLedge(Math.random()*(this.worldWidth/12*4)+startX, this.previousY);
-			this.previousY -= 180;
-		}
-		
-	},
 
 	generateBossArena: function(env) {
 
@@ -104,42 +93,11 @@ Level.prototype = {
 		});
 	},
 	
-	makeLedge : function(x, y) {
 
-		this.random = Math.random();
-		this.ledge = null;
 
-		if (this.random <= 0.25) {
-			this.ledge = this.platforms.create(x, y, 'shroomPlatformRed');
-		} else if (this.random > 0.25 && this.random <= 0.5) {
-			this.ledge = this.platforms.create(x, y, 'shroomPlatformTan');
-		} else if (this.random > 0.5 && this.random <= 0.75) {
-			this.ledge = this.platforms.create(x, y, 'shroomPlatformTanSmall');
-		} else {
-			this.ledge = this.platforms.create(x, y, 'shroomPlatformRedSmall');
-		}
 
-		this.ledge.body.immovable = true;
-		this.ledge.anchor.setTo(0.5,0.5);
-		this.ledge.body.checkCollision.left = false;
-		this.ledge.body.checkCollision.right = false;
-		this.ledge.body.checkCollision.bottom = false;
-		this.ledge.body.moves = false;
-	},
 
-	updateBackground: function() {
-		this.bg_night.alpha = (game.camera.y/this.worldHeight)+0.1;
-		this.bg_outside.tilePosition.y = game.camera.y*0.2;
-	},
 
-	platformCollision: function(){
-		if (player.sprite.body.velocity.y < 0){ 
-			return false;
-		}else{
-			return true;
-		}
-	},
-	
 	dropPlatform2: function(platform) {
 		//console.log(this);
 		//console.log(platform);

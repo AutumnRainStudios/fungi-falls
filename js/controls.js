@@ -90,9 +90,9 @@ Controls.prototype = {
 
 	render: function() {
 		if (debug == true){
-			game.debug.renderText("A: " + this.input.a, 850, 30);
-			game.debug.renderText("Left: " + this.input.left, 850, 50);
-			game.debug.renderText("Right: " + this.input.right, 850, 70);
+			game.debug.text("A: " + this.input.a, 850, 30);
+			game.debug.text("Left: " + this.input.left, 850, 50);
+			game.debug.text("Right: " + this.input.right, 850, 70);
 		}		
 	},
 }

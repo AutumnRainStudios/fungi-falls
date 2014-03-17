@@ -30,14 +30,12 @@ Entities.prototype = {
 		if (enemies.heart > 0){
 			game.physics.overlap(player.sprite, this.explosions, player.playerDeath, null, this);
 		}
-		this.bombs.forEachAlive(this.updateBomb, this);
+		
 		difficulty = (this.game.camera.y/this.game.world.height)+0.1;
 		this.progressCheck();
 	},
 	
-	updateBomb : function(bomb) {
-		bomb.angle = bomb.body.x;
-	},
+
 	
 	progressCheck: function() {
 		if (this.started == false && player.sprite.y < game.world.height-640) {

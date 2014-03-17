@@ -6,32 +6,15 @@ var StateStart = function(game) {
 };
 StateStart.prototype = {
 	preload: function() {
+		this.background = new Background(game);
 		this.controls = new Controls(game, 'buttons');
 	},
 	
 	create: function() {
 
-		this.bg_dawn = this.game.add.sprite(0, 0, 'bg_dawn');
-		this.bg_dawn.width = game.camera.width;
-		this.bg_dawn.height = game.camera.height;
-
-		this.bg_night = this.game.add.sprite(0, 0, 'bg_night');
-		this.bg_night.width = game.camera.width;
-		this.bg_night.height = game.camera.height;
-
-
-		this.bgFade = game.add.tween(this.bg_night)
-			.to({ alpha: 0 }, 5000, Phaser.Easing.Linear.None)
-			.to({ alpha: 1 }, 5000, Phaser.Easing.Linear.None)
-			.loop()
-			.start();
-
-
-		this.bg_outside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_outside');
-		this.bg_outside.alpha = 0.5;
-		this.bg_inside = this.game.add.tileSprite(0, 0, game.world.width, game.world.height, 'bg_inside');
-
-
+		this.background.makeSky();
+		this.background.makeBackground();
+		this.background.fadeLoop();
 
 		this.logo = game.add.sprite(game.camera.width/2, 240, 'logo');
 		this.logo.anchor.setTo(0.5,0.5);
@@ -47,9 +30,7 @@ StateStart.prototype = {
 	
 	update: function() {
 
-		this.bg_outside.tilePosition.y++;
-		this.bg_inside.tilePosition.y += 2;
-
+		this.background.scroll();
 		this.controls.update();
 
 		if (this.controls.input.right) {
@@ -72,12 +53,13 @@ StateStart.prototype = {
 	},
 
 	destroy: function() {
-		delete this.controls;
+		//delete this.controls;
 		console.log(game.state.current + ': destroyed');
 	},
 
 	render: function() {
-		game.debug.renderText("FPS: " + game.time.fps, 850, 10);
+		game.time.advancedTiming = true;
+		game.debug.text("FPS: " + game.time.fps, 850, 10);
 		this.controls.render();
 	}
 }
