@@ -1,30 +1,31 @@
-var Timer = function(delay, func, args){
+Timer = function(game, delay, func, scope){
+	this.game = game;
 	this.delay = delay;
+	this.scope = scope;
 	this.func = func;
-	this.args = args;
+	this.args = Array.prototype.slice.call(arguments, 4);
 	this.paused = true;
 	this.timer = null;
 }
 Timer.prototype = {
 	
-	
 	start : function() {
-		if (this.paused == true){
-		this.timer = setInterval(this.runFunction, this.delay)
+		var self = this;
+		this.timer = setInterval(
+			function() {
+				if (!this.paused && !self.game.paused){
+					self.func.apply(self.scope, self.args);
+				}
+			}, this.delay)
 		this.paused = false;
-		}
 	},
 
 	pause : function() {
 		this.paused = true;
-		clearTimeout(this.timer);
 	},
-	
-	runFunction: function() {
-		console.log('Pull');
-		this.func();
-	}
-	
-	
+
+	resume : function() {
+		this.paused = false;
+	},
 	
 }

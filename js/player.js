@@ -124,14 +124,14 @@ Player.prototype = {
 					break;
 			}
 
+			this.gib.anchor.setTo(0.5, 0.5);
 			game.physics.enable(this.gib, Phaser.Physics.ARCADE);
 			this.gib.body.gravity.y = 600;
-			this.gib.body.velocity.setTo(Math.random()*2000-1000, Math.random()* -1000);
-			this.gib.anchor.setTo(0.5, 0.5);
+			this.gib.body.velocity.setTo(Math.random()*200-100, Math.random()* -1000);
 			this.gib.body.rotation = Math.random()*360;
 			this.gib.body.bounce.y = 0.5;
 			this.gib.body.bounce.x = 0.5;
-			this.gib.body.linearDamping = 5;
+			this.gib.body.linearDamping = 50;
 			this.gib.body.collideWorldBounds = true;
 		}
 	},

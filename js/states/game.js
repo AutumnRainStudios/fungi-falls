@@ -37,49 +37,12 @@ StateGame.prototype = {
 		this.platforms.create();
 		this.bombs.create();
 		//enemies.create();
-		this.hello = function() {
-			console.log('hello');
-		}
 
- this.timer = new Timer(2000, this.hello);
- this.timer.start();
-
-
-		/*
-		this.bombTimer = new Phaser.Timer(this.game, false);
-		this.bombTimer.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200, game.world.height-600);
-		this.bombTimer.start();
-		*/
-		
-		/*
-
-		console.log(this.bombTimer);
-
-		var output = function(object) {
-			console.log(object);
-		}
-
-
-
-
-		this.bombTimer = this.game.time.create(false);
-
+		this.bombTimer = new Timer(this.game, 2000, this.spawn, this);
 		this.bombTimer.start();
 
-		this.bombTimer.repeat(Phaser.Timer.SECOND * 1, 10, this.bombs.spawn, this.bombs, 200, game.world.height-600);
-		
-		
-		
-		var stuff = this.game.time.create(false);
-		stuff.start()
-		stuff.loop(Phaser.Timer.SECOND * 5, output, this, this.bombTimer);
 
 
-
-		//console.log(this.bombTimer);
-
-		//this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200,game.world.height-600);
-*/
 
 
 		// Camera Setup
@@ -96,10 +59,6 @@ StateGame.prototype = {
 
 
 
-	},
-
-	spawn: function() {
-		this.bombs.spawn(200,game.world.height-600);
 	},
 	
 	update: function() {
@@ -119,12 +78,8 @@ StateGame.prototype = {
 
 		if (this.controls.input.left) {
 			this.player.move('left');
-			this.timer.pause();
 		} else if (this.controls.input.right) {
 			this.player.move('right');
-			
-			this.timer.start();
-			//this.bombTimer.loop(Phaser.Timer.SECOND * 1, this.bombs.spawn, this.bombs, 200, game.world.height-600);
 		} else {
 			this.player.halt();
 		}
@@ -156,6 +111,11 @@ StateGame.prototype = {
 
 		game.physics.arcade.collide(this.platforms.group, this.bombs.group);
 
+
+
+		game.physics.arcade.collide(this.platforms.group, this.player.gibs);
+
+
 		/*
 		game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
 	
@@ -184,16 +144,13 @@ StateGame.prototype = {
 	 	//document.getElementById("health").innerHTML=health;
 	 	//document.getElementById("health-bar").style.width= player.heart + "%";	
 
-
-
-
-
-
-
-
-
-
 	},
+
+
+	spawn: function() {
+		this.bombs.spawn(200,this.player.sprite.y-600);
+	},
+
 	
 	render: function() {
 		if (debug == true){
@@ -212,6 +169,7 @@ StateGame.prototype = {
 			//entities.shrooms.forEachAlive(this.renderPhysics, this);
 			this.platforms.group.forEachAlive(this.renderPhysics, this);
 			this.bombs.group.forEachAlive(this.renderPhysics, this);
+			this.bombs.explosions.forEachAlive(this.renderPhysics, this);
 			//entities.explosions.forEachAlive(this.renderPhysics, this);
 	
 			//game.debug.renderPhysicsBody(enemies.shroomLord.body);

@@ -16,8 +16,6 @@ Bombs.prototype = {
 
 		if (this.group.countDead() > 0){
 			this.entity = this.group.getFirstDead();
-			//this.entity.x = x;
-			//this.entity.y = y;
 			this.entity.reset(x, y, 1);
 		} else { 
 			this.entity = this.group.create(x, y, 'bomb');
@@ -40,15 +38,15 @@ Bombs.prototype = {
 	spawnExplosion :function(x, y) {
 		if (this.explosions.countDead() > 0){
 			this.entity = this.explosions.getFirstDead();
-			//this.entity.x = x;
-			//this.entity.y = y;
-			this.entity.reset(x, y, 1);
+			this.entity.reset(x-80, y-80, 1);
 		} else { 
-			this.entity = this.explosions.create(x, y, 'explosion');
+			this.entity = this.explosions.create(x-80, y-80, 'explosion');
+			
+			//this.entity.anchor.setTo(0.5, 0.5);
 			game.physics.enable(this.entity, Phaser.Physics.ARCADE);
+			this.entity.body.setSize(160, 160, -20, -20);
+			//this.entity.anchor.setTo(0.5, 0.5);
 			this.entity.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-			//this.entity.body.setCircle(80, 100, 100);
-			this.entity.anchor.setTo(0.5,0.5);
 		}
 		this.entity.animations.play('boom', 24, false, true);
 	},
