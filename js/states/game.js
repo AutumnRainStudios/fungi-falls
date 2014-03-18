@@ -37,6 +37,13 @@ StateGame.prototype = {
 		this.platforms.create();
 		this.bombs.create();
 		//enemies.create();
+		this.hello = function() {
+			console.log('hello');
+		}
+
+ this.timer = new Timer(2000, this.hello);
+ this.timer.start();
+
 
 		/*
 		this.bombTimer = new Phaser.Timer(this.game, false);
@@ -44,6 +51,7 @@ StateGame.prototype = {
 		this.bombTimer.start();
 		*/
 		
+		/*
 
 		console.log(this.bombTimer);
 
@@ -71,7 +79,7 @@ StateGame.prototype = {
 		//console.log(this.bombTimer);
 
 		//this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200,game.world.height-600);
-
+*/
 
 
 		// Camera Setup
@@ -111,11 +119,11 @@ StateGame.prototype = {
 
 		if (this.controls.input.left) {
 			this.player.move('left');
-			this.bombTimer.pause();
+			this.timer.pause();
 		} else if (this.controls.input.right) {
 			this.player.move('right');
 			
-			this.bombTimer.start();
+			this.timer.start();
 			//this.bombTimer.loop(Phaser.Timer.SECOND * 1, this.bombs.spawn, this.bombs, 200, game.world.height-600);
 		} else {
 			this.player.halt();
