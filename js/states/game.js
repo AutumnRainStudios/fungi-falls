@@ -38,8 +38,39 @@ StateGame.prototype = {
 		this.bombs.create();
 		//enemies.create();
 
+		/*
+		this.bombTimer = new Phaser.Timer(this.game, false);
+		this.bombTimer.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200, game.world.height-600);
+		this.bombTimer.start();
+		*/
 		
-		this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200,game.world.height-600);
+
+		console.log(this.bombTimer);
+
+		var output = function(object) {
+			console.log(object);
+		}
+
+
+
+
+		this.bombTimer = this.game.time.create(false);
+
+		this.bombTimer.start();
+
+		this.bombTimer.repeat(Phaser.Timer.SECOND * 1, 10, this.bombs.spawn, this.bombs, 200, game.world.height-600);
+		
+		
+		
+		var stuff = this.game.time.create(false);
+		stuff.start()
+		stuff.loop(Phaser.Timer.SECOND * 5, output, this, this.bombTimer);
+
+
+
+		//console.log(this.bombTimer);
+
+		//this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.bombs.spawn, this.bombs, 200,game.world.height-600);
 
 
 
@@ -80,8 +111,12 @@ StateGame.prototype = {
 
 		if (this.controls.input.left) {
 			this.player.move('left');
+			this.bombTimer.pause();
 		} else if (this.controls.input.right) {
 			this.player.move('right');
+			
+			this.bombTimer.start();
+			//this.bombTimer.loop(Phaser.Timer.SECOND * 1, this.bombs.spawn, this.bombs, 200, game.world.height-600);
 		} else {
 			this.player.halt();
 		}

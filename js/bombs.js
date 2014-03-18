@@ -1,13 +1,14 @@
 Bombs = function(game) {
 	this.game = game;
 	this.group = null;
+	this.explosions = null;
 }
 
 Bombs.prototype = {
 
 	create : function() {
 		this.group = game.add.group();
-
+		this.explosions = game.add.group();
 
 	},
 
@@ -15,9 +16,9 @@ Bombs.prototype = {
 
 		if (this.group.countDead() > 0){
 			this.entity = this.group.getFirstDead();
-			this.entity.x = x;
-			this.entity.y = y;
-			this.entity.revive();
+			//this.entity.x = x;
+			//this.entity.y = y;
+			this.entity.reset(x, y, 1);
 		} else { 
 			this.entity = this.group.create(x, y, 'bomb');
 			this.entity.anchor.setTo(0.5,0.5);
@@ -32,29 +33,30 @@ Bombs.prototype = {
 
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 		
-		//this.game.time.events.add(Phaser.Timer.SECOND * 2, this.explode);
+		this.game.time.events.add(Phaser.Timer.SECOND * 3, this.explode, this, this.entity);
 		
 	},
 		
 	spawnExplosion :function(x, y) {
 		if (this.explosions.countDead() > 0){
-			this.explosion = this.explosions.getFirstDead();
-			this.explosion.x = x;
-			this.explosion.y = y;
-			this.explosion.revive();
+			this.entity = this.explosions.getFirstDead();
+			//this.entity.x = x;
+			//this.entity.y = y;
+			this.entity.reset(x, y, 1);
 		} else { 
-			this.explosion = this.explosions.create(x, y, 'explosion');
-			this.explosion.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-			this.explosion.body.setCircle(80, 100, 100);
-			this.explosion.anchor.setTo(0.5,0.5);
+			this.entity = this.explosions.create(x, y, 'explosion');
+			game.physics.enable(this.entity, Phaser.Physics.ARCADE);
+			this.entity.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+			//this.entity.body.setCircle(80, 100, 100);
+			this.entity.anchor.setTo(0.5,0.5);
 		}
-		this.explosion.animations.play('boom', 24, false, true);
+		this.entity.animations.play('boom', 24, false, true);
 	},
 
-	explode :function() {
-		console.log('wat');
-		//this.spawnExplosion(this.x,this.y);
-		//this.kill();
+	explode :function(entity) {
+		//console.log(entity);
+		this.spawnExplosion(entity.x,entity.y);
+		entity.kill();
 		//entities.createEntity();
 	},
 
