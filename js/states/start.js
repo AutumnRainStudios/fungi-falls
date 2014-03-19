@@ -25,6 +25,7 @@ StateStart.prototype = {
 		this.startMenu.fixedToCamera = true;
 
 		this.controls.create();
+		this.controls.enable();
 
 	},
 	

@@ -20,7 +20,7 @@ Controls = function(game) {
 		right: false
 	};
 
-	this.type = 'buttons';
+	this.enabled = false;
 }
 
 Controls.prototype = {
@@ -63,63 +63,63 @@ Controls.prototype = {
 			//this.keyboard.right = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		}
 	},
-	/*
-	pointerCheck: function() {
-		var x = null;
-		if (this.game.input.pointer1.isDown) {
-			return
-		}
-		
-		
-		return x
-	},
-	*/
+
 	update: function() {
-		if (Modernizr.touch) {
-			
-			if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 874) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 874)){
-				this.touch.a.frame = 1;
-				this.input.a = true;
-			} else {
-				this.touch.a.frame = 0;
-				this.input.a = false;
-			}
-			
-			if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 150 && this.game.input.pointer1.position.x < 300) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 150 && this.game.input.pointer2.position.x < 300)){
-				this.input.right = true;
-				this.touch.right.frame = 1;
-			} else {
-				this.input.right = false;
-				this.touch.right.frame = 0;
-			}
+		if (this.enabled){
+			if (Modernizr.touch) {
+				
+				if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 874) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 874)){
+					this.touch.a.frame = 1;
+					this.input.a = true;
+				} else {
+					this.touch.a.frame = 0;
+					this.input.a = false;
+				}
+				
+				if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 150 && this.game.input.pointer1.position.x < 300) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 150 && this.game.input.pointer2.position.x < 300)){
+					this.input.right = true;
+					this.touch.right.frame = 1;
+				} else {
+					this.input.right = false;
+					this.touch.right.frame = 0;
+				}
 
-			if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 0 && this.game.input.pointer1.position.x < 150) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 0 && this.game.input.pointer2.position.x < 150)){
-				this.input.left = true;
-				this.touch.left.frame = 1;
-			} else {
-				this.input.left = false;
-				this.touch.left.frame = 0;
-			}
-		
-		} else {
-			if (this.keyboard.cursors.left.isDown) {
-				this.input.left = true;
-			} else {
-				this.input.left = false;
-			}
+				if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 0 && this.game.input.pointer1.position.x < 150) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 0 && this.game.input.pointer2.position.x < 150)){
+					this.input.left = true;
+					this.touch.left.frame = 1;
+				} else {
+					this.input.left = false;
+					this.touch.left.frame = 0;
+				}
 			
-			if (this.keyboard.cursors.right.isDown) {
-				this.input.right = true;
 			} else {
-				this.input.right = false;
-			}
+				if (this.keyboard.cursors.left.isDown) {
+					this.input.left = true;
+				} else {
+					this.input.left = false;
+				}
+				
+				if (this.keyboard.cursors.right.isDown) {
+					this.input.right = true;
+				} else {
+					this.input.right = false;
+				}
 
-			if (this.keyboard.enter.isDown || this.keyboard.z.isDown || this.keyboard.space.isDown || this.keyboard.cursors.up.isDown ) {
-				this.input.a = true;
-			} else {
-				this.input.a = false;
+				if (this.keyboard.enter.isDown || this.keyboard.z.isDown || this.keyboard.space.isDown || this.keyboard.cursors.up.isDown ) {
+					this.input.a = true;
+				} else {
+					this.input.a = false;
+				}
 			}
 		}
+	},
+
+	disable: function() {
+		this.enabled = false;
+	},
+
+	enable: function() {
+		this.enabled = true;
 	},
 
 	render: function() {

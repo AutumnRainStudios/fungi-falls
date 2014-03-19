@@ -1,5 +1,7 @@
 var StateGame = function(game) {
 	this.cameraPosition = null;
+	this.difficulty = 0;
+	this.progress = "start";
 };
 StateGame.prototype = {
 	preload: function() {
@@ -29,20 +31,16 @@ StateGame.prototype = {
 
 		this.bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
 		this.bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
+		this.bed.animations.add('awake', [5], 1, true);
 		this.bed.animations.add('empty', [6], 1, true);
 		this.bed.animations.play('sleep');
 
 
-		this.player.create();
+		
 		this.platforms.create();
 		this.bombs.create();
-		//enemies.create();
-
-		this.bombTimer = new Timer(this.game, 2000, this.spawn, this);
-		this.bombTimer.start();
-
-
-
+		this.controls.create();
+		this.player.create();
 
 
 		// Camera Setup
@@ -50,13 +48,10 @@ StateGame.prototype = {
 		this.game.camera.deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 
 
-
-		//this.cursors = this.game.input.keyboard.createCursorKeys();
-
-		this.controls.create();
+		this.spawnTimer = new Timer(this.game, 2000, this.spawnEntity, this);
 
 
-
+		this.intro();
 
 
 	},
@@ -71,18 +66,7 @@ StateGame.prototype = {
 
 		this.controls.update();
 
-		// Player Controls
-		if (this.controls.input.a) {
-			this.player.jump();
-		} 
 
-		if (this.controls.input.left) {
-			this.player.move('left');
-		} else if (this.controls.input.right) {
-			this.player.move('right');
-		} else {
-			this.player.halt();
-		}
 
 
 		// Camera Controls
@@ -105,16 +89,117 @@ StateGame.prototype = {
 			}
 		}
 		*/
+
+
+		this.collisionChecks();
+
+
+		this.progressManager();
+
+
+		this.updateDispatcher();
+
+		//player.update();
+		//entities.update();
+		//enemies.update();
+		//level.update();
+	
+		//document.getElementById("score").innerHTML=score;
+	 	//document.getElementById("health").innerHTML=health;
+	 	//document.getElementById("health-bar").style.width= player.heart + "%";	
+
+	},
+
+
+	updateDispatcher: function() {
+		if (this.progress == 'mid') {
+
+			// Player Controls
+			if (this.controls.input.a) {
+				this.player.jump();
+			} 
+
+			if (this.controls.input.left) {
+				this.player.move('left');
+			} else if (this.controls.input.right) {
+				this.player.move('right');
+			} else {
+				this.player.halt();
+			}
+
+		}
+
+	},
+
+	intro: function() {
+
+		this.progress = 'start';
+
+		for (i=0; i<10; i++){
+			this.bombs.spawn(Math.random()*game.world.width,game.world.height-600)
+		}
+
+		this.introTimer = this.game.time.create(false);
+		this.introTimer.start();
+		this.introTimer.add(Phaser.Timer.SECOND * 4, this.midGame, this);
+
+		var wakeUp = function(){
+			this.bed.animations.play('awake');
+		}
+
+		this.wakeTimer = this.game.time.create(false);
+		this.wakeTimer.start();
+		this.wakeTimer.add(Phaser.Timer.SECOND * 3, wakeUp, this);
+
+
+
+	},
+
+
+
+	midGame: function() {
+
+		this.progress = 'mid';
+
+		this.bed.animations.play('empty');
+		
+		this.controls.enable();
+		this.spawnTimer.start();
+
+	},
+
+
+
+
+	spawnEntity: function() {
+		//if (Math.random() < 1) {
+			//this.shrooms.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
+		//} else {
+			this.bombs.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
+		//}
+		
+	},
+
+
+	progressManager : function() {
+
+
+
+
+
+	},
+
+
+	collisionChecks : function() {
+
+
 		game.physics.arcade.overlap(this.player.sprite, this.platforms.group, this.player.fallDamage, null, this.player);
 		game.physics.arcade.collide(this.player.sprite, this.platforms.group, null, this.player.platformCollision, this.player);
 
 
 		game.physics.arcade.collide(this.platforms.group, this.bombs.group);
 
-
-
 		game.physics.arcade.collide(this.platforms.group, this.player.gibs);
-
 
 		/*
 		game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
@@ -135,22 +220,9 @@ StateGame.prototype = {
 		game.physics.collide(level.platforms, player.gibs);
 		game.physics.collide(level.boundary, player.gibs);
 		*/
-		//player.update();
-		//entities.update();
-		//enemies.update();
-		//level.update();
-	
-		//document.getElementById("score").innerHTML=score;
-	 	//document.getElementById("health").innerHTML=health;
-	 	//document.getElementById("health-bar").style.width= player.heart + "%";	
+
 
 	},
-
-
-	spawn: function() {
-		this.bombs.spawn(200,this.player.sprite.y-600);
-	},
-
 	
 	render: function() {
 		if (debug == true){
