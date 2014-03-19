@@ -11,6 +11,7 @@ StateGame.prototype = {
 		this.player = new Player(game);
 		this.platforms = new Platforms(game);
 		this.bombs = new Bombs(game);
+		this.shrooms = new Shrooms(game);
 		this.controls = new Controls(game);
 
 		//level = new Level(game);
@@ -39,16 +40,15 @@ StateGame.prototype = {
 		
 		this.platforms.create();
 		this.bombs.create();
+		this.shrooms.create();
 		this.controls.create();
-		this.player.create();
+		
 
 
-		// Camera Setup
-		this.game.camera.follow(this.player.sprite);
-		this.game.camera.deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 
 
-		this.spawnTimer = new Timer(this.game, 2000, this.spawnEntity, this);
+
+		this.spawnTimer = new Timer(this.game, 500, this.spawnEntity, this);
 
 
 		this.intro();
@@ -151,7 +151,7 @@ StateGame.prototype = {
 		this.wakeTimer.start();
 		this.wakeTimer.add(Phaser.Timer.SECOND * 3, wakeUp, this);
 
-
+		this.game.camera.y = game.world.height;
 
 	},
 
@@ -160,8 +160,12 @@ StateGame.prototype = {
 	midGame: function() {
 
 		this.progress = 'mid';
-
+		this.player.create();
 		this.bed.animations.play('empty');
+
+		// Camera Setup
+		this.game.camera.follow(this.player.sprite);
+		this.game.camera.deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 		
 		this.controls.enable();
 		this.spawnTimer.start();
@@ -172,11 +176,11 @@ StateGame.prototype = {
 
 
 	spawnEntity: function() {
-		//if (Math.random() < 1) {
-			//this.shrooms.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
-		//} else {
+		if (Math.random() < 0.5) {
+			this.shrooms.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
+		} else {
 			this.bombs.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
-		//}
+		}
 		
 	},
 
@@ -196,8 +200,8 @@ StateGame.prototype = {
 		game.physics.arcade.overlap(this.player.sprite, this.platforms.group, this.player.fallDamage, null, this.player);
 		game.physics.arcade.collide(this.player.sprite, this.platforms.group, null, this.player.platformCollision, this.player);
 
-
 		game.physics.arcade.collide(this.platforms.group, this.bombs.group);
+		game.physics.arcade.collide(this.platforms.group, this.shrooms.group);
 
 		game.physics.arcade.collide(this.platforms.group, this.player.gibs);
 
@@ -227,7 +231,7 @@ StateGame.prototype = {
 	render: function() {
 		if (debug == true){
 
-			this.player.render();
+			//this.player.render();
 
 			Phaser.Time.advancedTiming = true;
 			game.debug.text("FPS: " + game.time.fps, 850, 30);
@@ -245,7 +249,7 @@ StateGame.prototype = {
 			//entities.explosions.forEachAlive(this.renderPhysics, this);
 	
 			//game.debug.renderPhysicsBody(enemies.shroomLord.body);
-			game.debug.body(this.player.sprite);
+			//game.debug.body(this.player.sprite);
 			
 
 			//this.controls.render();	
