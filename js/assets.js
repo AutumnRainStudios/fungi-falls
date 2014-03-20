@@ -1,6 +1,8 @@
 var loadAssets = function() {
 	// GUI
 	game.load.image('logo', 'assets/gui/logo.png');
+	game.load.image('won', 'assets/gui/won.png');
+	game.load.image('died', 'assets/gui/died.png');
 
 	// Controls
 	game.load.spritesheet('button_a', 'assets/controls/button_a.png', 150, 150);
@@ -28,8 +30,7 @@ var loadAssets = function() {
 	game.load.image('shroomPlatformRedSmall', 'assets/sprites/platform_red_small.png');
 	game.load.image('shroomPlatformTanSmall', 'assets/sprites/platform_tan_small.png');
 	game.load.image('hitBox', 'assets/sprites/transTest.png');
-	game.load.image('win', 'assets/gui/won.png');
-	game.load.image('lose', 'assets/gui/died.png');
+
 	game.load.spritesheet('bed', 'assets/sprites/bed_spritesheet.png', 190, 130);
 
 	// Player

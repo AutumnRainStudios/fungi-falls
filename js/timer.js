@@ -13,7 +13,7 @@ Timer.prototype = {
 		var self = this;
 		this.timer = setInterval(
 			function() {
-				if (!this.paused && !self.game.paused){
+				if (!self.paused && !self.game.paused){
 					self.func.apply(self.scope, self.args);
 				}
 			}, this.delay)
@@ -28,4 +28,8 @@ Timer.prototype = {
 		this.paused = false;
 	},
 	
+	stop : function() {
+		this.paused = true;
+		delete this.timer;
+	}
 }

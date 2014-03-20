@@ -26,12 +26,12 @@ Bombs.prototype = {
 			this.entity.body.bounce.y = 0.2 + Math.random() * 0.2;
 			this.entity.body.collideWorldBounds = true;
 		}
-		var countdown = this.entity.animations.add('countdown', [0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,1,0,1,0,1,0,1,0,1], 10, false);
+		var countdown = this.entity.animations.add('countdown', [0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,1,0,1,0,1,0,1,0,1], 20, false);
 		this.entity.animations.play('countdown');
 
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 		
-		this.game.time.events.add(Phaser.Timer.SECOND * 3, this.explode, this, this.entity);
+		this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.explode, this, this.entity);
 		
 	},
 		

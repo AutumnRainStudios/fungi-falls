@@ -16,7 +16,7 @@ StateLost.prototype = {
 		this.background.makeBackground();
 		this.background.fadeLoop();
 
-		this.logo = game.add.sprite(game.camera.width/2, 240, 'logo');
+		this.logo = game.add.sprite(game.camera.width/2, 240, 'died');
 		this.logo.anchor.setTo(0.5,0.5);
 		this.logo.fixedToCamera = true;
 
