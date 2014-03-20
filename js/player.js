@@ -134,6 +134,20 @@ Player.prototype = {
 			this.gib.body.linearDamping = 50;
 			this.gib.body.collideWorldBounds = true;
 		}
+		
+		var gameOver = function() {
+			game.state.start('lost');	
+		}
+		
+		this.wakeTimer = this.game.time.create(false);
+		this.wakeTimer.start();
+		this.wakeTimer.add(Phaser.Timer.SECOND * 4, this.gameOver);
+		
+	},
+	
+	gameOver : function() {
+		game.state.getCurrentState().destroy();
+		game.state.start('lost');
 	},
 
 	render : function(){

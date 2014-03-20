@@ -24,15 +24,12 @@ StateGame.prototype = {
 		this.bed.animations.add('empty', [6], 1, true);
 		this.bed.animations.play('sleep');
 
-
 		this.score = game.add.text(game.camera.width-40, 20, "0", {
 	        font: "10px Arial",
 	        fill: "#ff0044",
 	        align: "center"
 	    });
-
-
-
+	    this.score.fixedToCamera = true;
 
 		this.platforms.create();
 		this.bombs.create();
@@ -49,6 +46,7 @@ StateGame.prototype = {
 		this.background.update();
 
 		this.bombs.update();
+		this.shrooms.update();
 
 		
 		this.collisionChecks();
@@ -141,7 +139,6 @@ StateGame.prototype = {
 			this.player.halt();
 		}
 	},
-
 
 	spawnEntity: function() {
 		if (Math.random() < 0.5) {
@@ -243,10 +240,14 @@ StateGame.prototype = {
 	},
 
 	destroy: function(){
-		delete enemies;
-		delete entities;
-		delete player;
-		delete level;
+		console.log('destroying game state');
+		delete this.shrooms;
+		delete this.bombs;
+		delete this.player;
+		delete this.platforms;
+		delete this.background;
+		delete this.controls;
+		delete this.spawnTimer;
 	},
 
 	renderPhysics: function(entity) {

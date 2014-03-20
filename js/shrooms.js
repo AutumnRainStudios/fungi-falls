@@ -30,6 +30,16 @@ Shrooms.prototype = {
 		}
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 	},
+	
+	update : function() {
+		this.group.forEachAlive(this.updateShroom, this);
+	},
+
+	updateShroom : function(entity) {
+		if (entity.body.wasTouching.down){
+			entity.body.velocity.x = entity.body.velocity.x/1.1;
+		}
+	},
 
 	collect: function(player, shroom) {
 		shroom.kill();
