@@ -31,8 +31,9 @@ Shrooms.prototype = {
 		this.entity.body.velocity.x = (Math.random()*500)-250;
 	},
 
-	collect: function() {
-
+	collect: function(player, shroom) {
+		shroom.kill();
+		score++;
 	}
 
 }

@@ -24,6 +24,16 @@ StateGame.prototype = {
 		this.bed.animations.add('empty', [6], 1, true);
 		this.bed.animations.play('sleep');
 
+
+		this.score = game.add.text(game.camera.width-40, 20, "0", {
+	        font: "10px Arial",
+	        fill: "#ff0044",
+	        align: "center"
+	    });
+
+
+
+
 		this.platforms.create();
 		this.bombs.create();
 		this.shrooms.create();
@@ -48,6 +58,7 @@ StateGame.prototype = {
 		if (this.progress != 'intro') {
 			if (this.progress == 'start'){
 				this.controlsUpdate();
+
 			}
 			if (this.progress == 'mid') {
 				this.controlsUpdate();
@@ -60,6 +71,9 @@ StateGame.prototype = {
 		//document.getElementById("score").innerHTML=score;
 	 	//document.getElementById("health").innerHTML=health;
 	 	//document.getElementById("health-bar").style.width= player.heart + "%";	
+
+		this.score.setText(score);
+
 
 	},
 
@@ -85,8 +99,6 @@ StateGame.prototype = {
 	},
 	
 	startInit: function() {
-		
-
 
 		this.player.create();
 		this.bed.animations.play('empty');
@@ -113,6 +125,9 @@ StateGame.prototype = {
 	},
 
 	controlsUpdate : function() {
+
+		this.controls.update();
+
 		// Jump
 		if (this.controls.input.a) {
 			this.player.jump();
@@ -153,16 +168,26 @@ StateGame.prototype = {
 
 	collisionChecks : function() {
 
+		// Player interactions with platforms
 		game.physics.arcade.overlap(this.player.sprite, this.platforms.group, this.player.fallDamage, null, this.player);
 		game.physics.arcade.collide(this.player.sprite, this.platforms.group, null, this.player.platformCollision, this.player);
 
+		// Kill player on contact with explosion
+		game.physics.arcade.collide(this.player.sprite, this.bombs.explosions, null, this.player.death, this.player);
+
+		// Collect shrooms
+		game.physics.arcade.overlap(this.player.sprite, this.shrooms.group, null, this.shrooms.collect, this.shrooms);
+
+		// Collide entities against platforms
 		game.physics.arcade.collide(this.platforms.group, this.bombs.group);
 		game.physics.arcade.collide(this.platforms.group, this.shrooms.group);
-
 		game.physics.arcade.collide(this.platforms.group, this.player.gibs);
 
+
+
+
 		/*
-		game.physics.overlap(player.sprite, entities.shrooms, entities.collectShroom, null, this);
+		
 	
 	 	game.physics.overlap(level.entityCollector, level.platforms, level.dropPlatform, null, this);
 	 	game.physics.overlap(level.entityCollector, entities.shrooms, entities.recycleEntity, null, this);
@@ -185,6 +210,11 @@ StateGame.prototype = {
 	},
 	
 	render: function() {
+
+
+
+
+
 		if (debug == true){
 
 			//this.player.render();
