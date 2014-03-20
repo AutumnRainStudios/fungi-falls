@@ -1,34 +1,22 @@
 var StateGame = function(game) {
 	this.cameraPosition = null;
 	this.difficulty = 0;
-	this.progress = "start";
+	this.progress = "intro";
 };
 StateGame.prototype = {
 	preload: function() {
-		
-
 		this.background = new Background(game);
 		this.player = new Player(game);
 		this.platforms = new Platforms(game);
 		this.bombs = new Bombs(game);
 		this.shrooms = new Shrooms(game);
 		this.controls = new Controls(game);
-
-		//level = new Level(game);
-
-		//entities = new Entities(game);
-
-		//enemies = new Enemies(game);
-	
-
 	},
 	
 	create: function() {
-
 		this.game.world.setBounds(0, 0, 1024, 4096);
 
 		this.background.create();
-
 
 		this.bed = this.game.add.sprite(game.world.width/2, game.world.height-165, 'bed');
 		this.bed.animations.add('sleep', [0, 1, 2, 3, 4], 4, true);
@@ -36,24 +24,14 @@ StateGame.prototype = {
 		this.bed.animations.add('empty', [6], 1, true);
 		this.bed.animations.play('sleep');
 
-
-		
 		this.platforms.create();
 		this.bombs.create();
 		this.shrooms.create();
 		this.controls.create();
-		
-
-
-
-
 
 		this.spawnTimer = new Timer(this.game, 500, this.spawnEntity, this);
 
-
-		this.intro();
-
-
+		this.introInit();
 	},
 	
 	update: function() {
@@ -62,47 +40,22 @@ StateGame.prototype = {
 
 		this.bombs.update();
 
-
-
-		this.controls.update();
-
-
-
-
-		// Camera Controls
-		if (this.game.camera.y >= this.game.world.height - 640) {
-			this.cameraPosition = 'bottom';
-		} else if (this.game.camera.y < this.game.world.height - 640 && this.cameraPosition != 'middle' && this.cameraPosition != 'top') {
-			this.cameraPosition = 'middle';
-		//} else if (this.game.camera.y < 840 && this.cameraPosition != 'midTop' && this.cameraPosition != 'top') {
-			//this.cameraPosition = 'midTop';
-		} else if (this.game.camera.y < 640 && this.cameraPosition != 'top') {
-			this.cameraPosition = 'top';
-		} 
-
-		/*
-		if (this.game.camera.y <= 120){
-			if (!this.cameraToggle) {
-				this.game.camera.follow(null);
-				game.add.tween(this.game.camera).to({ y: 0 }, 500, Phaser.Easing.Linear.None).start();
-				this.cameraToggle = true;
-			}
-		}
-		*/
-
-
+		
 		this.collisionChecks();
 
-
 		this.progressManager();
-
-
-		this.updateDispatcher();
-
-		//player.update();
-		//entities.update();
-		//enemies.update();
-		//level.update();
+		
+		if (this.progress != 'intro') {
+			if (this.progress == 'start'){
+				this.controlsUpdate();
+			}
+			if (this.progress == 'mid') {
+				this.controlsUpdate();
+			}
+			if (this.progress == 'boss') {
+				this.controlsUpdate();
+			}
+		}
 	
 		//document.getElementById("score").innerHTML=score;
 	 	//document.getElementById("health").innerHTML=health;
@@ -110,30 +63,7 @@ StateGame.prototype = {
 
 	},
 
-
-	updateDispatcher: function() {
-		if (this.progress == 'mid') {
-
-			// Player Controls
-			if (this.controls.input.a) {
-				this.player.jump();
-			} 
-
-			if (this.controls.input.left) {
-				this.player.move('left');
-			} else if (this.controls.input.right) {
-				this.player.move('right');
-			} else {
-				this.player.halt();
-			}
-
-		}
-
-	},
-
-	intro: function() {
-
-		this.progress = 'start';
+	introInit: function() {
 
 		for (i=0; i<10; i++){
 			this.bombs.spawn(Math.random()*game.world.width,game.world.height-600)
@@ -141,7 +71,7 @@ StateGame.prototype = {
 
 		this.introTimer = this.game.time.create(false);
 		this.introTimer.start();
-		this.introTimer.add(Phaser.Timer.SECOND * 4, this.midGame, this);
+		this.introTimer.add(Phaser.Timer.SECOND * 4, this.startInit, this);
 
 		var wakeUp = function(){
 			this.bed.animations.play('awake');
@@ -152,14 +82,12 @@ StateGame.prototype = {
 		this.wakeTimer.add(Phaser.Timer.SECOND * 3, wakeUp, this);
 
 		this.game.camera.y = game.world.height;
-
 	},
+	
+	startInit: function() {
+		
 
 
-
-	midGame: function() {
-
-		this.progress = 'mid';
 		this.player.create();
 		this.bed.animations.play('empty');
 
@@ -169,10 +97,35 @@ StateGame.prototype = {
 		
 		this.controls.enable();
 		this.spawnTimer.start();
-
+		
+		this.progress = 'start';
+		
+	},
+	
+	bossInit: function() {
+		if (this.game.camera.y <= 120){
+			if (!this.cameraToggle) {
+				this.game.camera.follow(null);
+				game.add.tween(this.game.camera).to({ y: 0 }, 500, Phaser.Easing.Linear.None).start();
+				this.cameraToggle = true;
+			}
+		}
 	},
 
-
+	controlsUpdate : function() {
+		// Jump
+		if (this.controls.input.a) {
+			this.player.jump();
+		} 
+		// Left & Right
+		if (this.controls.input.left) {
+			this.player.move('left');
+		} else if (this.controls.input.right) {
+			this.player.move('right');
+		} else {
+			this.player.halt();
+		}
+	},
 
 
 	spawnEntity: function() {
@@ -184,18 +137,21 @@ StateGame.prototype = {
 		
 	},
 
-
 	progressManager : function() {
-
-
-
-
-
+		// Camera Controls
+		if (this.progress != 'intro') {
+			if (this.game.camera.y <= 640) {
+				this.progress = 'boss';
+			} else if (this.game.camera.y > 640 && this.game.camera.y < this.game.world.height - 700) {
+				this.progress = 'mid';
+			} else {
+				this.progress = 'start';
+			}
+		}
 	},
 
 
 	collisionChecks : function() {
-
 
 		game.physics.arcade.overlap(this.player.sprite, this.platforms.group, this.player.fallDamage, null, this.player);
 		game.physics.arcade.collide(this.player.sprite, this.platforms.group, null, this.player.platformCollision, this.player);
@@ -238,7 +194,7 @@ StateGame.prototype = {
 
 			//game.debug.renderText("Diff: " + difficulty, 850, 50);
 			//game.debug.renderText("CPos: " + this.player.cameraPosition, 850, 70);
-			//game.debug.renderText("State: " + gameState, 850, 90)
+			game.debug.text("Prgrs: " + this.progress, 850, 90);
 
 			// Sprite debug info
 			//entities.bombs.forEachAlive(this.renderPhysics, this);
