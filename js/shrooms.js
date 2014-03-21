@@ -37,7 +37,7 @@ Shrooms.prototype = {
 
 	updateShroom : function(entity) {
 		if (entity.body.wasTouching.down){
-			entity.body.velocity.x = entity.body.velocity.x/1.1;
+			entity.body.velocity.x = entity.body.velocity.x/1.5;
 		}
 	},
 

@@ -3,7 +3,7 @@ var StateGame = function(game) {
 	this.progress = "intro";
 	this.spawnTimer = null;
 	this.sections = {
-		intro : new Section(true),
+		intro : new Section(true, true),
 		start : new Section(),
 		mid : new Section(),
 		boss : new Section(),
@@ -69,6 +69,7 @@ StateGame.prototype = {
 			}
 			if (this.sections.mid.isRunning()) {
 				this.controlsUpdate();
+				this.spawnTimer.start();
 			}
 			if (this.sections.boss.isRunning()) {
 				this.controlsUpdate();
@@ -80,7 +81,6 @@ StateGame.prototype = {
 	 	//document.getElementById("health-bar").style.width= player.heart + "%";	
 
 		this.gui.score.text = 'x' + score;
-
 
 	},
 
@@ -121,7 +121,7 @@ StateGame.prototype = {
 	},
 
 	midInit: function() {
-		this.spawnTimer.start();
+		//this.spawnTimer.init();
 	},
 	
 	bossInit: function() {
@@ -238,7 +238,7 @@ StateGame.prototype = {
 			game.debug.text("Diff: " + this.difficulty, 850, 50);
 			game.debug.text("spawnTimer: " + this.spawnTimer.paused, 850, 70);
 			game.debug.text("Prgrs: " + this.progress, 850, 90);
-			game.debug.text("MidGame?: " + this.sections.mid.isRunning(), 850, 110);
+			game.debug.text("MidGame?: " + this.sections.start.isRunning(), 850, 110);
 
 			// Sprite debug info
 			//entities.bombs.forEachAlive(this.renderPhysics, this);
@@ -262,6 +262,10 @@ StateGame.prototype = {
 		this.difficulty = 0;
 		this.progress = "intro";
 		this.spawnTimer = null;
+		this.sections.intro.reset();
+		this.sections.start.reset();
+		this.sections.mid.reset();
+		this.sections.boss.reset();
 	},
 
 	renderPhysics: function(entity) {

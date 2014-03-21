@@ -1,8 +1,14 @@
-Section = function(initState) {
-	this.running = typeof initState !== 'undefined' ? initState : false;
-	this.initialised = typeof initState !== 'undefined' ? initState : false;
+Section = function(init, run) {
+	this.running = typeof run !== 'undefined' ? run : false;
+	this.initialised = typeof init !== 'undefined' ? init : false;
+	//this.init();
 };
 Section.prototype = {
+	start : function(){
+		this.initialised = false;
+		this.running = false;
+	},
+
 	start : function(){
 		this.initialised = true;
 		this.running = true;
