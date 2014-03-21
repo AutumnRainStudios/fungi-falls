@@ -2,12 +2,7 @@ var StateGame = function(game) {
 	this.difficulty = 0;
 	this.progress = "intro";
 	this.spawnTimer = null;
-	this.sections = {
-		intro : new Section(true, true),
-		start : new Section(),
-		mid : new Section(),
-		boss : new Section(),
-	},
+	this.sectionManager = new SectionManager(['intro','start','mid','boss','outro']);
 	this.gui = {};
 };
 StateGame.prototype = {
@@ -63,15 +58,15 @@ StateGame.prototype = {
 
 		this.progressManager();
 		
-		if (this.sections.intro.isRunning() == false) {
-			if (this.sections.start.isRunning()){
+		if (!this.sectionManager.isRunning('intro')) {
+			if (this.sectionManager.isRunning('start')){
 				this.controlsUpdate();
 			}
-			if (this.sections.mid.isRunning()) {
+			if (this.sectionManager.isRunning('mid')) {
 				this.controlsUpdate();
 				this.spawnTimer.start();
 			}
-			if (this.sections.boss.isRunning()) {
+			if (this.sectionManager.isRunning('boss')) {
 				this.controlsUpdate();
 			}
 		}
@@ -106,7 +101,7 @@ StateGame.prototype = {
 	},
 	
 	startInit: function() {
-		this.sections.intro.reset();
+		this.sectionManager.start('start');
 
 		this.player.create();
 		this.bed.animations.play('empty');
@@ -116,8 +111,6 @@ StateGame.prototype = {
 		this.game.camera.deadzone = new Phaser.Rectangle(50,(this.game.camera.height/8)*4,this.game.camera.width-100,this.game.camera.height/8*2);
 		
 		this.controls.enable();
-		
-		this.sections.start.start();
 	},
 
 	midInit: function() {
@@ -158,24 +151,20 @@ StateGame.prototype = {
 		} else {
 			this.bombs.spawn(Math.random()*game.world.width,this.player.sprite.y-600);
 		}
-		
 	},
 
 	progressManager : function() {
 		// Camera Controls
-		if (!this.sections.intro.isRunning()) {
+		if (!this.sectionManager.isRunning('intro')) {
 			if (this.game.camera.y <= 640) {
-				this.sections.boss.start();
-				this.sections.mid.reset();
+
 			} else if (this.game.camera.y > 640 && this.game.camera.y < this.game.world.height - 800) {
-				this.sections.mid.start();
-				this.sections.start.reset();
+
 			} else {
-				this.sections.start.start();
+
 			}
 		}
 	},
-
 
 	collisionChecks : function() {
 
@@ -237,10 +226,16 @@ StateGame.prototype = {
 
 			game.debug.text("Diff: " + this.difficulty, 850, 50);
 			game.debug.text("spawnTimer: " + this.spawnTimer.paused, 850, 70);
-			game.debug.text("Prgrs: " + this.progress, 850, 90);
-			game.debug.text("MidGame?: " + this.sections.start.isRunning(), 850, 110);
 
-			// Sprite debug info
+			game.debug.text("Section: " + this.sectionManager.currentSection(), 850, 90);
+			game.debug.text("Start?: " + this.sectionManager.isRunning('start'), 850, 110);
+			game.debug.text("Mid?: " + this.sectionManager.isRunning('mid'), 850, 130);
+			game.debug.text("Intro?: " + this.sectionManager.isRunning('intro'), 850, 150);
+			
+			
+			
+			
+			// Sprite debug info			
 			//entities.bombs.forEachAlive(this.renderPhysics, this);
 			//entities.shrooms.forEachAlive(this.renderPhysics, this);
 			this.platforms.group.forEachAlive(this.renderPhysics, this);
