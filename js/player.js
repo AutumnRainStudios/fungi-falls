@@ -90,8 +90,8 @@ Player.prototype = {
 		//this.sprite.body.velocity.y = (1-this.movement.acceleration) * this.sprite.body.velocity.y);
 	},
 
-	fallDamage : function() {
-		if (this.sprite.body.velocity.y > 1200){
+	fallDamage : function(player, platform) {
+		if (this.sprite.body.velocity.y > 980 && platform.fallDamage){
 			this.sprite.heart = 0;
 		}
 	},

@@ -15,11 +15,13 @@ Platforms.prototype = {
 		this.ground.scale.setTo(15, 1);
 		game.physics.enable(this.ground, Phaser.Physics.ARCADE);
 		this.ground.body.immovable = true;
+		this.ground.fallDamage = true;
 
 		this.bossPlatform = this.group.create(0, 600, 'ground');
 		this.bossPlatform.scale.setTo(15, 1);
 		game.physics.enable(this.bossPlatform, Phaser.Physics.ARCADE);
 		this.bossPlatform.body.immovable = true;
+		this.bossPlatform.fallDamage = false;
 
 	},
 
@@ -29,7 +31,7 @@ Platforms.prototype = {
 		
 		while (this.previousY > 700) {
 			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
-			this.makeLedge(Math.random()*(game.world.width/12*4)+startX, this.previousY, 'random', true);
+			this.makeLedge(Math.random()*(game.world.width/12*4)+startX, this.previousY, 'random', true, true);
 			this.previousY -= 180;
 		}
 		
@@ -43,9 +45,10 @@ Platforms.prototype = {
 		//this.makeLedge(game.world.width-200, 500, 'shroomPlatformTan');
 	},
 
-	makeLedge : function(x, y, type, fragile) {
+	makeLedge : function(x, y, type, fragile, fallDamage) {
 		type = typeof type !=='undefined' ? type: 'random';
 		fragile = typeof fragile !=='undefined' ? fragile: false;
+		fallDamage = typeof fallDamage !=='undefined' ? fallDamage: false;
 
 		this.random = Math.random();
 		this.ledge = null;
@@ -80,6 +83,7 @@ Platforms.prototype = {
 			this.ledge.fragile = false;
 		}
 
+		this.ledge.fallDamage = fallDamage;
 	},
 
 	removalCheck :function() {

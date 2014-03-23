@@ -12,7 +12,7 @@ StateGame.prototype = {
 		if (hardMode){
 			this.player = new Player(game, 1);
 		} else {
-			this.player = new Player(game, 16);
+			this.player = new Player(game, 20);
 		}
 		this.platforms = new Platforms(game);
 		this.bombs = new Bombs(game);
@@ -220,7 +220,7 @@ StateGame.prototype = {
 	},
 
 	progressManager : function() {
-		if (this.sectionManager.isRunning('start') && this.game.camera.y < this.game.world.height-640) {
+		if (this.sectionManager.isRunning('start') && this.game.camera.y < this.game.world.height-800) {
 			this.sectionManager.start('mid');
 			if (!this.sectionManager.isInitialised('mid')) {
 				this.sectionManager.init('mid');
@@ -228,7 +228,7 @@ StateGame.prototype = {
 			}
 		}
 
-		if (this.sectionManager.isRunning('mid') && this.game.camera.y < 640) {
+		if (this.sectionManager.isRunning('mid') && this.game.camera.y < 700) {
 			this.sectionManager.start('top');
 			if (!this.sectionManager.isInitialised('top')) {
 				this.sectionManager.init('top');
