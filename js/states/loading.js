@@ -40,7 +40,9 @@ StateLoading.prototype = {
 	},
 
 	loadUpdate: function() {
-		this.preloadBar2.crop.width = (this.game.load.progress/100)*682;
+		this.preloadBar2.crop(new Phaser.Rectangle(0, 0, (this.game.load.progress/100)*682, 41));
+
+		//
 	},
 
 	create: function() {
