@@ -250,7 +250,7 @@ StateGame.prototype = {
 
 		// Player interactions with platforms
 		game.physics.arcade.overlap(this.player.sprite, this.platforms.group, this.player.fallDamage, null, this.player);
-		game.physics.arcade.collide(this.player.sprite, this.platforms.group, null, this.player.platformCollision, this.player);
+		game.physics.arcade.collide(this.player.sprite, this.platforms.group, this.platforms.age, this.player.platformCollision, this.player);
 
 		// Kill player on contact with explosion
 		game.physics.arcade.collide(this.player.sprite, this.bombs.explosions, null, this.player.hurt, this.player);

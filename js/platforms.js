@@ -75,6 +75,7 @@ Platforms.prototype = {
 
 		if (fragile) {
 			this.ledge.fragile = true;
+			this.ledge.heart = 60;
 		} else {
 			this.ledge.fragile = false;
 		}
@@ -90,6 +91,14 @@ Platforms.prototype = {
 		this.group.forEachAlive(check, this);
 	},
 
+	age : function(player, platform) {
+		platform.heart--;
+		platform.alpha = platform.heart/60;
 
+		if (platform.heart <= 0) {
+			platform.kill();
+		}
+
+	}
 
 }

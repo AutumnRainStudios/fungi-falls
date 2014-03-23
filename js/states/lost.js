@@ -68,8 +68,10 @@ StateLost.prototype = {
 	},
 
 	render: function() {
-		game.time.advancedTiming = true;
-		game.debug.text("FPS: " + game.time.fps, 850, 10);
-		this.controls.render();
+		if (debug) {
+			game.time.advancedTiming = true;
+			game.debug.text("FPS: " + game.time.fps, 850, 10);
+			this.controls.render();
+		}
 	}
 }
