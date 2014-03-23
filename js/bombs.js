@@ -12,7 +12,8 @@ Bombs.prototype = {
 
 	},
 
-	spawn :function(x,y) {
+	spawn :function(x,y,velY_Offset) {
+		velY_Offset = typeof velY_Offset !=='undefined' ? velY_Offset : 0;
 
 		if (this.group.countDead() > 0){
 			this.entity = this.group.getFirstDead();
@@ -30,6 +31,7 @@ Bombs.prototype = {
 		this.entity.animations.play('countdown');
 
 		this.entity.body.velocity.x = (Math.random()*500)-250;
+		this.entity.body.velocity.y = ((Math.random()*800)-400)+velY_Offset;
 		
 		this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.explode, this, this.entity);
 		
@@ -58,6 +60,8 @@ Bombs.prototype = {
 		//entities.createEntity();
 	},
 
+	
+
 	update : function() {
 		this.group.forEachAlive(this.updateBomb, this);
 	},
@@ -67,7 +71,14 @@ Bombs.prototype = {
 		entity.body.velocity.x = entity.body.velocity.x/1.002;
 	},
 
-
+	removalCheck :function() {
+		var check = function(entity){
+			if (entity.y > this.game.camera.y+this.game.camera.height+100){
+				entity.kill();
+			}
+		}
+		this.group.forEachAlive(check, this);
+	},
 
 
 

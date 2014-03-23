@@ -44,6 +44,15 @@ Shrooms.prototype = {
 	collect: function(player, shroom) {
 		shroom.kill();
 		score++;
-	}
+	},
+
+	removalCheck :function() {
+		var check = function(entity){
+			if (entity.y > this.game.camera.y+this.game.camera.height+100){
+				entity.kill();
+			}
+		}
+		this.group.forEachAlive(check, this);
+	},
 
 }

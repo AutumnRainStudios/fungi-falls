@@ -3,6 +3,7 @@ var StateStart = function(game) {
 	this.logo = null;
 	this.menuSelected = 'start';
 	this.cursors = null;
+	this.gui = {};
 };
 StateStart.prototype = {
 	preload: function() {
@@ -11,7 +12,6 @@ StateStart.prototype = {
 	},
 	
 	create: function() {
-
 		this.background.makeSky();
 		this.background.makeBackground();
 		this.background.fadeLoop();
@@ -26,7 +26,6 @@ StateStart.prototype = {
 
 		this.controls.create();
 		this.controls.enable();
-
 	},
 	
 	update: function() {
@@ -36,20 +35,21 @@ StateStart.prototype = {
 
 		if (this.controls.input.right) {
 			this.startMenu.frame = 1;
-			this.menuSelected = 'scores';
+			this.menuSelected = 'hard';
 		} else if (this.controls.input.left) {
 			this.startMenu.frame = 0;
-			this.menuSelected = 'start';
+			this.menuSelected = 'easy';
 		}
 
 		if (this.controls.input.a) {
-			if (this.menuSelected == 'scores') {
-				this.destroy();
-				game.state.start('scores');
+			if (this.menuSelected == 'hard') {
+				hardMode = true;
 			} else {
-				this.destroy();
-				game.state.start('game');
+				hardMode = false;
 			}
+
+			this.destroy();
+			game.state.start('game');
 		}
 	},
 
@@ -59,8 +59,10 @@ StateStart.prototype = {
 	},
 
 	render: function() {
-		game.time.advancedTiming = true;
-		game.debug.text("FPS: " + game.time.fps, 850, 10);
-		this.controls.render();
+		if (debug){
+			game.time.advancedTiming = true;
+			game.debug.text("FPS: " + game.time.fps, 850, 10);
+			this.controls.render();
+		}
 	}
 }

@@ -8,7 +8,6 @@ SectionManager = function(sections, singleInstance) {
 SectionManager.prototype = {
 	
 	add : function(name) {
-		//console.log('stuff');
 		var section = {
 			running : false,
 			initialised :false
@@ -29,11 +28,21 @@ SectionManager.prototype = {
 		}
 	},
 
+	isInitialised : function(section) {
+		if (this.sections[section].initialised) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+
 	currentSection : function() {
 		if (this.singleInstance) {
 			for (var index in this.sections){
-				if (this.sections[index].running){
-					return index;
+				if(this.sections.hasOwnProperty(index)){
+					if (this.sections[index].running){
+						return index;
+					}
 				}
 			}		
 		}
@@ -46,10 +55,9 @@ SectionManager.prototype = {
 	start : function(section) {
 		if (this.singleInstance) {
 			for (var index in this.sections){
-				console.log(index);
-				//if(this.section.hasOwnProperty(index)){
+				if(this.sections.hasOwnProperty(index)){
 					this.sections[index].running = false;
-				//}
+				}
 			}
 		}
 		this.sections[section].running = true;
@@ -63,7 +71,17 @@ SectionManager.prototype = {
 		this.sections[section].running = false;
 		this.sections[section].initialised = false;
 	},
-	
+
+	resetAll : function() {
+		for (var index in this.sections){
+			if(this.sections.hasOwnProperty(index)){
+				this.sections[index].running = false;
+				this.sections[index].initialised = false;
+			}
+		}
+	},
+
+	/*
 	toggle : function(section) {
 		if (this.running) {
 			this.sections[section].running = false;
@@ -73,4 +91,5 @@ SectionManager.prototype = {
 			return true;
 		}
 	}
+	*/
 }

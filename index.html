@@ -5,8 +5,8 @@
 		<title>Fungi Falls</title>
 		
 		<script type="text/javascript">
-			var debug = true;
-			var debugMobile = true;
+			var debug = false;
+			var debugMobile = false;
 		</script>
 		
         <script type="text/javascript" src="js/debug.js"></script>
@@ -15,20 +15,16 @@
 		<script type="text/javascript" src="js/vendor/phaser.2.0.min.js"></script>
 
 		<script type="text/javascript" src="js/assets.js?v=1"></script>
-		<script type="text/javascript" src="js/sectionManager.js?v=12345w678912jk"></script>
+		<script type="text/javascript" src="js/sectionManager.js?v=1"></script>
 		<script type="text/javascript" src="js/background.js?v=1"></script>
 		<script type="text/javascript" src="js/player.js?v=1"></script>
 		<script type="text/javascript" src="js/platforms.js?v=1"></script>
 		<script type="text/javascript" src="js/bombs.js?v=1"></script>
 		<script type="text/javascript" src="js/shrooms.js?v=1"></script>
+		<script type="text/javascript" src="js/boss.js?v=1"></script>
 		<script type="text/javascript" src="js/timer.js?v=1"></script>
 		
-
-		<!--<script type="text/javascript" src="js/level.js?v=1"></script>-->
-		<script type="text/javascript" src="js/entities.js?v=1"></script>
-		<script type="text/javascript" src="js/enemies.js?v=1"></script>
 		<script type="text/javascript" src="js/controls.js?v=1"></script>
-		<script type="text/javascript" src="js/gui.js?v=1"></script>
 		
 		<script type="text/javascript" src="js/states/boot.js?v=1"></script>
 		<script type="text/javascript" src="js/states/loading.js?v=1"></script>
@@ -80,23 +76,6 @@
 		
 
 		<div class="container">
-
-			<br/>
-
-			<div class="row">
-				<div class="col-sm-6">
-						<strong>Score: <span id="score" class="badge badge-info"></span></strong>
-				</div>
-
-				<div class="col-sm-6">
-					<div class="progress progress-striped">
-					 	<div id="health-bar" class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%">
-					    	Health: <span id="health"></span>
-					  	</div>
-					</div>
-				</div>
-			</div>
-
 			
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
@@ -107,6 +86,7 @@
 				</div>
 			</div>
 
+			<!--
 			<div class="well">
 				<h4>Console:</h4>
 				
@@ -115,7 +95,7 @@
 				<ul id="console">
 				</ul>
 			</div>
-
+			-->
 		</div>
 	</body>
 </html>
