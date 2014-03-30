@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Fungi Falls :: An HTML5 Game Demo by Autumn Rain Studios</title>
+		
+		<script type="text/javascript">
+			var debug = true;
+			var debugMobile = true;
+		</script>
+		
+		<style>
+		 body {
+			 background: #111;
+		 }
+		 </style>
+		
+        <script type="text/javascript" src="js/debug.js"></script>
+		<!--<script type="text/javascript" src="js/vendor/phaser.min.js"></script>-->
+		<script type="text/javascript" src="../bower_components/phaser-official/build/phaser.min.js"></script>
+
+		<script type="text/javascript" src="js/assets.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/sectionManager.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/background.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/player.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/platforms.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/bombs.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/shrooms.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/boss.js?v=1"></script>
+		<script type="text/javascript" src="js/prototypes/timer.js?v=1"></script>
+		
+		<script type="text/javascript" src="js/prototypes/controls.js?v=1"></script>
+		
+		<script type="text/javascript" src="js/states/boot.js?v=1"></script>
+		<script type="text/javascript" src="js/states/loading.js?v=1"></script>
+		<script type="text/javascript" src="js/states/start.js?v=1"></script>
+		<script type="text/javascript" src="js/states/game.js?v=12"></script>
+		<script type="text/javascript" src="js/states/won.js?v=1"></script>
+		<script type="text/javascript" src="js/states/lost.js?v=1"></script>
+		<script type="text/javascript" src="js/states/scores.js?v=1"></script>
+
+		<script type="text/javascript" src="js/main.js?v=1"></script>
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+					
+	</head>
+	<body id="page_home">
+	
+		<section id="game_canvas"></section>
+		
+		<div class="well">
+			<h4>Console:</h4>
+			
+			<button type="button" onclick="console.clearOutput();" class="btn">Clear</button>
+			
+			<ul id="console">
+			</ul>
+		</div>
+
+	</body>
+</html>
