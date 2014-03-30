@@ -23,6 +23,9 @@ StateStart.prototype = {
 		this.startMenu = game.add.sprite(game.camera.width/2, 500, 'startOptions');
 		this.startMenu.anchor.setTo(0.5, 0.5);
 		this.startMenu.fixedToCamera = true;
+		
+		this.music = this.add.audio('music', 1, true);
+		this.music.play();
 
 		this.controls.create();
 		this.controls.enable();
@@ -56,6 +59,7 @@ StateStart.prototype = {
 	destroy: function() {
 		//delete this.controls;
 		console.log(game.state.current + ': destroyed');
+		this.music.stop();
 	},
 
 	render: function() {

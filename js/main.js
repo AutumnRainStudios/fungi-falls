@@ -5,6 +5,7 @@ var game = new Phaser.Game(1024, 640, Phaser.CANVAS, 'game_canvas');
 
 var score = 0;
 var hardMode = false;
+var music = null;
 
 game.state.add('boot', StateBoot, false);
 game.state.add('loading', StateLoading, false);

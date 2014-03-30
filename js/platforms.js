@@ -28,11 +28,16 @@ Platforms.prototype = {
 	generateLedges : function(startX, startY) {
 
 		this.previousY = startY;
-		
+		var i = 0;
 		while (this.previousY > 700) {
 			//previous.x = Math.random()*(this.worldWidth/12*4)+startX;
-			this.makeLedge(Math.random()*(game.world.width/12*4)+startX, this.previousY, 'random', true, true);
+			if (i > 1){
+				this.makeLedge(Math.random()*(game.world.width/12*4)+startX, this.previousY, 'random', true, true);
+			} else {
+				this.makeLedge(Math.random()*(game.world.width/12*4)+startX, this.previousY, 'random', false, false);
+			}
 			this.previousY -= 180;
+			i++
 		}
 		
 	},
@@ -78,7 +83,11 @@ Platforms.prototype = {
 
 		if (fragile) {
 			this.ledge.fragile = true;
-			this.ledge.heart = 60;
+			if (hardMode){
+				this.ledge.heart = 60;
+			} else {
+				this.ledge.heart = 120;
+			}
 		} else {
 			this.ledge.fragile = false;
 		}
@@ -92,7 +101,9 @@ Platforms.prototype = {
 				entity.kill();
 			}
 		}
-		this.group.forEachAlive(check, this);
+		if (hardMode){
+			this.group.forEachAlive(check, this);
+		}
 	},
 
 	age : function(player, platform) {
@@ -100,6 +111,17 @@ Platforms.prototype = {
 		platform.alpha = platform.heart/60;
 
 		if (platform.heart <= 0) {
+			var revive = function() {
+				platform.revive(1);
+				if (hardMode){
+					platform.heart = 60;
+				} else {
+					platform.heart = 120;
+				}
+				platform.alpha = 1;
+			}
+		
+			this.game.time.events.add(Phaser.Timer.SECOND * 4, revive);
 			platform.kill();
 		}
 

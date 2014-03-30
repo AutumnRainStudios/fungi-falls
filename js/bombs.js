@@ -9,6 +9,8 @@ Bombs.prototype = {
 	create : function() {
 		this.group = game.add.group();
 		this.explosions = game.add.group();
+		
+		this.sfx_explosion = this.game.add.audio('sfx_explosion', 0.2, false);
 
 	},
 
@@ -47,10 +49,13 @@ Bombs.prototype = {
 			//this.entity.anchor.setTo(0.5, 0.5);
 			game.physics.enable(this.entity, Phaser.Physics.ARCADE);
 			this.entity.body.setSize(160, 160, -20, -20);
+			this.entity.body.moves = false;
 			//this.entity.anchor.setTo(0.5, 0.5);
 			this.entity.animations.add('boom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		}
 		this.entity.animations.play('boom', 24, false, true);
+		
+		this.sfx_explosion.play();
 	},
 
 	explode :function(entity) {

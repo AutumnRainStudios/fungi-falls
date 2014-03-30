@@ -27,7 +27,7 @@ Controls.prototype = {
 	
 	create: function() {
 
-		if (Modernizr.touch) {
+		if (!this.game.device.desktop) {
 			
 			this.touch.a = this.game.add.sprite(924, 520, 'button_a');
 			this.touch.a.anchor.setTo(0.5, 0.5);
@@ -66,7 +66,7 @@ Controls.prototype = {
 
 	update: function() {
 		if (this.enabled){
-			if (Modernizr.touch) {
+			if (!this.game.device.desktop) {
 				
 				if ((this.game.input.pointer1.isDown && this.game.input.pointer1.position.x > 874) || (this.game.input.pointer2.isDown && this.game.input.pointer2.position.x > 874)){
 					this.touch.a.frame = 1;

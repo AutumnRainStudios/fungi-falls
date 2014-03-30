@@ -24,12 +24,15 @@ Player.prototype = {
 		this.sprite.body.gravity.y = 1800;
 		this.sprite.body.setSize(40, 100, -15, 0);
 		this.sprite.body.collideWorldBounds = true;
+		this.sprite.body.tilePadding.setTo(10,10);
 
 	 	this.sprite.animations.add('walkRight', [5, 6, 7, 8, 9, 10], 16, true);
 		this.sprite.animations.add('walkLeft', [11, 12, 13, 14, 15, 16], 16, true);
 		this.sprite.animations.add('jumpRight', [1, 2], 8, true);
 		this.sprite.animations.add('jumpLeft', [3, 4], 8, true);
 		this.sprite.animations.add('hurt', [3, 4], 1, true);
+		
+		this.sfx_jump = this.game.add.audio('sfx_jump', 0.2, false);
 
 		this.gibs = game.add.group();
 	},
@@ -38,6 +41,7 @@ Player.prototype = {
 		//  Allow the player to jump if they are touching the ground.
 		if (this.sprite.body.wasTouching.down) {
 			this.sprite.body.velocity.y = -850;
+			this.sfx_jump.play();
 		}
 	},
 
@@ -91,7 +95,7 @@ Player.prototype = {
 	},
 
 	fallDamage : function(player, platform) {
-		if (this.sprite.body.velocity.y > 980 && platform.fallDamage){
+		if (this.sprite.body.velocity.y > 1100 && platform.fallDamage){
 			this.sprite.heart = 0;
 		}
 	},

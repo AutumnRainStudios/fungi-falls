@@ -9,8 +9,13 @@
 			var debugMobile = false;
 		</script>
 		
+		<style>
+		 body {
+			 background: #111;
+		 }
+		 </style>
+		
         <script type="text/javascript" src="js/debug.js"></script>
-		<script type="text/javascript" src="js/vendor/modernizr.js"></script>
 		<!--<script type="text/javascript" src="js/vendor/phaser.min.js"></script>-->
 		<script type="text/javascript" src="js/vendor/phaser.2.0.min.js"></script>
 
@@ -35,66 +40,24 @@
 		<script type="text/javascript" src="js/states/scores.js?v=1"></script>
 
 		<script type="text/javascript" src="js/main.js?v=1"></script>
-	
-		<link rel="stylesheet" href="css/vendor/bootstrap.min.css">
-		<link rel="stylesheet" href="css/vendor/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="css/styles.css">
 		
-
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 					
 	</head>
 	<body id="page_home">
 	
-		<section id="game_canvas">
-			<!-- Canvas for game -->
-
-			<div class="hud">
-			<div id="hud_gameOver" class="_gameOver">
-				<h2>Game Over</h2>
-				<h3>No more 'shrooms for you...</h3>
-
-				<h3>Final Score: <strong><span id="score-final"></span>!</strong></h3>
-
-				<button type="button" class="btn btn-primary" onclick="window.location.reload(false);">Try Again</button>
-			</div>
-
-			<div id="hud_start" class="_start">
-				<button type="button" class="btn btn-primary btn-large" onclick="start();">Start</button>
-			</div>
-
-		</section>
-
-	
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-
-					<!-- <h1>Fungi Falls</h1> -->
-				</div>
-			</div>
-		</div>
+		<section id="game_canvas"></section>
 		
-
-		<div class="container">
+		<!--
+		<div class="well">
+			<h4>Console:</h4>
 			
-			<div class="row">
-				<div class="col-sm-8 col-sm-offset-2">
-					<article class="well">
-
-					</article>
-				</div>
-			</div>
-
-			<!--
-			<div class="well">
-				<h4>Console:</h4>
-				
-				<button type="button" onclick="console.clearOutput();" class="btn">Clear</button>
-				
-				<ul id="console">
-				</ul>
-			</div>
-			-->
+			<button type="button" onclick="console.clearOutput();" class="btn">Clear</button>
+			
+			<ul id="console">
+			</ul>
 		</div>
+		-->
+
 	</body>
 </html>

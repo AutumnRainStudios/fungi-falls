@@ -31,6 +31,7 @@ var loadAssets = function() {
 	game.load.image('bg_inside', 'assets/bg/bg_inside.png');
 	game.load.image('bg_outside', 'assets/bg/bg_outside.png');
 	game.load.spritesheet('bed', 'assets/sprites/bed_spritesheet.png', 190, 130);
+	game.load.spritesheet('sign', 'assets/sprites/sign.png', 150, 100);
 
 	// Platforms
 	game.load.image('ground', 'assets/sprites/ground.png');
@@ -45,4 +46,9 @@ var loadAssets = function() {
 	game.load.image('gib_body', 'assets/sprites/player_gibs/player_gib_body.png');
 	game.load.image('gib_hat', 'assets/sprites/player_gibs/player_gib_hat.png');
 	game.load.image('gib_limb', 'assets/sprites/player_gibs/player_gib_limb.png');
+	
+	// Player
+	game.load.audio('music', ['assets/audio/twilight_juggle.mp3', 'assets/audio/twilight_juggle.ogg']);
+	game.load.audio('sfx_explosion', ['assets/audio/explosion.mp3', 'assets/audio/explosion.ogg']);
+	game.load.audio('sfx_jump', ['assets/audio/jump.mp3', 'assets/audio/jump.ogg']);
 }

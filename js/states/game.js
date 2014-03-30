@@ -12,7 +12,7 @@ StateGame.prototype = {
 		if (hardMode){
 			this.player = new Player(game, 1);
 		} else {
-			this.player = new Player(game, 20);
+			this.player = new Player(game, 40);
 		}
 		this.platforms = new Platforms(game);
 		this.bombs = new Bombs(game);
@@ -31,6 +31,8 @@ StateGame.prototype = {
 		this.bed.animations.add('awake', [5], 1, true);
 		this.bed.animations.add('empty', [6], 1, true);
 		this.bed.animations.play('sleep');
+
+		this.sign = this.game.add.sprite(100, game.world.height-135, 'sign');
 
 		this.platforms.create();
 		this.platforms.generateBossArena();
@@ -59,6 +61,9 @@ StateGame.prototype = {
 	        align: "left"
 	    });
 		this.gui.health.fixedToCamera = true;
+		
+		this.music = this.add.audio('music', 1, true);
+		this.music.play();
 		
 		this.introInit();
 	},
@@ -253,7 +258,7 @@ StateGame.prototype = {
 		game.physics.arcade.collide(this.player.sprite, this.platforms.group, this.platforms.age, this.player.platformCollision, this.player);
 
 		// Kill player on contact with explosion
-		game.physics.arcade.collide(this.player.sprite, this.bombs.explosions, null, this.player.hurt, this.player);
+		game.physics.arcade.overlap(this.player.sprite, this.bombs.explosions, null, this.player.hurt, this.player);
 
 		// Collect shrooms
 		game.physics.arcade.overlap(this.player.sprite, this.shrooms.group, null, this.shrooms.collect, this.shrooms);
@@ -325,6 +330,7 @@ StateGame.prototype = {
 		this.sectionManager.resetAll();
 		this.spawnTimer.stop();
 		this.difficulty = 0;
+		this.music.stop();
 	},
 
 	renderPhysics: function(entity) {

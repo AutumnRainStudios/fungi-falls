@@ -18,75 +18,31 @@ StateLoading.prototype = {
 		this.preloadBar2.cropEnabled;
 		this.preloadBar2.fixedToCamera = true;
 
-		//this.game.load.setPreloadSprite(this.reloadBar2);
-
 		loadAssets();
-
-		//player = new Player(game);
-		//player.preload();
-
-		//this.level = new Level(game);
-		//level.preload();
-
-		//entities = new Entities(game);
-		//entities.preload();
-
-		//enemies = new Enemies(game);
-		//enemies.preload();
-	
-		
-		//controls.preload();
 
 	},
 
 	loadUpdate: function() {
 		this.preloadBar2.crop(new Phaser.Rectangle(0, 0, (this.game.load.progress/100)*682, 41));
 
-		//
 	},
 
 	create: function() {
-		
-		//var start = function() {
-			this.destroy();
-			game.state.start('start');
-		//	}
-		/*
-		console.log(this.fade);
-
-		this.fade2 = this.fade;
-
-		this.level.createBackground();
-
-		this.bg.bringToTop();
-		this.bg.height = game.world.height;
-		this.logo.bringToTop();
-		this.preloadBar1.bringToTop();
-		this.preloadBar2.bringToTop();
-
-		this.bgFade = this.game.add.tween(this.bg);
-		this.bgFade.to( { alpha: 0 }, 1000, Phaser.Easing.Quadratic.InOut, false, 0, 0, false);
-		this.bgFade.onComplete.add(start, this);
-		this.bgFade.start();
-		*/
-
+		//game.state.start('start');
 	},
 
 	update: function() {
-		/*
-		this.bg.alpha = this.fade2/this.fade;
-		this.preloadBar1.alpha = this.fade2/this.fade;
-		this.preloadBar2.alpha = this.fade2/this.fade;
 
-		if (this.fade2 == 0){
+		if (this.cache.isSoundDecoded('music'))
+		{
+			this.ready = true;
 			game.state.start('start');
+			this.destroy();
 		}
 
-		this.fade2 -= 1;
-		*/
 	},
 
 	destroy: function(){
-		delete this.level;
+		//delete this.level;
 	}
 }
